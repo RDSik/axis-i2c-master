@@ -10,7 +10,7 @@
 
 ### Clone repository:
 ```bash
-git clone --recurse-submodules https://github.com/RDSik/FPGA_transceiver.git
+git clone --recurse-submodules https://github.com/RDSik/i2c_master.git
 ```
 
 ### Download pip:
