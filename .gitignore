@@ -1,0 +1,9 @@
+syn/*
+!Manifest.py
+!add_ip.tcl
+!i2c_master.xdc
+platform/xilinx/fifo/*
+!fifo.xci
+sim/cocotb/*
+!test.py
+!i2c_master_tb.py
