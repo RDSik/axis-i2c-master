@@ -1,5 +1,3 @@
-![My Image](transeiver.drawio.png)
-
 # Usage
 
 ## Dependencies 
