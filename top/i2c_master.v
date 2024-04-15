@@ -2,23 +2,23 @@ module i2c_master #(
     parameter DATA_WIDTH = 8,
     parameter ADDR_WIDTH = 7
 ) (
-    input  logic                  clk,
-    input  logic                  i2c_clk,
-    input  logic                  arst,
-    input  logic [DATA_WIDTH-1:0] data,
-    input  logic [ADDR_WIDTH-1:0] addr,
-    input  logic                  fifo_wr_en,
-    output logic                  fifo_full,
-    inout  logic                  i2c_sda,
-    inout  logic                  i2c_scl 
+    input  wire                  clk,
+    input  wire                  i2c_clk,
+    input  wire                  arst,
+    input  wire [DATA_WIDTH-1:0] data,
+    input  wire [ADDR_WIDTH-1:0] addr,
+    input  wire                  fifo_wr_en,
+    output wire                  fifo_full,
+    inout  wire                  i2c_sda,
+    inout  wire                  i2c_scl 
 );
 
-logic [14:0] fifo_data_i;
-logic [14:0] fifo_data_o;
+wire [14:0] fifo_data_i;
+wire [14:0] fifo_data_o;
 
-logic fifo_empty;
-logic fsm_ready;
-logic start;
+wire fifo_empty;
+wire fsm_ready;
+wire start;
 
 assign fifo_data_i = {data, addr};
 

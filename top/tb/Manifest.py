@@ -1,4 +1,4 @@
 files = [
-    "i2c_master_tb.sv",
-    "timescale.svh",
+    "i2c_master_tb.v",
+    "timescale.vh",
 ]

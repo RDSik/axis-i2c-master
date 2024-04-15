@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 
 import cocotb
@@ -10,12 +11,16 @@ def test_runner():
     hdl_toplevel_lang = os.getenv("HDL_TOPLEVEL_LANG", "verilog")
     sim = os.getenv("SIM", "questa")
     
-    build_dir = Path('sim_build_transceiver')
+    build_dir = Path('sim_build_i2c_master')
     build_dir.mkdir(exist_ok=True)
 
+    xilinx_simlibs_path = Path(r'modelsim')
+
+    shutil.copyfile(xilinx_simlibs_path / 'modelsim.ini', build_dir / 'modelsim.ini')
+
     verilog_sources = [
-        src / "top/i2c_master.sv",
-        src / "top/i2c_sfm.sv",
+        src / "top/i2c_master.v",
+        src / "top/i2c_fsm.v",
     ]
     hdl_toplevel = 'i2c_master' # HDL module name
     test_module = 'i2c_master_tb' # Python module name

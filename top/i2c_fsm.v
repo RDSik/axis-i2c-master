@@ -2,35 +2,35 @@ module i2c_fsm #(
     parameter DATA_WIDTH = 8,    
     parameter ADDR_WIDTH = 7
 ) (
-    input  logic                  clk,
-    input  logic                  arst,    
-    input  logic                  start,
-    input  logic [ADDR_WIDTH-1:0] addr,
-    input  logic [DATA_WIDTH-1:0] data,
-    output logic                  ready,
-    output logic                  sda,
-    output logic                  scl
+    input  wire                  clk,
+    input  wire                  arst,    
+    input  wire                  start,
+    input  wire [ADDR_WIDTH-1:0] addr,
+    input  wire [DATA_WIDTH-1:0] data,
+    output wire                  ready,
+    output wire                  scl,
+    output reg                   sda
 );
 
-enum logic [2:0] {
-    IDLE      = 3'b000,
-    START     = 3'b001,
-    ADDR      = 3'b010,
-    RW        = 3'b011,
-    WACK_ADDR = 3'b100,
-    DATA      = 3'b101,
-    WACK_DATA = 3'b110,
-    STOP      = 3'b111
-} state;
+localparam [2:0] IDLE      = 3'b000,
+                 START     = 3'b001,
+                 ADDR      = 3'b010,
+                 RW        = 3'b011,
+                 WACK_ADDR = 3'b100,
+                 DATA      = 3'b101,
+                 WACK_DATA = 3'b110,
+                 STOP      = 3'b111;
 
-logic [ADDR_WIDTH-1:0]         saved_addr;
-logic [DATA_WIDTH-1:0]         saved_data;
-logic [$clog2(DATA_WIDTH)-1:0] cnt;
-logic                          scl_en;
+reg [ADDR_WIDTH-1:0]         saved_addr;
+reg [DATA_WIDTH-1:0]         saved_data;
+reg [$clog2(DATA_WIDTH)-1:0] cnt;
+reg                          scl_en;
+reg [2:0]                    state;
 
-always_ff @(posedge clk or posedge arst) begin
+always @(posedge clk or posedge arst) begin
     if (arst) begin
         state      <= IDLE;
+        sda        <= 1;
         cnt        <= 0;
         saved_addr <= 0;
         saved_data <= 0;        
@@ -91,7 +91,7 @@ always_ff @(posedge clk or posedge arst) begin
     end
 end
 
-always_ff @(negedge clk) begin
+always @(negedge clk) begin
     if (arst) begin
         scl_en <= 0;
     end
