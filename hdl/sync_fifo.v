@@ -23,7 +23,7 @@ module sync_fifo #(
         if (arst) begin
             rd_pointer <= 0;
         end
-        else if (rd_en) begin
+        else if (rd_en & ~empty) begin
             rd_pointer <= rd_pointer + 1;
         end
     end
@@ -33,7 +33,7 @@ module sync_fifo #(
         if (arst) begin
             wr_pointer <= 0;
         end
-        else if (wr_en) begin
+        else if (wr_en & ~full) begin
             fifo[wr_pointer] <= data_in;
             wr_pointer       <= wr_pointer + 1;
         end
@@ -54,8 +54,8 @@ module sync_fifo #(
         end
     end
 
-    assign full     = wr_en ? (status_cnt >= FIFO_DEPTH - 1) : (status_cnt == FIFO_DEPTH);
-    assign empty    = rd_en ? (status_cnt <= 1) : (status_cnt == 0);
+    assign full     = (status_cnt >= FIFO_DEPTH);
+    assign empty    = (status_cnt <= 0);
     assign data_out = fifo[rd_pointer];
 
 endmodule

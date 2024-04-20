@@ -2,7 +2,7 @@
 
 module i2c_master_tb ();
 
-localparam SIM_TIME   = 200;
+localparam SIM_TIME   = 100;
 localparam CLK_PERIOD = 2;
 localparam FIFO_DEPTH = 4;
 // localparam I2C_CLK_PERIOD = 20;
@@ -42,25 +42,25 @@ assign fifo_empty  = dut.fifo_empty;
 assign fsm_ready   = dut.fsm_ready;
 assign fsm_start   = dut.fsm_start;
 
-task rst_en_set(input zero, one);
+task rst_set(input zero, one);
     begin
         #CLK_PERIOD;
-        fifo_wr_en = zero;
-        arst       = one;
+        arst = one;
         #CLK_PERIOD;
-        fifo_wr_en = one;
-        arst       = zero;
+        arst = zero;
         $display("\n-----------------------------");
-        $display("Reset done and enable high");
+        $display("Reset done");
         $display("-----------------------------\n");
     end
 endtask
 
 task data_addr_gen();
     begin
-        repeat (FIFO_DEPTH) begin
-            #50; data = $urandom_range(0, 255); addr = $urandom_range(0, 127);
+        fifo_wr_en = 1;
+        repeat (FIFO_DEPTH*2) begin
+            #CLK_PERIOD; data = $urandom_range(0, 255); addr = $urandom_range(0, 127);
         end
+        fifo_wr_en = 0;
     end
 endtask
 
@@ -70,7 +70,7 @@ always #(CLK_PERIOD/2) clk = ~clk;
 initial begin
     clk = 0;
     // i2c_clk = 0;
-    rst_en_set(0, 1);
+    rst_set(0, 1);
     data_addr_gen();
 end
 
