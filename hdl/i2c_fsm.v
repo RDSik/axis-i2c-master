@@ -106,7 +106,6 @@ always @(negedge clk) begin
 end
 
 assign ready = ((arst == 0) && (state == IDLE)) ? 1 : 0;
-
-assign scl = scl_en ? ~clk : 1;
+assign scl   = scl_en ? ~clk : 1;
 
 endmodule
