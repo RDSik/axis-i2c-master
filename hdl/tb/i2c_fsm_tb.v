@@ -82,7 +82,7 @@ end
 initial begin
     $dumpfile("i2c_fsm_tb.vcd");
     $dumpvars(0, i2c_fsm_tb);
-    $monitor("time=%g, data=0x%h, addr=0x%h, sda=%b, slc=%b, ready=%b, start=%b", $time, data, addr, sda, scl, ready, start);
+    $monitor("time=%g, data=0x%h, addr=0x%h, sda=%b, scl=%b, ready=%b, start=%b", $time, data, addr, sda, scl, ready, start);
 end
 
 initial #SIM_TIME $stop;

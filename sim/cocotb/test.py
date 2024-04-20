@@ -6,21 +6,22 @@ import cocotb
 from cocotb.runner import get_runner
 
 def test_runner():
-    src = Path("../../")
+    src = Path("../../hdl/")
     
     hdl_toplevel_lang = os.getenv("HDL_TOPLEVEL_LANG", "verilog")
-    sim = os.getenv("SIM", "questa")
+    sim = os.getenv("SIM", "icarus")
     
     build_dir = Path('sim_build_i2c_master')
     build_dir.mkdir(exist_ok=True)
 
-    xilinx_simlibs_path = Path(r'modelsim')
+    # xilinx_simlibs_path = Path(r'modelsim')
 
-    shutil.copyfile(xilinx_simlibs_path / 'modelsim.ini', build_dir / 'modelsim.ini')
+    # shutil.copyfile(xilinx_simlibs_path / 'modelsim.ini', build_dir / 'modelsim.ini')
 
     verilog_sources = [
-        src / "top/i2c_master.v",
-        src / "top/i2c_fsm.v",
+        src / "i2c_master.v",
+        src / "i2c_fsm.v",
+        src / "sync_fifo.v",
     ]
     hdl_toplevel = 'i2c_master' # HDL module name
     test_module = 'i2c_master_tb' # Python module name
