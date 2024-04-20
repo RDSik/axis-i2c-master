@@ -47,13 +47,27 @@ make project
 
 ## Simulation
 
+### Vivado simulation using hdlmake:
+```bash
+cd top/sim/vivado
+hdlmake
+make
+```
+
+### Modelsim simulation using hdlmake:
+```bash
+cd top/sim/modelsim
+hdlmake
+make
+```
+
 ### Icarus simulation using cocotb:
 ```bash
-python3 -m venv myenv
+venv myenv
 .\myenv\Scripts\activate.ps1
 cd sim\cocotb
 pytest test.py
-cd .\sim_build_transceiver
-gtkwave .\transceiver_top.vcd
+cd .\sim_build_i2c_master
+gtkwave .\i2c_master_top.vcd
 deactivate
 ```

@@ -25,8 +25,8 @@ wire        fifo_empty;
 wire        fsm_ready;
 
 i2c_master dut (
-    // .i2c_clk    (i2c_clk),
     .clk        (clk),
+    // .i2c_clk    (i2c_clk),
     .arst       (arst),
     .data       (data),
     .addr       (addr),
