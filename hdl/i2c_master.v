@@ -25,8 +25,7 @@ module i2c_master #(
     wire fsm_start;
 
     assign fifo_data_i = {data, addr};
-
-    assign fsm_start = ~fifo_empty & fsm_ready;
+    assign fsm_start   = ~fifo_empty & fsm_ready;
 
     i2c_fsm #(
         .DATA_WIDTH (DATA_WIDTH),

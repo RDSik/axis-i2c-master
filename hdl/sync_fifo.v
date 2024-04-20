@@ -54,10 +54,8 @@ module sync_fifo #(
         end
     end
 
-    assign full = wr_en ? (status_cnt >= FIFO_DEPTH - 1) : (status_cnt == FIFO_DEPTH);
-
-    assign empty = rd_en ? (status_cnt <= 1) : (status_cnt == 0);
-
+    assign full     = wr_en ? (status_cnt >= FIFO_DEPTH - 1) : (status_cnt == FIFO_DEPTH);
+    assign empty    = rd_en ? (status_cnt <= 1) : (status_cnt == 0);
     assign data_out = fifo[rd_pointer];
 
 endmodule
