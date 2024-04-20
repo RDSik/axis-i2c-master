@@ -14,9 +14,9 @@ module sync_fifo #(
 
     reg [DATA_WIDTH-1:0] fifo [0:FIFO_DEPTH-1];
 
-    reg [$clog2(FIFO_DEPTH):0] rd_pointer;
-    reg [$clog2(FIFO_DEPTH):0] wr_pointer;
-    reg [$clog2(FIFO_DEPTH):0] status_cnt;
+    reg [$clog2(FIFO_DEPTH)-1:0] rd_pointer;
+    reg [$clog2(FIFO_DEPTH)-1:0] wr_pointer;
+    reg [$clog2(FIFO_DEPTH):0]   status_cnt;
 
     //! Read logic
     always @(posedge clk or posedge arst) begin
