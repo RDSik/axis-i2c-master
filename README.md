@@ -47,11 +47,13 @@ make project
 
 ## Simulation
 
-### Modelsim simulation using cocotb:
+### Icarus simulation using cocotb:
 ```bash
 python3 -m venv myenv
 .\myenv\Scripts\activate.ps1
-cd top/sim/cocotb
+cd sim\cocotb
 pytest test.py
+cd .\sim_build_transceiver
+gtkwave .\transceiver_top.vcd
 deactivate
 ```
