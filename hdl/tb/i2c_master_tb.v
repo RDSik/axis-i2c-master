@@ -1,10 +1,9 @@
-`include "timescale.vh"
+// `include "timescale.vh"
 
 module i2c_master_tb ();
 
-localparam SIM_TIME   = 100;
+localparam SIM_TIME   = 220;
 localparam CLK_PERIOD = 2;
-localparam FIFO_DEPTH = 4;
 // localparam I2C_CLK_PERIOD = 20;
 
 reg [7:0] data;
@@ -13,16 +12,16 @@ reg [6:0] addr;
 reg       clk;
 reg       arst;
 reg       fifo_wr_en;
+reg       fifo_rd_en;
 
+wire fsm_ready;
+wire fifo_empty;
 wire fifo_full;
 wire i2c_sda;
 wire i2c_scl;
 
 wire [14:0] fifo_data_i;
 wire [14:0] fifo_data_o;
-wire        fsm_start;
-wire        fifo_empty;
-wire        fsm_ready;
 
 i2c_master dut (
     .clk        (clk),
@@ -31,20 +30,19 @@ i2c_master dut (
     .data       (data),
     .addr       (addr),
     .fifo_wr_en (fifo_wr_en),
+    .fifo_rd_en (fifo_rd_en),
+    .fifo_empty (fifo_empty),
     .fifo_full  (fifo_full),
+    .fsm_ready  (fsm_ready),
     .i2c_sda    (i2c_sda),
     .i2c_scl    (i2c_scl)
 );
 
 assign fifo_data_i = dut.fifo_data_i;
 assign fifo_data_o = dut.fifo_data_o;
-assign fifo_empty  = dut.fifo_empty;
-assign fsm_ready   = dut.fsm_ready;
-assign fsm_start   = dut.fsm_start;
 
 task rst_set(input zero, one);
     begin
-        #CLK_PERIOD;
         arst = one;
         #CLK_PERIOD;
         arst = zero;
@@ -56,11 +54,36 @@ endtask
 
 task data_addr_gen();
     begin
+        data = $urandom_range(0, 255); 
+        addr = $urandom_range(0, 127);
+    end
+endtask
+
+task rd_en_gen();
+    begin
+        fifo_rd_en = 1;
+        #CLK_PERIOD;
+        fifo_rd_en = 0;
+    end
+endtask
+
+task wr_en_gen();
+    begin
         fifo_wr_en = 1;
-        repeat (FIFO_DEPTH*2) begin
-            #CLK_PERIOD; data = $urandom_range(0, 255); addr = $urandom_range(0, 127);
-        end
+        #CLK_PERIOD;
         fifo_wr_en = 0;
+    end
+endtask
+
+task flow();
+    begin
+        rst_set(0, 1);
+        repeat (4) begin        
+            wr_en_gen();
+            data_addr_gen();
+            #40;
+            rd_en_gen();
+        end
     end
 endtask
 
@@ -70,14 +93,13 @@ always #(CLK_PERIOD/2) clk = ~clk;
 initial begin
     clk = 0;
     // i2c_clk = 0;
-    rst_set(0, 1);
-    data_addr_gen();
+    flow();
 end
 
 initial begin
     $dumpfile("i2c_master_tb.vcd");
     $dumpvars(0, i2c_master_tb);
-    $monitor("time=%g, data=0x%h, addr=0x%h, i2c_sda=%b, i2c_slc=%b, fifo_full=%b, fifo_emply=%b", $time, data, addr, i2c_sda, i2c_scl, fifo_full, fifo_empty);
+    $monitor("time=%g, data=0x%h, addr=0x%h, i2c_sda=%b, i2c_slc=%b, fifo_full=%b, fifo_empty=%b", $time, data, addr, i2c_sda, i2c_scl, fifo_full, fifo_empty);
 end
 
 initial #SIM_TIME $stop;

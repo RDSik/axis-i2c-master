@@ -2,7 +2,7 @@
 
 module sync_fifo_tb();
 
-localparam SIM_TIME   = 50; // simulation time 10000 ns
+localparam SIM_TIME   = 25; // simulation time 10000 ns
 localparam CLK_PERIOD = 2;
 localparam FIFO_DEPTH = 4;
 localparam DATA_WIDTH = 15;
@@ -38,10 +38,9 @@ sync_fifo dut(
 
  task rst_en_set(input zero, one);
     begin
-        #CLK_PERIOD;
-        arst       = one;
+        arst = one;
         #CLK_PERIOD;        
-        arst       = zero;
+        arst = zero;
         $display("\n-----------------------------");
         $display("Reset done");
         $display("-----------------------------\n");
