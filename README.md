@@ -47,20 +47,6 @@ make project
 
 ## Simulation
 
-### Vivado simulation using hdlmake:
-```bash
-cd top/sim/vivado
-hdlmake
-make
-```
-
-### Modelsim simulation using hdlmake:
-```bash
-cd top/sim/modelsim
-hdlmake
-make
-```
-
 ### Icarus simulation using cocotb:
 ```bash
 python3 -m venv myenv

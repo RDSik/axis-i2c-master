@@ -14,7 +14,7 @@ def test_runner():
     build_dir = Path('sim_build_i2c_master')
     build_dir.mkdir(exist_ok=True)
 
-    # xilinx_simlibs_path = Path(r'modelsim')
+    # xilinx_simlibs_path = Path(r'xilinx-simulation-libraries')
 
     # shutil.copyfile(xilinx_simlibs_path / 'modelsim.ini', build_dir / 'modelsim.ini')
 
@@ -37,6 +37,7 @@ def test_runner():
 
     runner.test(
         hdl_toplevel=hdl_toplevel,
+        # hdl_toplevel_library = 'fifo_generator_v13_2_4',
         test_module=test_module,
         waves=True,
         gui=True,
