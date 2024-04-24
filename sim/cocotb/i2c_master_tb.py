@@ -18,15 +18,15 @@ async def test_i2c_master(dut):
     dut_rst.value = 1
     await Timer(2, units="sec")
     dut_rst.value = 0
-    await RisingEdge(dut_clk)
+    await Timer(2, units="sec")
 
     dut_rd_en.value = 0
 
     for i in range(4):    
         dut_wr_en.value = 1
-        await Timer(2, units="sec")
         dut_data.value = random.randint(0, 255)
         dut_addr.value = random.randint(0, 127)
+        await Timer(2, units="sec")
         dut_wr_en.value = 0
         await Timer(2, units="sec")
         
