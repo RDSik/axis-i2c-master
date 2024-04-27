@@ -2,7 +2,7 @@
 
 module i2c_master_tb ();
 
-localparam SIM_TIME   = 220;
+localparam SIM_TIME   = 240;
 localparam CLK_PERIOD = 2;
 // localparam I2C_CLK_PERIOD = 20;
 
@@ -64,20 +64,23 @@ task rd_en_gen();
         fifo_rd_en = 1;
         #CLK_PERIOD;
         fifo_rd_en = 0;
+        #CLK_PERIOD;
     end
 endtask
 
 task wr_en_gen();
     begin
-        fifo_wr_en = 1;
+        fifo_wr_en = 1;      
         #CLK_PERIOD;
         fifo_wr_en = 0;
+        #CLK_PERIOD;
     end
 endtask
 
 task flow();
     begin
         rst_set(0, 1);
+        fifo_rd_en = 0;
         repeat (4) begin        
             wr_en_gen();
             data_addr_gen();

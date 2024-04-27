@@ -1,7 +1,10 @@
-syn/*
+syn/vivado/*
 !Manifest.py
 !add_ip.tcl
 !i2c_master.xdc
+syn/quartus/*
+!Makefile
+!Pins
 platform/xilinx/fifo/*
 !fifo.xci
 sim/modelsim/*

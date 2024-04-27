@@ -69,6 +69,7 @@ always @(posedge clk or posedge arst) begin
             WACK_ADDR: begin
                 state <= DATA;
                 cnt   <= DATA_WIDTH - 1;
+                sda   <= 0;
             end
             DATA: begin
                 sda <= saved_data[cnt];
@@ -81,6 +82,7 @@ always @(posedge clk or posedge arst) begin
             end
             WACK_DATA: begin
                 state <= STOP;
+                sda   <= 0;
             end
             STOP: begin
                 state <= IDLE;

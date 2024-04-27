@@ -1,5 +1,5 @@
 modules = {
     "local" : [
-        "hdl",
+        "src",
     ],
 }
