@@ -39,7 +39,7 @@ module sync_fifo #(
         end
     end
 
-    //! Status pointer for full and empty
+    //! Status counter for full and empty
     always @(posedge clk or posedge arst) begin
         if (arst) begin
             status_cnt <= 0;
