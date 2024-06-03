@@ -1,6 +1,8 @@
 syn/quartus/*
+!Manifest.py
+!quartus_preflow.tcl
+!i2c_master.sdc
 !Makefile
-!Pins
 syn/vivado/*
 !Manifest.py
 !add_ip.tcl
