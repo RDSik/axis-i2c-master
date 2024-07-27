@@ -11,7 +11,7 @@ platform/xilinx/fifo/*
 !fifo.xci
 sim/modelsim/*
 !Manifest.py
-!vsim.do
+!wave.do
 sim/vivado/*
 !xsim.tcl
 !Manifest.py
