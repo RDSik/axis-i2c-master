@@ -6,6 +6,6 @@ sim_post_cmd = "xsim %s -gui" % sim_top
 
 modules = {
     "local" : [ 
-        "../../hdl/tb/",
+        "../../src/tb/",
     ],
 }

@@ -38,39 +38,40 @@ module i2c_master #(
         .sda   (i2c_sda),
         .scl   (i2c_scl)
     );
+    
+    sync_fifo #(
+        .DATA_WIDTH (FIFO_DATA_WIDTH),
+        .FIFO_DEPTH (FIFO_DEPTH)
+    ) fifo_inst (
+        .clk      (clk),
+        .arst     (arst),
+        .rd_en    (fifo_rd_en),
+        .wr_en    (fifo_wr_en),
+        .data_in  (fifo_data_i),
+        .data_out (fifo_data_o),
+        .empty    (fifo_empty),
+        .full     (fifo_full)
+    );
 
     `ifdef COCOTB_SIM
-        sync_fifo #(
-            .DATA_WIDTH (FIFO_DATA_WIDTH),
-            .FIFO_DEPTH (FIFO_DEPTH)
-        ) fifo_inst (
-            .clk      (clk),
-            .arst     (arst),
-            .rd_en    (fifo_rd_en),
-            .wr_en    (fifo_wr_en),
-            .data_in  (fifo_data_i),
-            .data_out (fifo_data_o),
-            .empty    (fifo_empty),
-            .full     (fifo_full)
-        );
         initial begin
             $dumpfile ("i2c_master.vcd");
             $dumpvars (0, i2c_master);
             #1;
         end
-    `else
-        fifo fifo_inst (
-            // .wr_clk (clk),
-            // .rd_clk (i2c_clk),
-            .clk    (clk),
-            .rst    (arst),
-            .din    (fifo_data_i),
-            .dout   (fifo_data_o),
-            .full   (fifo_full),
-            .empty  (fifo_empty),
-            .wr_en  (fifo_wr_en),
-            .rd_en  (fifo_rd_en)
-        );
     `endif
+
+    // fifo fifo_inst (
+        // .wr_clk (clk),
+        // .rd_clk (i2c_clk),
+        // .clk    (clk),
+        // .rst    (arst),
+        // .din    (fifo_data_i),
+        // .dout   (fifo_data_o),
+        // .full   (fifo_full),
+        // .empty  (fifo_empty),
+        // .wr_en  (fifo_wr_en),
+        // .rd_en  (fifo_rd_en)
+    // );
 
 endmodule
