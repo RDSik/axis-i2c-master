@@ -6,6 +6,6 @@ sim_post_cmd = "vvp i2c_master_tb.vvp; gtkwave i2c_master_tb.vcd"
 
 modules = {
     "local" : [ 
-        "../../top/tb/",
+        "../../src/tb/",
     ],
 }
