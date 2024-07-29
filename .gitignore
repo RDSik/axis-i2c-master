@@ -15,6 +15,8 @@ sim/modelsim/*
 sim/vivado/*
 !xsim.tcl
 !Manifest.py
+sim/iverilog/*
+!Manifest.py
 sim/cocotb/*
 !test.py
 !i2c_master_tb.py
