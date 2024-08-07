@@ -32,7 +32,7 @@ module i2c_master #(
         .clk   (clk              ),
         .arst  (arst             ),
         .start (fifo_rd_en       ),
-        .addr  (fifo_data_o[6:0] ),
+        .addr  (fifo_data_o[6:0 ]),
         .data  (fifo_data_o[14:7]),
         .ready (fsm_ready        ),
         .sda   (i2c_sda          ),
