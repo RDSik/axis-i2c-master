@@ -1,4 +1,4 @@
-// `include "timescale.vh"
+`include "timescale.vh"
 
 module i2c_master_tb ();
 

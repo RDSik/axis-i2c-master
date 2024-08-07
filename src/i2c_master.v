@@ -29,28 +29,28 @@ module i2c_master #(
         .DATA_WIDTH (DATA_WIDTH),
         .ADDR_WIDTH (ADDR_WIDTH)
     ) i2c_inst (
-        .clk   (clk),
-        .arst  (arst),
-        .start (fifo_rd_en),
-        .addr  (fifo_data_o[6:0]),
+        .clk   (clk              ),
+        .arst  (arst             ),
+        .start (fifo_rd_en       ),
+        .addr  (fifo_data_o[6:0] ),
         .data  (fifo_data_o[14:7]),
-        .ready (fsm_ready),
-        .sda   (i2c_sda),
-        .scl   (i2c_scl)
+        .ready (fsm_ready        ),
+        .sda   (i2c_sda          ),
+        .scl   (i2c_scl          )
     );
     
     sync_fifo #(
         .DATA_WIDTH (FIFO_DATA_WIDTH),
-        .FIFO_DEPTH (FIFO_DEPTH)
+        .FIFO_DEPTH (FIFO_DEPTH     )
     ) fifo_inst (
-        .clk      (clk),
-        .arst     (arst),
-        .rd_en    (fifo_rd_en),
-        .wr_en    (fifo_wr_en),
+        .clk      (clk        ),
+        .arst     (arst       ),
+        .rd_en    (fifo_rd_en ),
+        .wr_en    (fifo_wr_en ),
         .data_in  (fifo_data_i),
         .data_out (fifo_data_o),
-        .empty    (fifo_empty),
-        .full     (fifo_full)
+        .empty    (fifo_empty ),
+        .full     (fifo_full  )
     );
 
     `ifdef COCOTB_SIM
@@ -62,16 +62,16 @@ module i2c_master #(
     `endif
 
     // fifo fifo_inst (
-        // .wr_clk (clk),
-        // .rd_clk (i2c_clk),
-        // .clk    (clk),
-        // .rst    (arst),
+        // .wr_clk (clk        ),
+        // .rd_clk (i2c_clk    ),
+        // .clk    (clk        ),
+        // .rst    (arst       ),
         // .din    (fifo_data_i),
         // .dout   (fifo_data_o),
-        // .full   (fifo_full),
-        // .empty  (fifo_empty),
-        // .wr_en  (fifo_wr_en),
-        // .rd_en  (fifo_rd_en)
+        // .full   (fifo_full  ),
+        // .empty  (fifo_empty ),
+        // .wr_en  (fifo_wr_en ),
+        // .rd_en  (fifo_rd_en )
     // );
 
 endmodule

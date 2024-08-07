@@ -16,14 +16,13 @@ module sync_fifo #(
 
     reg [$clog2(FIFO_DEPTH)-1:0] rd_pointer;
     reg [$clog2(FIFO_DEPTH)-1:0] wr_pointer;
-    reg [$clog2(FIFO_DEPTH):0]   status_cnt;
+    reg [$clog2(FIFO_DEPTH):0  ] status_cnt;
 
     //! Read logic
     always @(posedge clk or posedge arst) begin
         if (arst) begin
             rd_pointer <= 0;
-        end
-        else if (rd_en) begin
+        end else if (rd_en) begin
             rd_pointer <= rd_pointer + 1;
         end
     end
@@ -32,8 +31,7 @@ module sync_fifo #(
     always @(posedge clk or posedge arst) begin
         if (arst) begin
             wr_pointer <= 0;
-        end
-        else if (wr_en) begin
+        end else if (wr_en) begin
             fifo[wr_pointer] <= data_in;
             wr_pointer       <= wr_pointer + 1;
         end
@@ -43,12 +41,10 @@ module sync_fifo #(
     always @(posedge clk or posedge arst) begin
         if (arst) begin
             status_cnt <= 0;
-        end
-        else begin
+        end else begin
             if (wr_en && !rd_en && (status_cnt != FIFO_DEPTH)) begin
                 status_cnt <= status_cnt + 1;
-            end
-            else if (rd_en && !wr_en && (status_cnt != 0)) begin
+            end else if (rd_en && !wr_en && (status_cnt != 0)) begin
                 status_cnt <= status_cnt - 1;
             end
         end

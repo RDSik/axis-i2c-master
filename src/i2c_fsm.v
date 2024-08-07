@@ -21,11 +21,11 @@ localparam [2:0] IDLE      = 3'b000,
                  WACK_DATA = 3'b110,
                  STOP      = 3'b111;
 
-reg [ADDR_WIDTH-1:0]         saved_addr;
-reg [DATA_WIDTH-1:0]         saved_data;
+reg [ADDR_WIDTH-1:0        ] saved_addr;
+reg [DATA_WIDTH-1:0        ] saved_data;
 reg [$clog2(DATA_WIDTH)-1:0] cnt;
 reg                          scl_en;
-reg [2:0]                    state;
+reg [2:0                   ] state;
 
 always @(posedge clk or posedge arst) begin
     if (arst) begin
@@ -34,8 +34,7 @@ always @(posedge clk or posedge arst) begin
         cnt        <= 0;
         saved_addr <= 0;
         saved_data <= 0;        
-    end 
-    else begin
+    end else begin
         case (state)
             IDLE: begin
                 sda <= 1;
@@ -43,8 +42,7 @@ always @(posedge clk or posedge arst) begin
                     state      <= START;
                     saved_addr <= addr;
                     saved_data <= data;
-                end
-                else begin
+                end else begin
                     state <= IDLE;
                 end
             end
@@ -57,8 +55,7 @@ always @(posedge clk or posedge arst) begin
                 sda <= saved_addr[cnt];
                 if (cnt == 0) begin
                     state <= RW;
-                end
-                else begin
+                end else begin
                     cnt <= cnt - 1;
                 end
             end
@@ -75,8 +72,7 @@ always @(posedge clk or posedge arst) begin
                 sda <= saved_data[cnt];
                 if (cnt == 0) begin
                     state <= WACK_DATA;
-                end
-                else begin
+                end else begin
                     cnt <= cnt - 1;
                 end
             end
@@ -96,12 +92,10 @@ end
 always @(negedge clk) begin
     if (arst) begin
         scl_en <= 0;
-    end
-    else begin
+    end else begin
         if ((state == IDLE) || (state == START) || (state == STOP)) begin
             scl_en <= 0;
-        end
-        else begin
+        end else begin
             scl_en <= 1;
         end
     end
