@@ -1,6 +1,6 @@
 `include "timescale.vh"
 
-module i2c_fsm_tb();
+module i2c_fsm_tb ();
 
 localparam DATA_WIDTH  = 8;
 localparam ADDR_WIDTH  = 7;
@@ -18,20 +18,20 @@ wire sda;
 wire scl;
 
 wire [$clog2(DATA_WIDTH)-1:0] cnt;
-wire [ADDR_WIDTH-1:0]         saved_addr;
-wire [DATA_WIDTH-1:0]         saved_data;
-wire [2:0]                    state;
+wire [ADDR_WIDTH-1:0        ] saved_addr;
+wire [DATA_WIDTH-1:0        ] saved_data;
+wire [2:0                   ] state;
 wire                          scl_en;
 
 i2c_fsm dut(
-    .clk   (clk),
-    .arst  (arst),    
+    .clk   (clk  ),
+    .arst  (arst ),    
     .start (start),
-    .addr  (addr),
-    .data  (data),
+    .addr  (addr ),
+    .data  (data ),
     .ready (ready),
-    .sda   (sda),
-    .scl   (scl)
+    .sda   (sda  ),
+    .scl   (scl  )
 );
 
 assign saved_addr = dut.saved_addr;

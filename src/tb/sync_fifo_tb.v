@@ -22,14 +22,14 @@ wire [$clog2(FIFO_DEPTH):0] wr_pointer;
 wire [$clog2(FIFO_DEPTH):0] status_cnt;
 
 sync_fifo dut(
-    .clk      (clk),
-    .arst     (arst),
-    .rd_en    (rd_en),
-    .wr_en    (wr_en),
-    .data_in  (data_in),
+    .clk      (clk     ),
+    .arst     (arst    ),
+    .rd_en    (rd_en   ),
+    .wr_en    (wr_en   ),
+    .data_in  (data_in ),
     .data_out (data_out),
-    .empty    (empty),
-    .full     (full)
+    .empty    (empty   ),
+    .full     (full    )
  );
 
  assign rd_pointer = dut.rd_pointer;

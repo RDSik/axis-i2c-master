@@ -24,18 +24,18 @@ wire [14:0] fifo_data_i;
 wire [14:0] fifo_data_o;
 
 i2c_master dut (
-    .clk        (clk),
+    .clk        (clk       ),
     // .i2c_clk    (i2c_clk),
-    .arst       (arst),
-    .data       (data),
-    .addr       (addr),
+    .arst       (arst      ),
+    .data       (data      ),
+    .addr       (addr      ),
     .fifo_wr_en (fifo_wr_en),
     .fifo_rd_en (fifo_rd_en),
     .fifo_empty (fifo_empty),
-    .fifo_full  (fifo_full),
-    .fsm_ready  (fsm_ready),
-    .i2c_sda    (i2c_sda),
-    .i2c_scl    (i2c_scl)
+    .fifo_full  (fifo_full ),
+    .fsm_ready  (fsm_ready ),
+    .i2c_sda    (i2c_sda   ),
+    .i2c_scl    (i2c_scl   )
 );
 
 assign fifo_data_i = dut.fifo_data_i;
