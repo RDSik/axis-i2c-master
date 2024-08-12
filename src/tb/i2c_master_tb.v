@@ -1,4 +1,4 @@
-`include "timescale.vh"
+`include "timescale.vh" // comment this for vivado simulation with hdlmake
 
 module i2c_master_tb ();
 

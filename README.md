@@ -2,7 +2,7 @@
 
 ## Dependencies 
 
-`hdlmake`, `make`, `cocotb`, `vivado`, `modelsim`, `python`
+`hdlmake`, `make`, `cocotb`, `vivado`, `quartus`, `modelsim`, `python`
 
 ## Installation
 
@@ -31,27 +31,40 @@ winget install GnuWin32.make
 
 ## Build project
 
-### Build i2c_master:
+### Build vivado project:
 ```bash
-cd syn
+cd .\syn\vivado\
 hdlmake
-make
+make project
 ```
 
-### Build only vivado project:
+### Build quartus project:
 ```bash
-cd syn
+cd .\syn\quartus\
 hdlmake
 make project
 ```
 
 ## Simulation
 
+### Vivado simulation using hdlmake:
+```bash
+cd .\sim\vivado
+hdlmake
+make
+```
+
+### Modelsim simulation using hdlmake:
+```bash
+cd .\sim\modelsim
+hdlmake
+make
+
 ### Icarus simulation using cocotb:
 ```bash
 python3 -m venv myenv
 .\myenv\Scripts\activate.ps1
-cd sim\cocotb
+cd .\sim\cocotb
 pytest test.py
 cd .\sim_build_i2c_master
 gtkwave .\i2c_master_top.vcd
