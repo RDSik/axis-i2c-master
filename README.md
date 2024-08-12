@@ -59,6 +59,7 @@ make
 cd .\sim\modelsim
 hdlmake
 make
+```
 
 ### Icarus simulation using cocotb:
 ```bash
