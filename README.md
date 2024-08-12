@@ -35,14 +35,14 @@ winget install GnuWin32.make
 ```bash
 cd .\syn\vivado\
 hdlmake
-make project
+make
 ```
 
 ### Build quartus project:
 ```bash
 cd .\syn\quartus\
 hdlmake
-make project
+make
 ```
 
 ## Simulation
