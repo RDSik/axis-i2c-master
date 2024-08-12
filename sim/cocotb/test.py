@@ -18,11 +18,18 @@ def test_runner():
 
     # shutil.copyfile(xilinx_simlibs_path / 'modelsim.ini', build_dir / 'modelsim.ini')
 
-    verilog_sources = [
-        src / "i2c_master.v",
-        src / "i2c_fsm.v",
-        src / "sync_fifo.v",
-    ]
+    verilog_sources = []
+    
+    def files(path):
+        sources = []
+        for (dirpath, _, files) in os.walk(path):
+            for file in files:
+                if file != 'Manifest.py':
+                    sources.append(dirpath.replace("\\", '/') +'/' + file)
+            return sources
+
+    verilog_sources.extend(files(src))
+    
     hdl_toplevel = 'i2c_master' # HDL module name
     test_module = 'i2c_master_tb' # Python module name
 
