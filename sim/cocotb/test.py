@@ -6,7 +6,7 @@ import cocotb
 from cocotb.runner import get_runner
 
 def test_runner():
-    src = Path("../../src/")
+    src = Path("../../src")
     
     hdl_toplevel_lang = os.getenv("HDL_TOPLEVEL_LANG", "verilog")
     sim = os.getenv("SIM", "icarus")
@@ -22,8 +22,8 @@ def test_runner():
     
     def files(path):
         sources = []
-        for (dirpath, _, files) in os.walk(path):
-            for file in files:
+        for (dirpath, dirnames, filenames) in os.walk(path):
+            for file in filenames:
                 if file != 'Manifest.py':
                     sources.append(dirpath.replace("\\", '/') +'/' + file)
             return sources
@@ -32,6 +32,7 @@ def test_runner():
     
     hdl_toplevel = 'i2c_master' # HDL module name
     test_module = 'i2c_master_tb' # Python module name
+    # pre_cmd = ['do wave.do'] # Macro file
 
     runner = get_runner(sim)
     
@@ -48,4 +49,5 @@ def test_runner():
         test_module=test_module,
         waves=True,
         gui=True,
+        # pre_cmd=pre_cmd,
     )
