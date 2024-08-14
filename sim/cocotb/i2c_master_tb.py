@@ -34,6 +34,6 @@ async def test_i2c_master(dut):
         await Timer(clk_per, units="sec")
         dut.fifo_rd_en.value = 0
         await Timer(clk_per, units="sec")
-        await Timer(40, units="sec")
+        await Timer(clk_per*20, units="sec")
     
     
