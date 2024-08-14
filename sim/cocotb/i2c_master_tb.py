@@ -27,11 +27,11 @@ async def test_i2c_master(dut):
 
     async def read():
         for i in range(4):
-        dut.fifo_rd_en.value = 1
-        await Timer(clk_per, units="sec")
-        dut.fifo_rd_en.value = 0
-        await Timer(clk_per, units="sec")
-        await Timer(clk_per*20, units="sec")
+            dut.fifo_rd_en.value = 1
+            await Timer(clk_per, units="sec")
+            dut.fifo_rd_en.value = 0
+            await Timer(clk_per, units="sec")
+            await Timer(clk_per*20, units="sec")
     
     #------------------Order of test execution -------------------
     await rst(dut, 1)
