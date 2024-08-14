@@ -38,5 +38,3 @@ async def test_i2c_master(dut):
     dut.fifo_wr_en.value = 0
     await write()
     await read()
-    
-    
