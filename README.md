@@ -41,7 +41,6 @@ make
 ### Build quartus project:
 ```bash
 cd .\syn\quartus\
-hdlmake
 make
 ```
 
