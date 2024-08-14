@@ -16,7 +16,7 @@ async def test_i2c_master(dut):
         await ClockCycles(dut.clk, cycles)
         dut.arst.value = 0
 
-    async def data_gen():
+    async def write():
         for i in range(4):    
             dut.fifo_wr_en.value = 1
             dut.data.value = random.randint(0, 255)
@@ -24,16 +24,19 @@ async def test_i2c_master(dut):
             await RisingEdge(dut.clk)
             dut.fifo_wr_en.value = 0
             await RisingEdge(dut.clk)
-    
-    #------------------Order of test execution -------------------
-    await rst(dut, 1)
-    dut.fifo_wr_en.value = 0
-    await data_gen()
-    for i in range(4):
+
+    async def read():
+        for i in range(4):
         dut.fifo_rd_en.value = 1
         await Timer(clk_per, units="sec")
         dut.fifo_rd_en.value = 0
         await Timer(clk_per, units="sec")
         await Timer(clk_per*20, units="sec")
+    
+    #------------------Order of test execution -------------------
+    await rst(dut, 1)
+    dut.fifo_wr_en.value = 0
+    await write()
+    await read()
     
     
