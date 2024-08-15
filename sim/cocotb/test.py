@@ -32,7 +32,7 @@ def test_runner():
     
     hdl_toplevel = 'i2c_master' # HDL module name
     test_module = 'i2c_master_tb' # Python module name
-    # pre_cmd = ['do ../wave.do'] # Macro file
+    # pre_cmd = ['do ../../modelsim/wave.do'] # Macro file
 
     runner = get_runner(sim)
     
