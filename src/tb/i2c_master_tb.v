@@ -91,10 +91,14 @@ task flow();
 endtask
 
 // always #(I2C_CLK_PERIOD/2) i2c_clk = ~i2c_clk;
-always #(CLK_PERIOD/2) clk = ~clk;
-
 initial begin
     clk = 0;
+    forever begin
+        #(CLK_PERIOD/2) clk = ~clk;
+    end
+end
+
+initial begin
     // i2c_clk = 0;
     flow();
 end
@@ -105,6 +109,8 @@ initial begin
     $monitor("time=%g, data=0x%h, addr=0x%h, i2c_sda=%b, i2c_slc=%b, fifo_full=%b, fifo_empty=%b", $time, data, addr, i2c_sda, i2c_scl, fifo_full, fifo_empty);
 end
 
-initial #SIM_TIME $stop;
+initial begin
+    #SIM_TIME $stop;
+end
 
 endmodule
