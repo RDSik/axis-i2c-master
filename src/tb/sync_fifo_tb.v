@@ -62,10 +62,14 @@ task data_addr_gen();
     end
 endtask
 
-always #(CLK_PERIOD/2) clk = ~clk;
-
 initial begin
     clk = 0;
+    forever begin
+        #(CLK_PERIOD/2) clk = ~clk;
+    end
+end
+
+initial begin
     rst_en_set(0, 1);
     data_addr_gen();
 end
@@ -76,6 +80,8 @@ initial begin
     $monitor("time=%g, data_out=0x%h, data_in=0x%h, full=%b, emply=%b", $time, data_in, data_out, full, empty);
 end
 
-initial #SIM_TIME $stop;
+initial begin
+    #SIM_TIME $stop;
+end
 
 endmodule

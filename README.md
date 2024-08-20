@@ -66,7 +66,6 @@ python3 -m venv myenv
 .\myenv\Scripts\activate.ps1
 cd .\sim\cocotb
 pytest test.py
-cd .\sim_build_i2c_master
-gtkwave .\i2c_master_top.vcd
+gtkwave  .\sim_build_i2c_master\i2c_master_top.vcd
 deactivate
 ```

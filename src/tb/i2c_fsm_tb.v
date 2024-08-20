@@ -40,8 +40,6 @@ assign cnt        = dut.cnt;
 assign scl_en     = dut.scl_en;
 assign state      = dut.state;
 
-always #(CLK_PERIOID/2) clk = ~clk;
-
 task rst_gen(input zero, one);
     begin
         arst = one;
@@ -74,6 +72,12 @@ endtask
 
 initial begin
     clk = 0;
+    forever begin
+        #(CLK_PERIOD/2) clk = ~clk;
+    end
+end    
+    
+initial begin
     rst_gen(0, 1);
     data_addr_gen();
     start_gen(0 , 1);
@@ -85,6 +89,8 @@ initial begin
     $monitor("time=%g, data=0x%h, addr=0x%h, sda=%b, scl=%b, ready=%b, start=%b", $time, data, addr, sda, scl, ready, start);
 end
 
-initial #SIM_TIME $stop;
+initial begin
+    #SIM_TIME $stop;
+end
 
 endmodule
