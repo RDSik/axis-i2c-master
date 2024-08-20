@@ -11,10 +11,10 @@ syn_project = "i2c_master"
 
 syn_tool = "quartus"
 
-quartus_preflow = "quartus_preflow.tcl"
+quartus_preflow = "quartus.tcl"
 
 files = [
-    "quartus_preflow.tcl",
+    "quartus.tcl",
     "i2c_master.sdc",
 ]
 
