@@ -12,7 +12,7 @@ async def test_i2c_master(dut):
     cocotb.start_soon(Clock(dut.clk, clk_per, units = 'sec').start())
     # cocotb.start_soon(Clock(dut.i2c_clk, 20, units = 'sec').start())
 
-    async def rst(dut, cycles):
+    async def rst(cycles):
         dut.arst.value = 1
         await ClockCycles(dut.clk, cycles)
         dut.arst.value = 0
@@ -39,6 +39,6 @@ async def test_i2c_master(dut):
     #------------------Order of test execution -------------------
     dut.fifo_wr_en.value = 0
     dut.fifo_rd_en.value = 0
-    await rst(dut, 1)
+    await rst(1)
     await write()
     await read()
