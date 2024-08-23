@@ -2,6 +2,7 @@ import cocotb
 import random
 from cocotb.clock import Clock
 from cocotb.triggers import Timer, RisingEdge, FallingEdge, ClockCycles
+from cocotb.utils import get_sim_time
 
 @cocotb.test()
 async def test_i2c_master(dut):
@@ -24,6 +25,7 @@ async def test_i2c_master(dut):
             await RisingEdge(dut.clk)
             dut.fifo_wr_en.value = 0
             await RisingEdge(dut.clk)
+        print(f'Write ended at {get_sim_time('sec')} sec.')
 
     async def read():
         for i in range(4):
@@ -32,9 +34,11 @@ async def test_i2c_master(dut):
             dut.fifo_rd_en.value = 0
             await Timer(clk_per, units="sec")
             await Timer(clk_per*20, units="sec")
+        print(f'Read ended at {get_sim_time('sec')} sec.')
     
     #------------------Order of test execution -------------------
-    await rst(dut, 1)
     dut.fifo_wr_en.value = 0
+    dut.fifo_rd_en.value = 0
+    await rst(dut, 1)
     await write()
     await read()
