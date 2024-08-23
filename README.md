@@ -31,14 +31,14 @@ winget install GnuWin32.make
 
 ### Build vivado project:
 ```bash
-cd .\syn\vivado\
+cd syn/vivado
 hdlmake
 make
 ```
 
 ### Build quartus project:
 ```bash
-cd .\syn\quartus\
+cd syn/quartus
 make
 ```
 
@@ -56,14 +56,14 @@ deactivate
 
 ### Vivado simulation using hdlmake:
 ```bash
-cd .\sim\vivado
+cd sim/vivado
 hdlmake
 make
 ```
 
 ### Modelsim simulation using hdlmake:
 ```bash
-cd .\sim\modelsim
+cd sim/modelsim
 hdlmake
 make
 ```
