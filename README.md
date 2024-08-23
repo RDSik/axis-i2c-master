@@ -6,14 +6,12 @@
 
 ## Installation
 
+### Download python and git:
+- [Install Chocolatey on Windows 10](https://gist.github.com/lopezjurip/2a188c90284bf239197b)
+
 ### Clone repository:
 ```bash
 git clone --recurse-submodules https://github.com/RDSik/i2c_master.git
-```
-
-### Download pip:
-```bash
-https://pip.pypa.io/en/latest/installation/
 ```
 
 ### Download packages:
