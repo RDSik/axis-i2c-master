@@ -46,6 +46,16 @@ make
 
 ## Simulation
 
+### Icarus simulation using cocotb:
+```bash
+py -m venv myenv
+.\myenv\Scripts\activate.ps1
+cd .\sim\cocotb
+py -m pytest test.py
+gtkwave  .\sim_build_i2c_master\i2c_master_top.vcd
+deactivate
+```
+
 ### Vivado simulation using hdlmake:
 ```bash
 cd .\sim\vivado
@@ -58,14 +68,4 @@ make
 cd .\sim\modelsim
 hdlmake
 make
-```
-
-### Icarus simulation using cocotb:
-```bash
-python3 -m venv myenv
-.\myenv\Scripts\activate.ps1
-cd .\sim\cocotb
-pytest test.py
-gtkwave  .\sim_build_i2c_master\i2c_master_top.vcd
-deactivate
 ```
