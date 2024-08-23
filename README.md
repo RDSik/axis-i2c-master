@@ -2,7 +2,7 @@
 
 ## Dependencies 
 
-`hdlmake`, `make`, `cocotb`, `vivado`, `quartus`, `modelsim`, `python`
+`hdlmake`, `make`, `cocotb`, `vivado`, `quartus`, `modelsim`, `python`, `chocolatey`
 
 ## Installation
 
