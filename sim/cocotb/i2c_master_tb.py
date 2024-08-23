@@ -7,7 +7,8 @@ from cocotb.utils import get_sim_time
 @cocotb.test()
 async def test_i2c_master(dut):
     
-    clk_per = 2
+    clk_per    = 2
+    fifo_depth = 4
 
     cocotb.start_soon(Clock(dut.clk, clk_per, units = 'sec').start())
     # cocotb.start_soon(Clock(dut.i2c_clk, 20, units = 'sec').start())
@@ -17,8 +18,8 @@ async def test_i2c_master(dut):
         await ClockCycles(dut.clk, cycles)
         dut.arst.value = 0
 
-    async def write():
-        for i in range(4):    
+    async def write(n):
+        for i in range(n):
             dut.fifo_wr_en.value = 1
             dut.data.value = random.randint(0, 255)
             dut.addr.value = random.randint(0, 127)
@@ -27,8 +28,8 @@ async def test_i2c_master(dut):
             await RisingEdge(dut.clk)
         print(f'Write ended at {get_sim_time('sec')} sec.')
 
-    async def read():
-        for i in range(4):
+    async def read(n):
+        for i in range(n):
             dut.fifo_rd_en.value = 1
             await Timer(clk_per, units="sec")
             dut.fifo_rd_en.value = 0
@@ -40,5 +41,5 @@ async def test_i2c_master(dut):
     dut.fifo_wr_en.value = 0
     dut.fifo_rd_en.value = 0
     await reset(1)
-    await write()
-    await read()
+    await write(fifo_depth)
+    await read(fifo_depth)
