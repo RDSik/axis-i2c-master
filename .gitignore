@@ -1,4 +1,12 @@
+syn/vivado/*
+!Manifest.py
+!add_files.tcl
 !i2c_master.xdc
+syn/quartus/*
+!Manifest.py
+!quartus.tcl
+!i2c_master.sdc
+!Makefile
 platform/xilinx/fifo/*
 !fifo.xci
 sim/modelsim/*
