@@ -2,7 +2,7 @@
 
 ## Dependencies 
 
-`hdlmake`, `make`, `cocotb`, `pytest`, `vivado`, `quartus`, `modelsim`, `python`, `chocolatey`, `winget`
+`hdlmake`, `make`, `cocotb`, `pytest`, `modelsim`, `python`, `chocolatey`, `winget`
 
 ## Installation
 
@@ -25,21 +25,6 @@ pip install pytest
 ### Download make (add to PATH system variable the Make bin folder: C:\Program Files (x86)\GnuWin32\bin):
 ```bash
 winget install GnuWin32.make
-```
-
-## Build project
-
-### Build vivado project:
-```bash
-cd syn/vivado
-hdlmake
-make
-```
-
-### Build quartus project:
-```bash
-cd syn/quartus
-make
 ```
 
 ## Simulation
