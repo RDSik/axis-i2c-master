@@ -1,4 +1,5 @@
 import os
+import random
 import shutil
 from pathlib import Path
 
@@ -33,6 +34,7 @@ def test_runner():
     hdl_toplevel = 'i2c_master' # HDL module name
     test_module = 'i2c_master_tb' # Python module name
     # pre_cmd = ['do ../../modelsim/wave.do'] # Macro file
+    seed = random.randint(0, 255)
 
     runner = get_runner(sim)
     
@@ -50,4 +52,5 @@ def test_runner():
         waves=True,
         gui=True,
         # pre_cmd=pre_cmd,
+        seed=seed,
     )
