@@ -12,6 +12,7 @@
 ### Clone repository:
 ```bash
 git clone https://github.com/RDSik/i2c-master.git
+cd i2c-master
 ```
 
 ### Download packages:
