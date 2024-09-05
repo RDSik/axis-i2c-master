@@ -4,6 +4,8 @@ add wave -noupdate /i2c_master/clk
 add wave -noupdate /i2c_master/arst
 add wave -noupdate /i2c_master/data
 add wave -noupdate /i2c_master/addr
+add wave -noupdate /i2c_master/fifo_data_i
+add wave -noupdate /i2c_master/fifo_data_o
 add wave -noupdate /i2c_master/fifo_wr_en
 add wave -noupdate /i2c_master/fifo_rd_en
 add wave -noupdate /i2c_master/fifo_full
@@ -11,8 +13,6 @@ add wave -noupdate /i2c_master/fifo_empty
 add wave -noupdate /i2c_master/fsm_ready
 add wave -noupdate /i2c_master/i2c_sda
 add wave -noupdate /i2c_master/i2c_scl
-add wave -noupdate /i2c_master/fifo_data_i
-add wave -noupdate /i2c_master/fifo_data_o
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {3 ns} 0}
 quietly wave cursor active 1
