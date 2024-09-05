@@ -18,13 +18,11 @@ async def write(dut):
     dut.addr.value = random.randint(0, 127)
     await Timer(clk_per, units="ns")
     dut.fifo_wr_en.value = 0
-    await Timer(clk_per, units="ns")
 
 async def read(dut):
     dut.fifo_rd_en.value = 1
     await Timer(clk_per, units="ns")
     dut.fifo_rd_en.value = 0
-    await Timer(clk_per, units="ns")
 
 async def init(dut, n):
 
@@ -36,10 +34,12 @@ async def init(dut, n):
     await reset(dut, clk_per)
     assert dut.fifo_empty.value == 1, f'Error fifo is not empty at {get_sim_time('ns')} ns.'
     for i in range(n):
+        await Timer(clk_per, units="ns")
         await write(dut)
     assert dut.fifo_full.value == 1, f'Error fifo is not full at {get_sim_time('ns')} ns.'
     for i in range(n):
-        await read(dut)        
+        await Timer(clk_per, units="ns")
+        await read(dut)
     assert dut.fifo_empty.value == 1, f'Error fifo is not empty at {get_sim_time('ns')} ns.'
 
 @cocotb.test()
