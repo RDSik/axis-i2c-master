@@ -40,6 +40,6 @@ async def test_i2c_master(dut):
     #------------------Order of test execution -------------------
     dut.fifo_wr_en.value = 0
     dut.fifo_rd_en.value = 0
-    await reset(dut, 1)
+    await reset(dut, clk_per)
     await write(dut, fifo_depth)
     await read(dut, fifo_depth)

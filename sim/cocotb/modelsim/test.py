@@ -7,10 +7,10 @@ import cocotb
 from cocotb.runner import get_runner
 
 def test_runner():
-    src = Path("../../src")
+    src = Path("../../../src")
     
     hdl_toplevel_lang = os.getenv("HDL_TOPLEVEL_LANG", "verilog")
-    sim = os.getenv("SIM", "icarus")
+    sim = os.getenv("SIM", "questa")
     
     build_dir = Path('sim_build_i2c_master')
     build_dir.mkdir(exist_ok=True)
@@ -33,8 +33,8 @@ def test_runner():
     
     hdl_toplevel = 'i2c_master' # HDL module name
     test_module = 'i2c_master_tb' # Python module name
-    # pre_cmd = ['do ../../modelsim/wave.do'] # Macro file
-    seed = random.randint(0, 255)
+    pre_cmd = ['do ../wave.do'] # Macro file
+    # seed = random.randint(0, 255)
 
     runner = get_runner(sim)
     
@@ -51,6 +51,6 @@ def test_runner():
         test_module=test_module,
         waves=True,
         gui=True,
-        # pre_cmd=pre_cmd,
-        seed=seed,
+        pre_cmd=pre_cmd,
+        # seed=seed,
     )

@@ -17,6 +17,11 @@ sim/vivado/*
 !Manifest.py
 sim/iverilog/*
 !Manifest.py
-sim/cocotb/*
+sim/cocotb/icarus/*
 !test.py
 !i2c_master_tb.py
+!i2c_master.gtkw
+sim/cocotb/modelsim/*
+!test.py
+!i2c_master_tb.py
+!wave.do
