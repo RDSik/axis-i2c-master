@@ -34,7 +34,7 @@ winget install GnuWin32.make
 ```bash
 py -m venv myenv
 .\myenv\Scripts\activate.ps1
-cd .\sim\cocotb\icarus
+cd .\sim\cocotb
 py -m pytest test.py
 gtkwave .\sim_build_i2c_master\i2c_master.vcd
 deactivate
@@ -47,20 +47,9 @@ hdlmake
 make
 ```
 
-### Modelsim simulation
-
-#### Using hdlmake:
+### Modelsim simulation using hdlmake
 ```bash
 cd sim/modelsim
 hdlmake
 make
-```
-
-#### Using cocotb:
-```bash
-py -m venv myenv
-.\myenv\Scripts\activate.ps1
-cd .\sim\cocotb\modelsim
-py -m pytest test.py
-deactivate
 ```
