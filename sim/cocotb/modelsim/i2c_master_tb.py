@@ -34,15 +34,13 @@ async def init(dut, n):
     dut.fifo_wr_en.value = 0
     dut.fifo_rd_en.value = 0
     await reset(dut, clk_per)
-    assert dut.fifo_empty.value == 1, 'Error fifo is not empty.'
+    assert dut.fifo_empty.value == 1, f'Error fifo is not empty at {get_sim_time('ns')} ns.'
     for i in range(n):
         await write(dut)
-    assert dut.fifo_full.value == 1, 'Error fifo is not full.'
-    print(f'Write ended at {get_sim_time('ns')} ns.')
+    assert dut.fifo_full.value == 1, f'Error fifo is not full at {get_sim_time('ns')} ns.'
     for i in range(n):
         await read(dut)        
-    assert dut.fifo_empty.value == 1, 'Error fifo is not empty.'
-    print(f'Read ended at {get_sim_time('ns')} ns.')
+    assert dut.fifo_empty.value == 1, f'Error fifo is not empty at {get_sim_time('ns')} ns.'
 
 @cocotb.test()
 async def test_i2c_master(dut):
