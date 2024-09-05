@@ -36,7 +36,7 @@ py -m venv myenv
 .\myenv\Scripts\activate.ps1
 cd .\sim\cocotb\icarus
 py -m pytest test.py
-gtkwave .\i2c_master.gtkw
+gtkwave .\sim_build_i2c_master\i2c_master.vcd
 deactivate
 ```
 

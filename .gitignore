@@ -20,7 +20,7 @@ sim/iverilog/*
 sim/cocotb/icarus/*
 !test.py
 !i2c_master_tb.py
-!i2c_master.gtkw
+!gtkw.gtkw
 sim/cocotb/modelsim/*
 !test.py
 !i2c_master_tb.py

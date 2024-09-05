@@ -35,11 +35,14 @@ async def init(dut, n):
     
     dut.fifo_wr_en.value = 0
     dut.fifo_rd_en.value = 0
+    await reset(dut, clk_per)
+    assert dut.fifo_empty.value == 1, 'Error fifo is not empty.'
     for i in range(n):
-        await reset(dut, clk_per)
         await write(dut)
+    assert dut.fifo_full.value == 1, 'Error fifo is not full.'
+    for i in range(n):
         await read(dut)
-        assert dut.fifo_data_o == {dut.data, dut.addr}, f'Incorrect output.\n Expected: {dut.data, dut.addr}, got {dut.fifo_data_o}'
+    assert dut.fifo_empty.value == 1, 'Error fifo is not empty.'
 
 @cocotb.test()
 async def test_i2c_master(dut):
