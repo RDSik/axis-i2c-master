@@ -20,7 +20,7 @@ async def write(dut, n):
         await RisingEdge(dut.clk)
         dut.fifo_wr_en.value = 0
         await RisingEdge(dut.clk)
-    print(f'Write ended at {get_sim_time('sec')} sec.')
+    print(f'Write ended at {get_sim_time('ns')} ns.')
 
 async def read(dut, n):
     for i in range(n):
@@ -29,7 +29,7 @@ async def read(dut, n):
         dut.fifo_rd_en.value = 0
         await Timer(clk_per, units="sec")
         await Timer(clk_per*20, units="sec")
-    print(f'Read ended at {get_sim_time('sec')} sec.')
+    print(f'Read ended at {get_sim_time('ns')} ns.')
 
 @cocotb.test()
 async def test_i2c_master(dut):

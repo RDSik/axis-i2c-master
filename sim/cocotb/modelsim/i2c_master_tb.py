@@ -16,21 +16,19 @@ async def write(dut):
     dut.fifo_wr_en.value = 1
     dut.data.value = random.randint(0, 255)
     dut.addr.value = random.randint(0, 127)
-    await Timer(clk_per, units="sec")
+    await Timer(clk_per, units="ns")
     dut.fifo_wr_en.value = 0
-    await Timer(clk_per, units="sec")
-    print(f'Write ended at {get_sim_time('sec')} sec.')
+    await Timer(clk_per, units="ns")
 
 async def read(dut):
     dut.fifo_rd_en.value = 1
-    await Timer(clk_per, units="sec")
+    await Timer(clk_per, units="ns")
     dut.fifo_rd_en.value = 0
-    await Timer(clk_per, units="sec")
-    print(f'Read ended at {get_sim_time('sec')} sec.')
+    await Timer(clk_per, units="ns")
 
 async def init(dut, n):
 
-    cocotb.start_soon(Clock(dut.clk, clk_per, units = 'sec').start())
+    cocotb.start_soon(Clock(dut.clk, clk_per, units = 'ns').start())
     # cocotb.start_soon(Clock(dut.i2c_clk, 20, units = 'sec').start())
     
     dut.fifo_wr_en.value = 0
@@ -40,9 +38,11 @@ async def init(dut, n):
     for i in range(n):
         await write(dut)
     assert dut.fifo_full.value == 1, 'Error fifo is not full.'
+    print(f'Write ended at {get_sim_time('ns')} ns.')
     for i in range(n):
-        await read(dut)
+        await read(dut)        
     assert dut.fifo_empty.value == 1, 'Error fifo is not empty.'
+    print(f'Read ended at {get_sim_time('ns')} ns.')
 
 @cocotb.test()
 async def test_i2c_master(dut):
