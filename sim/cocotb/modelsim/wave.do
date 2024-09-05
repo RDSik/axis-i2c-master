@@ -14,7 +14,7 @@ add wave -noupdate /i2c_master/i2c_scl
 add wave -noupdate /i2c_master/fifo_data_i
 add wave -noupdate /i2c_master/fifo_data_o
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {17 ns} 0}
+WaveRestoreCursors {{Cursor 1} {1 ns} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 173
 configure wave -valuecolwidth 100
