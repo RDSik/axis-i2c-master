@@ -36,7 +36,7 @@ py -m venv myenv
 .\myenv\Scripts\activate.ps1
 cd .\sim\cocotb
 py -m pytest test.py
-gtkwave .\sim_build_i2c_master\i2c_master.vcd
+gtkwave .\gtkw.gtkw
 deactivate
 ```
 
