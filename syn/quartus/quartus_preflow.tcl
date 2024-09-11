@@ -1,3 +1,4 @@
+# SCRIPT EXECUTION STARTS HERE
 post_message "i2c_master design pre-flow script"
 
 set project_name "i2c_master"
