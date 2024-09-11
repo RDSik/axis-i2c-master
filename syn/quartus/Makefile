@@ -34,7 +34,7 @@ SOURCES_SDCFile := \
 i2c_master.sdc
 
 files.tcl:
-		@echo set_global_assignment -name PRE_FLOW_SCRIPT_FILE "quartus_sh:quartus.tcl" >> $@
+		@echo set_global_assignment -name PRE_FLOW_SCRIPT_FILE "quartus_sh:quartus_preflow.tcl" >> $@
 		@$(foreach sourcefile, $(SOURCES_VerilogFile), echo set_global_assignment -name VERILOG_FILE $(sourcefile) -library work >> $@ &)
 		@$(foreach sourcefile, $(SOURCES_SDCFile), echo set_global_assignment -name SDC_FILE $(sourcefile) >> $@ &)
 
