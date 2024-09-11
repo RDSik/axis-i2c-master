@@ -28,6 +28,7 @@ all: bitstream
 
 SOURCES_VerilogFile := \
 ../../src/i2c_fsm.v \
+../../src/sync_fifo.v \
 ../../src/i2c_master.v
 
 SOURCES_SDCFile := \
