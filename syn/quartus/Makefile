@@ -15,7 +15,7 @@ endif
 SYN_FAMILY := Cyclone 10 GX
 SYN_DEVICE := 10cx220YF780I5G
 SYN_PACKAGE := F780
-SYN_GRADE := I5G
+SYN_GRADE := E5G
 
 TCL_CREATE := project_new $(PROJECT)
 TCL_OPEN := project_open $(PROJECT)
