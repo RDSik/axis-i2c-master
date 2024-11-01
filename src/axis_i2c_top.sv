@@ -1,32 +1,55 @@
-`include "axis_i2c_pkg.svh"
+// `include "axis_i2c_pkg.svh"
 
-import axis_i2c_pkg::*;
+// import axis_i2c_pkg::*;
 
-module axis_i2c_top (
+module axis_i2c_top #(
+    parameter AXIS_MEM        = "axis_mem.mem",
+    parameter AXIS_DATA_WIDTH = 16
+) (
     input  logic clk,
     input  logic arst,
-    input  logic fifo_wr_en,
-    input  logic fifo_rd_en,
-    output logic fifo_full,
-    output logic fifo_empty,
-    output logic fsm_ready,
     output logic i2c_sda,
     output logic i2c_scl 
 );
 
-    axis_if axis();
+    axis_if s_axis();
+    axis_if m_axis();
 
-    i2c_fsm i2c_inst (
-        .clk   (clk              ),
-        .arst  (arst             ),
-        .start (fifo_rd_en       ),
-        .addr  (fifo_data_o[6:0 ]),
-        .data  (fifo_data_o[14:7]),
-        .ready (fsm_ready        ),
-        .sda   (i2c_sda          ),
-        .scl   (i2c_scl          )
+    logic [$clog2(AXIS_DATA_WIDTH)-1:0] cnt;
+
+    logic [AXIS_DATA_WIDTH-1:0] axis_mem [AXIS_DATA_WIDTH-1:0];
+
+    initial $readmemh(AXIS_MEM, axis_mem);
+
+    always_comb begin
+        m_axis.tvalid = 1;
+        m_axis.tdata = axis_mem[cnt];
+    end
+
+    always_ff @(posedge clk or posedge arst) begin
+        if (arst) cnt <= 0;
+        else if (m_axis.tvalid & m_axis.tready) cnt <= cnt + 1;
+    end
+
+    axis_i2c_slave i2c_inst (
+        .clk    (clk    ),
+        .arst   (arst   ),
+        .sda    (i2c_sda),
+        .scl    (i2c_scl),
+        .s_axis (s_axis   )
     );
     
+    axis_data_fifo fifo_inst (
+        .s_axis_aresetn (arst),
+        .s_axis_aclk    (clk),
+        .s_axis_tvalid  (m_axis.tvalid),
+        .s_axis_tready  (m_axis.tready),
+        .s_axis_tdata   (m_axis.tdata),
+        .m_axis_tvalid  (s_axis.tvalid),
+        .m_axis_tready  (s_axis.tready),
+        .m_axis_tdata   (s_axis.tdata)
+    );
+
     // sync_fifo #(
         // .DATA_WIDTH (FIFO_DATA_WIDTH),
         // .FIFO_DEPTH (FIFO_DEPTH     )
@@ -43,8 +66,8 @@ module axis_i2c_top (
 
     `ifdef COCOTB_SIM
         initial begin
-            $dumpfile ("i2c_top.vcd");
-            $dumpvars (0, i2c_master);
+            $dumpfile ("axis_i2c_top.vcd");
+            $dumpvars (0, axis_i2c_top);
             #1;
         end
     `endif

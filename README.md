@@ -28,28 +28,19 @@ pip install pytest
 winget install GnuWin32.make
 ```
 
-## Simulation
+## Build project
 
-### Icarus simulation using cocotb:
 ```bash
-py -m venv myenv
-.\myenv\Scripts\activate.ps1
-cd .\sim\cocotb
-py -m pytest test.py
-gtkwave .\gtkw.gtkw
-deactivate
-```
-
-### Vivado simulation using hdlmake:
-```bash
-cd sim/vivado
+cd syn/
 hdlmake
 make
 ```
 
-### Modelsim simulation using hdlmake
+## Simulation
+
+### Vivado simulation using hdlmake:
 ```bash
-cd sim/modelsim
+cd sim/vivado
 hdlmake
 make
 ```

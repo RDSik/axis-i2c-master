@@ -1,19 +1,23 @@
-`include "axis_i2c_pkg.svh"
+// `include "axis_i2c_pkg.svh"
 
-import axis_i2c_pkg::*;
+// import axis_i2c_pkg::*;
 
-module axis_i2c_slave (
-    input  logic                  clk,
-    input  logic                  arst,
-    output logic                  scl,
-    output logic                  sda,
+module axis_i2c_slave #(
+    parameter I2C_DATA_WIDTH  = 8,
+    parameter I2C_ADDR_WIDTH  = 7,
+    parameter AXIS_DATA_WIDTH = 16
+) (
+    input  logic clk,
+    input  logic arst,
+    output logic scl,
+    output logic sda,
 
     axis_if.slave s_axis
 );
 
-    logic [AXIS_DATA_WIDTH-1:0] saved_data;
-    logic [CNT_WIDTH-1:0 ]      cnt;
-    logic                       scl_en;
+    logic [AXIS_DATA_WIDTH-1:0]         saved_data;
+    logic [$clog2(AXIS_DATA_WIDTH)-1:0] cnt;
+    logic                               scl_en;
 
     enum logic [2:0] {
         IDLE      = 3'b000,

@@ -1,5 +1,3 @@
-`include "timescale.vh"
-
 module sync_fifo_tb();
 
 localparam SIM_TIME   = 25; // simulation time 10000 ns
