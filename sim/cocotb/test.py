@@ -10,14 +10,15 @@ def test_runner():
     src = Path("../../src")
     
     hdl_toplevel_lang = os.getenv("HDL_TOPLEVEL_LANG", "verilog")
-    sim = os.getenv("SIM", "icarus")
+    sim = os.getenv("SIM", "questa")
     
-    build_dir = Path('sim_build_i2c_master')
+    build_dir = Path('sim_build_axis_i2c_top')
     build_dir.mkdir(exist_ok=True)
 
-    # xilinx_simlibs_path = Path(r'xilinx-simulation-libraries')
+    xilinx_simlibs_path = Path(r'../../syn/axis_i2c_slave.cache/compile_simlib/modelsim')
 
-    # shutil.copyfile(xilinx_simlibs_path / 'modelsim.ini', build_dir / 'modelsim.ini')
+    shutil.copyfile(src / 'axis_data.mem', build_dir / 'axis_data.mem')
+    shutil.copyfile(xilinx_simlibs_path / 'modelsim.ini', build_dir / 'modelsim.ini')
 
     verilog_sources = []
     
@@ -25,7 +26,7 @@ def test_runner():
         sources = []
         for (dirpath, dirnames, filenames) in os.walk(path):
             for file in filenames:
-                if file != 'Manifest.py':
+                if file[-3:] == '.sv':
                     sources.append(dirpath.replace("\\", '/') +'/' + file)
             return sources
 
@@ -33,7 +34,7 @@ def test_runner():
     
     hdl_toplevel = 'axis_i2c_top' # HDL module name
     test_module = 'axis_i2c_top_tb' # Python module name
-    # pre_cmd = ['do ../../modelsim/wave.do'] # Macro file
+    pre_cmd = ['do ../wave.do'] # Macro file
     # seed = random.randint(0, 255)
 
     runner = get_runner(sim)
@@ -47,10 +48,10 @@ def test_runner():
 
     runner.test(
         hdl_toplevel=hdl_toplevel,
-        # hdl_toplevel_library = 'axis_data_fifo_v2_0_1',
+        hdl_toplevel_library = 'axis_data_fifo_v2_0_1',
         test_module=test_module,
         waves=True,
         gui=True,
-        # pre_cmd=pre_cmd,
+        pre_cmd=pre_cmd,
         # seed=seed,
     )

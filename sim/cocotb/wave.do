@@ -1,9 +1,9 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
-add wave -noupdate /axis_i2c_top_tb/dut/clk
-add wave -noupdate /axis_i2c_top_tb/dut/arst
-add wave -noupdate /axis_i2c_top_tb/dut/i2c_sda
-add wave -noupdate /axis_i2c_top_tb/dut/i2c_scl
+add wave -noupdate /axis_i2c_top/clk
+add wave -noupdate /axis_i2c_top/arst
+add wave -noupdate /axis_i2c_top/i2c_sda
+add wave -noupdate /axis_i2c_top/i2c_scl
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {43 ps} 0}
 quietly wave cursor active 1

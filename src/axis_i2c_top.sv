@@ -3,7 +3,7 @@
 // import axis_i2c_pkg::*;
 
 module axis_i2c_top #(
-    parameter AXIS_MEM        = "axis_mem.mem",
+    parameter AXIS_MEM        = "axis_data.mem",
     parameter AXIS_DATA_WIDTH = 16
 ) (
     input  logic clk,
