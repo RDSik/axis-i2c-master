@@ -47,7 +47,7 @@ def test_runner():
 
     runner.test(
         hdl_toplevel=hdl_toplevel,
-        # hdl_toplevel_library = 'axis_data_fifo',
+        # hdl_toplevel_library = 'axis_data_fifo_v2_0_1',
         test_module=test_module,
         waves=True,
         gui=True,
