@@ -36,7 +36,7 @@ module axis_i2c_top #(
         .arstn  (arstn  ),
         .sda    (i2c_sda),
         .scl    (i2c_scl),
-        .s_axis (s_axis   )
+        .s_axis (s_axis )
     );
     
     axis_data_fifo fifo_inst (
