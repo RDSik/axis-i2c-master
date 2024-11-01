@@ -1,5 +1,7 @@
 files = [
-    "i2c_fsm.v",
-    "i2c_master.v",
+    "axis_if.sv",
+    "axis_i2c_pkg.svh",
+    "axis_i2c_top.sv",
+    "axis_i2c_slave.sv",
     "sync_fifo.v",
 ]
