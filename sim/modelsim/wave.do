@@ -1,18 +1,9 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
-add wave -noupdate -radix binary /i2c_master_tb/dut/clk
-add wave -noupdate -radix binary /i2c_master_tb/dut/arst
-add wave -noupdate /i2c_master_tb/dut/data
-add wave -noupdate /i2c_master_tb/dut/addr
-add wave -noupdate -radix binary /i2c_master_tb/dut/fifo_wr_en
-add wave -noupdate -radix binary /i2c_master_tb/dut/fifo_rd_en
-add wave -noupdate -radix binary /i2c_master_tb/dut/fifo_full
-add wave -noupdate -radix binary /i2c_master_tb/dut/fifo_empty
-add wave -noupdate -radix binary /i2c_master_tb/dut/fsm_ready
-add wave -noupdate -radix binary /i2c_master_tb/dut/i2c_sda
-add wave -noupdate -radix binary /i2c_master_tb/dut/i2c_scl
-add wave -noupdate -radix binary /i2c_master_tb/dut/fifo_data_i
-add wave -noupdate /i2c_master_tb/dut/fifo_data_o
+add wave -noupdate -radix binary /axis_i2c_top_tb/dut/clk
+add wave -noupdate -radix binary /axis_i2c_top_tb/dut/arst
+add wave -noupdate -radix binary /axis_i2c_top_tb/dut/i2c_sda
+add wave -noupdate -radix binary /axis_i2c_top_tb/dut/i2c_scl
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {43 ps} 0}
 quietly wave cursor active 1

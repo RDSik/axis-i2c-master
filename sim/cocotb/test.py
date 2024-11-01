@@ -31,10 +31,10 @@ def test_runner():
 
     verilog_sources.extend(files(src))
     
-    hdl_toplevel = 'i2c_master' # HDL module name
-    test_module = 'i2c_master_tb' # Python module name
+    hdl_toplevel = 'axis_i2c_top' # HDL module name
+    test_module = 'axis_i2c_top_tb' # Python module name
     # pre_cmd = ['do ../../modelsim/wave.do'] # Macro file
-    seed = random.randint(0, 255)
+    # seed = random.randint(0, 255)
 
     runner = get_runner(sim)
     
@@ -47,10 +47,10 @@ def test_runner():
 
     runner.test(
         hdl_toplevel=hdl_toplevel,
-        # hdl_toplevel_library = 'fifo_generator_v13_2_4',
+        # hdl_toplevel_library = 'axis_data_fifo',
         test_module=test_module,
         waves=True,
         gui=True,
         # pre_cmd=pre_cmd,
-        seed=seed,
+        # seed=seed,
     )

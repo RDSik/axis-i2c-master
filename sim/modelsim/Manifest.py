@@ -1,8 +1,8 @@
 action = "simulation"
 sim_tool = "modelsim"
-sim_top = "i2c_master_tb"
+sim_top = "axis_i2c_top_tb"
 
-sim_post_cmd = "vsim -do wave.do -i i2c_master_tb"
+sim_post_cmd = "vsim -do wave.do -i axis_i2c_top_tb"
 
 modules = {
     "local" : [ 

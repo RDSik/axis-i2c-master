@@ -35,12 +35,3 @@ cd syn/
 hdlmake
 make
 ```
-
-## Simulation
-
-### Vivado simulation using hdlmake:
-```bash
-cd sim/vivado
-hdlmake
-make
-```
