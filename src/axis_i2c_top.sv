@@ -40,14 +40,14 @@ module axis_i2c_top #(
     );
     
     axis_data_fifo fifo_inst (
-        .s_axis_aresetn (arstn),
-        .s_axis_aclk    (clk),
+        .s_axis_aresetn (arstn        ),
+        .s_axis_aclk    (clk          ),
         .s_axis_tvalid  (m_axis.tvalid),
         .s_axis_tready  (m_axis.tready),
-        .s_axis_tdata   (m_axis.tdata),
+        .s_axis_tdata   (m_axis.tdata ),
         .m_axis_tvalid  (s_axis.tvalid),
         .m_axis_tready  (s_axis.tready),
-        .m_axis_tdata   (s_axis.tdata)
+        .m_axis_tdata   (s_axis.tdata )
     );
 
     // sync_fifo #(
