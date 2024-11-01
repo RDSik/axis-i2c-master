@@ -7,7 +7,7 @@ module axis_i2c_top #(
     parameter AXIS_DATA_WIDTH = 16
 ) (
     input  logic clk,
-    input  logic arst,
+    input  logic arstn,
     output logic i2c_sda,
     output logic i2c_scl 
 );
@@ -26,21 +26,21 @@ module axis_i2c_top #(
         m_axis.tdata = axis_mem[cnt];
     end
 
-    always_ff @(posedge clk or posedge arst) begin
-        if (arst) cnt <= 0;
+    always_ff @(posedge clk or negedge arstn) begin
+        if (~arstn) cnt <= 0;
         else if (m_axis.tvalid & m_axis.tready) cnt <= cnt + 1;
     end
 
     axis_i2c_slave i2c_inst (
         .clk    (clk    ),
-        .arst   (arst   ),
+        .arstn  (arstn  ),
         .sda    (i2c_sda),
         .scl    (i2c_scl),
         .s_axis (s_axis   )
     );
     
     axis_data_fifo fifo_inst (
-        .s_axis_aresetn (arst),
+        .s_axis_aresetn (arstn),
         .s_axis_aclk    (clk),
         .s_axis_tvalid  (m_axis.tvalid),
         .s_axis_tready  (m_axis.tready),

@@ -8,7 +8,7 @@ module axis_i2c_slave #(
     parameter AXIS_DATA_WIDTH = 16
 ) (
     input  logic clk,
-    input  logic arst,
+    input  logic arstn,
     output logic scl,
     output logic sda,
 
@@ -30,8 +30,8 @@ module axis_i2c_slave #(
         STOP      = 3'b111
     } state;
 
-    always_ff @(posedge clk or posedge arst) begin
-        if (arst) state <= IDLE;
+    always_ff @(posedge clk or negedge arstn) begin
+        if (~arstn) state <= IDLE;
         else begin
             case (state)
                 IDLE: if (s_axis.tvalid) begin
@@ -50,8 +50,8 @@ module axis_i2c_slave #(
         end
     end
 
-    always_ff @(posedge clk or posedge arst) begin
-        if (arst) cnt <= 0;
+    always_ff @(posedge clk or negedge arstn) begin
+        if (~arstn) cnt <= 0;
         else begin
             if ((s_axis.tready & s_axis.tvalid) && state == ADDR || state == RW || state == DATA) cnt <= cnt + 1;
             if (state == DATA && cnt == AXIS_DATA_WIDTH) cnt <= 0;
@@ -59,7 +59,7 @@ module axis_i2c_slave #(
     end
 
     always_ff @(negedge clk) begin
-        if (arst) begin
+        if (~arstn) begin
             scl_en <= 0;
         end else begin
             if ((state == IDLE) || (state == START) || (state == STOP)) begin
@@ -71,7 +71,7 @@ module axis_i2c_slave #(
     end
 
     always_comb begin
-        s_axis.tready = (arst == 0) && (state == START) ? 1 : 0;
+        s_axis.tready = (arstn == 0) && (state == START) ? 1 : 0;
         scl           = scl_en ? ~clk : 1;
         case (state)
             IDLE:      sda = 1;

@@ -1,6 +1,8 @@
 `ifndef ENV_SV
 `define ENV_SV
 
+`timescale 1ns/1ps
+
 class environment;
 
     localparam CLK_PER = 2;
@@ -19,10 +21,10 @@ class environment;
 
     task reset();
         begin
-            dut_if.arst = 1;
+            dut_if.arstn = 0;
             $display("Reset at %g ns.", $time);
             #CLK_PER;
-            dut_if.arst = 0;
+            dut_if.arstn = 1;
         end
     endtask
 

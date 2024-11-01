@@ -13,7 +13,7 @@ syn_tool = "vivado"
 syn_post_project_cmd = "vivado -mode tcl -source add_files.tcl"
 
 files = [
-    "axis_i2c_slave.xdc",
+    "axis_i2c_top.xdc",
 ]
 
 modules = {
