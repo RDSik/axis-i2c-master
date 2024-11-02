@@ -28,8 +28,6 @@ class environment;
         end
     endtask
 
-    
-
 endclass
 
 `endif
