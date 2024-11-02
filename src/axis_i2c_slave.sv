@@ -29,7 +29,10 @@ module axis_i2c_slave #(
     } state;
 
     always_ff @(posedge clk or negedge arstn) begin
-        if (~arstn) state <= IDLE;
+        if (~arstn) begin
+            state <= IDLE;
+            cnt   <= 0
+        end
         else begin
             case (state)
                 IDLE: if (s_axis.tvalid) begin
@@ -44,10 +47,12 @@ module axis_i2c_slave #(
                 ADDR: begin
                     sda <= saved_data[cnt];
                     if (cnt == I2C_ADDR_WIDTH - 1) state <= RW;
+                    else cnt <= cnt + 1;
                 end
                 RW: begin
                     state <= WACK_ADDR;
                     sda   <= saved_data[cnt];
+                    cnt   <= cnt + 1;
                 end
                 WACK_ADDR: begin
                     state <= DATA;
@@ -56,6 +61,7 @@ module axis_i2c_slave #(
                 DATA: begin
                     sda <= saved_data[cnt];
                     if (cnt == AXIS_DATA_WIDTH - 1) state <= WACK_DATA;
+                    else cnt <= cnt + 1;
                 end
                 WACK_DATA: begin
                     state <= STOP;
@@ -64,17 +70,10 @@ module axis_i2c_slave #(
                 STOP: begin
                     state <= IDLE;
                     sda   <= 1;
+                    cnt   <= 0;
                 end
                 default: state <= IDLE;
             endcase
-        end
-    end
-
-    always_ff @(posedge clk or negedge arstn) begin
-        if (~arstn) cnt <= 0;
-        else begin
-            if (state == ADDR || state == RW || state == DATA) cnt <= cnt + 1;
-            if (state == STOP) cnt <= 0;
         end
     end
 
