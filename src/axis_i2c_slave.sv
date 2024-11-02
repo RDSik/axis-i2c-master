@@ -1,12 +1,8 @@
-// `include "axis_i2c_pkg.svh"
+`include "axis_i2c_pkg.svh"
 
-// import axis_i2c_pkg::*;
+import axis_i2c_pkg::*;
 
-module axis_i2c_slave #(
-    parameter I2C_DATA_WIDTH  = 8,
-    parameter I2C_ADDR_WIDTH  = 7,
-    parameter AXIS_DATA_WIDTH = 16
-) (
+module axis_i2c_slave (
     input  logic clk,
     input  logic arstn,
     output logic scl,
@@ -15,9 +11,9 @@ module axis_i2c_slave #(
     axis_if.slave s_axis
 );
 
-    logic [AXIS_DATA_WIDTH-1:0]         saved_data;
-    logic [$clog2(AXIS_DATA_WIDTH)-1:0] cnt;
-    logic                               scl_en;
+    logic [AXIS_DATA_WIDTH-1:0] saved_data;
+    logic [CNT_WIDTH-1:0      ] cnt;
+    logic                       scl_en;
 
     enum logic [2:0] {
         IDLE      = 3'b000,
@@ -53,7 +49,7 @@ module axis_i2c_slave #(
     always_ff @(posedge clk or negedge arstn) begin
         if (~arstn) cnt <= 0;
         else begin
-            if ((s_axis.tready & s_axis.tvalid) && state == ADDR || state == RW || state == DATA) cnt <= cnt + 1;
+            if ((s_axis.tready & s_axis.tvalid) && (state == ADDR || state == RW || state == DATA)) cnt <= cnt + 1;
             if (state == DATA && cnt == AXIS_DATA_WIDTH) cnt <= 0;
         end
     end
@@ -71,7 +67,7 @@ module axis_i2c_slave #(
     end
 
     always_comb begin
-        s_axis.tready = (arstn == 0) && (state == START) ? 1 : 0;
+        s_axis.tready = (arstn == 1) && (state == START) ? 1 : 0;
         scl           = scl_en ? ~clk : 1;
         case (state)
             IDLE:      sda = 1;
