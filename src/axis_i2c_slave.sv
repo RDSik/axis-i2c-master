@@ -32,8 +32,7 @@ module axis_i2c_slave #(
         if (~arstn) begin
             state <= IDLE;
             cnt   <= 0;
-        end
-        else begin
+        end else begin
             case (state)
                 IDLE: begin
                     sda <= 1;
