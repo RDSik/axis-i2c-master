@@ -35,10 +35,12 @@ module axis_i2c_slave #(
         end
         else begin
             case (state)
-                IDLE: if (s_axis.tvalid) begin
-                    state      <= READY;
-                    sda        <= 1;
-                    saved_data <= s_axis.tdata;
+                IDLE: begin
+                    sda <= 1;
+                    if (s_axis.tvalid) begin
+                        state      <= READY;
+                        saved_data <= s_axis.tdata;
+                    end
                 end
                 READY: begin
                     state <= ADDR;
