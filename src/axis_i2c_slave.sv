@@ -54,7 +54,7 @@ module axis_i2c_slave #(
                     sda   <= 0;
                 end
                 DATA: begin
-                    sda = saved_data[cnt];
+                    sda <= saved_data[cnt];
                     if (cnt == AXIS_DATA_WIDTH - 1) state <= WACK_DATA;
                 end
                 WACK_DATA: begin
