@@ -1,5 +1,5 @@
-`ifndef I2C_PKG
-`define I2C_PKG
+`ifndef AXIS_I2C_PKG
+`define AXIS_I2C_PKG
 
 package axis_i2c_pkg;
 
