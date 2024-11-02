@@ -36,16 +36,12 @@ module axis_i2c_slave #(
                     state      <= READY;
                     saved_data <= s_axis.tdata;
                 end
-                READY: if (s_axis.tvalid) state <= ADDR;
-                ADDR: if (s_axis.tvalid) begin
-                    if (cnt == I2C_ADDR_WIDTH - 1) state <= RW;
-                end
-                RW: if (s_axis.tvalid) state <= WACK_ADDR;
-                WACK_ADDR: if (s_axis.tvalid) state <= DATA;
-                DATA: if (s_axis.tvalid) begin
-                    if (cnt == AXIS_DATA_WIDTH - 1) state <= WACK_DATA;
-                end
-                WACK_DATA: if (s_axis.tvalid) state <= STOP;
+                READY: state <= ADDR;
+                ADDR: if (cnt == I2C_ADDR_WIDTH - 1) state <= RW;
+                RW: state <= WACK_ADDR;
+                WACK_ADDR: state <= DATA;
+                DATA: if (cnt == AXIS_DATA_WIDTH - 1) state <= WACK_DATA;
+                WACK_DATA: state <= STOP;
                 STOP: state <= IDLE;
                 default: state <= IDLE;
             endcase
