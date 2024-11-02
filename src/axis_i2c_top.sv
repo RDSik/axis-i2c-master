@@ -1,9 +1,6 @@
-`include "axis_i2c_pkg.svh"
-
-import axis_i2c_pkg::*;
-
 module axis_i2c_top #(
-    parameter AXIS_MEM = "axis_data.mem"
+    parameter AXIS_DATA_WIDTH = 16,
+    parameter AXIS_MEM        = "axis_data.mem"
 ) (
     input  logic clk,
     input  logic arstn,
@@ -14,23 +11,29 @@ module axis_i2c_top #(
     axis_if s_axis();
     axis_if m_axis();
 
-    logic [$clog2(AXIS_DATA_WIDTH)-1:0] cnt;
+    localparam CNT_WIDTH = $clog2(AXIS_DATA_WIDTH);
 
-    logic [AXIS_DATA_WIDTH-1:0] axis_mem [AXIS_DATA_WIDTH-1:0];
+    (* keep = "true" *) logic [CNT_WIDTH-1:0] cnt;
+
+    (* keep = "true" *) logic [AXIS_DATA_WIDTH-1:0] axis_mem [AXIS_DATA_WIDTH-1:0];
 
     initial $readmemh(AXIS_MEM, axis_mem);
 
-    always_comb begin
-        m_axis.tvalid = 1;
-        m_axis.tdata = axis_mem[cnt];
-    end
-
     always_ff @(posedge clk or negedge arstn) begin
-        if (~arstn) cnt <= 0;
-        else if (m_axis.tvalid & m_axis.tready) cnt <= cnt + 1;
+        if (~arstn) begin
+            m_axis.tvalid <= 0;
+            m_axis.tdata  <= 0;
+            cnt           <= 0;
+        end else begin
+            m_axis.tvalid <= 1;
+            m_axis.tdata  <= axis_mem[cnt];
+            if (m_axis.tvalid & m_axis.tready) cnt <= cnt + 1;
+        end
     end
 
-    axis_i2c_slave i2c_inst (
+    axis_i2c_slave #(
+        .AXIS_DATA_WIDTH (AXIS_DATA_WIDTH)
+    ) i2c_inst (
         .clk    (clk    ),
         .arstn  (arstn  ),
         .sda    (i2c_sda),

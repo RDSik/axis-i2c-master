@@ -1,9 +1,9 @@
 interface axis_i2c_top_if;
 
-    bit clk;
-    bit arstn;
+    (* keep = "true" *) bit clk;
+    (* keep = "true" *) bit arstn;
 
-    logic i2c_sda;
-    logic i2c_scl;
+    (* keep = "true" *) logic i2c_sda;
+    (* keep = "true" *) logic i2c_scl;
 
 endinterface

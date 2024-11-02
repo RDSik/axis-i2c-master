@@ -1,8 +1,6 @@
 `ifndef ENV_SV
 `define ENV_SV
 
-`timescale 1ns/1ps
-
 class environment;
 
     localparam CLK_PER = 2;
@@ -15,7 +13,10 @@ class environment;
 
     task init();
         begin
-            reset();
+            repeat (10) begin
+                reset();
+                #(CLK_PER*100);
+            end
         end
     endtask
 

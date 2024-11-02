@@ -1,9 +1,10 @@
+`timescale 1ns/1ps
+
 `include "environment.sv"
 
 module axis_i2c_top_tb ();
 
-    localparam SIM_TIME   = 300;
-    localparam CLK_PERIOD = 2;
+    localparam CLK_PER = 2;
 
     axis_i2c_top_if dut_if();
     environment env;
@@ -15,12 +16,12 @@ module axis_i2c_top_tb ();
         .i2c_scl (dut_if.i2c_scl) 
     );
 
-    always #(CLK_PERIOD/2) dut_if.clk = ~dut_if.clk;
+    always #(CLK_PER/2) dut_if.clk = ~dut_if.clk;
 
     initial begin
         env = new(dut_if);
         env.init();
-        #SIM_TIME $stop;
+        $stop;
     end
 
     initial begin

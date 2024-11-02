@@ -13,6 +13,7 @@ syn/*
 !Manifest.py
 !add_files.tcl
 !axis_i2c_top.xdc
+!wave.tcl
 sim/modelsim/*
 !Manifest.py
 !wave.do
