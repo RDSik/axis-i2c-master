@@ -31,7 +31,7 @@ module axis_i2c_slave #(
     always_ff @(posedge clk or negedge arstn) begin
         if (~arstn) begin
             state <= IDLE;
-            cnt   <= 0
+            cnt   <= 0;
         end
         else begin
             case (state)
