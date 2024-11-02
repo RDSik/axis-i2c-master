@@ -34,15 +34,37 @@ module axis_i2c_slave #(
             case (state)
                 IDLE: if (s_axis.tvalid) begin
                     state      <= READY;
+                    sda        <= 1;
                     saved_data <= s_axis.tdata;
                 end
-                READY: state <= ADDR;
-                ADDR: if (cnt == I2C_ADDR_WIDTH - 1) state <= RW;
-                RW: state <= WACK_ADDR;
-                WACK_ADDR: state <= DATA;
-                DATA: if (cnt == AXIS_DATA_WIDTH - 1) state <= WACK_DATA;
-                WACK_DATA: state <= STOP;
-                STOP: state <= IDLE;
+                READY: begin
+                    state <= ADDR;
+                    sda   <= 0;
+                end
+                ADDR: begin
+                    sda <= saved_data[cnt];
+                    if (cnt == I2C_ADDR_WIDTH - 1) state <= RW;
+                end
+                RW: begin
+                    state <= WACK_ADDR;
+                    sda   <= saved_data[cnt];
+                end
+                WACK_ADDR: begin
+                    state <= DATA;
+                    sda   <= 0;
+                end
+                DATA: begin
+                    sda = saved_data[cnt];
+                    if (cnt == AXIS_DATA_WIDTH - 1) state <= WACK_DATA;
+                end
+                WACK_DATA: begin
+                    state <= STOP;
+                    sda   <= 0;
+                end
+                STOP: begin
+                    state <= IDLE;
+                    sda   <= 1;
+                end
                 default: state <= IDLE;
             endcase
         end
@@ -71,17 +93,6 @@ module axis_i2c_slave #(
     always_comb begin
         s_axis.tready = (state == READY);
         scl           = scl_en ? ~clk : 1;
-        case (state)
-            IDLE:      sda = 1;
-            READY:     sda = 0;
-            ADDR:      sda = saved_data[cnt];
-            RW:        sda = saved_data[cnt];
-            WACK_ADDR: sda = 0;
-            DATA:      sda = saved_data[cnt];
-            WACK_DATA: sda = 0;
-            STOP:      sda = 1;
-            default:   sda = 1;
-        endcase
     end
 
 endmodule
