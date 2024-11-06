@@ -47,13 +47,12 @@ module axis_i2c_slave #(
                 end
                 ADDR: begin
                     sda <= saved_data[cnt];
+                    cnt <= cnt + 1;
                     if (cnt == I2C_ADDR_WIDTH - 1) state <= RW;
-                    else cnt <= cnt + 1;
                 end
                 RW: begin
                     state <= WACK_ADDR;
                     sda   <= saved_data[cnt];
-                    cnt   <= cnt + 1;
                 end
                 WACK_ADDR: begin
                     state <= DATA;
