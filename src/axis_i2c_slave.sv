@@ -53,6 +53,7 @@ module axis_i2c_slave #(
                 RW: begin
                     state <= WACK_ADDR;
                     sda   <= saved_data[cnt];
+                    cnt   <= cnt + 1;
                 end
                 WACK_ADDR: begin
                     state <= DATA;
