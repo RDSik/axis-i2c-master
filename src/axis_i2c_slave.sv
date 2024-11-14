@@ -11,7 +11,7 @@ module axis_i2c_slave #(
     axis_if.slave s_axis
 );
 
-    (* keep = "true" *) logic [AXIS_DATA_WIDTH-1:0.       ] saved_data;
+    (* keep = "true" *) logic [AXIS_DATA_WIDTH-1:0        ] saved_data;
     (* keep = "true" *) logic [$clog2(AXIS_DATA_WIDTH)-1:0] cnt;
     (* keep = "true" *) logic                               scl_en;
 
