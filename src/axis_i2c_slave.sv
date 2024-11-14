@@ -11,11 +11,9 @@ module axis_i2c_slave #(
     axis_if.slave s_axis
 );
 
-    localparam CNT_WIDTH = $clog2(AXIS_DATA_WIDTH);
-
-    (* keep = "true" *) logic [AXIS_DATA_WIDTH-1:0] saved_data;
-    (* keep = "true" *) logic [CNT_WIDTH-1:0      ] cnt;
-    (* keep = "true" *) logic                       scl_en;
+    (* keep = "true" *) logic [AXIS_DATA_WIDTH-1:0.       ] saved_data;
+    (* keep = "true" *) logic [$clog2(AXIS_DATA_WIDTH)-1:0] cnt;
+    (* keep = "true" *) logic                               scl_en;
 
     (* keep = "true" *) enum logic [2:0] {
         IDLE      = 3'b000,
