@@ -11,9 +11,7 @@ module axis_i2c_top #(
     axis_if s_axis();
     axis_if m_axis();
 
-    localparam CNT_WIDTH = $clog2(AXIS_DATA_WIDTH);
-
-    (* keep = "true" *) logic [CNT_WIDTH-1:0] cnt;
+    (* keep = "true" *) logic [$clog2(AXIS_DATA_WIDTH)-1:0] cnt;
 
     (* keep = "true" *) logic [AXIS_DATA_WIDTH-1:0] axis_mem [AXIS_DATA_WIDTH-1:0];
 
