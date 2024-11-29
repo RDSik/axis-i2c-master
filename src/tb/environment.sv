@@ -13,6 +13,7 @@ class environment;
 
     task init();
         begin
+            clk_gen();
             repeat (10) begin
                 reset();
                 #(CLK_PER*100);
@@ -26,6 +27,15 @@ class environment;
             $display("Reset at %g ns.", $time);
             #CLK_PER;
             dut_if.arstn = 1;
+        end
+    endtask
+
+    task clk_gen();
+        begin
+            dut_if.clk = 0;
+            forever begin
+                #(CLK_PER/2) dut_if.clk = ~dut_if.clk;
+            end
         end
     endtask
 

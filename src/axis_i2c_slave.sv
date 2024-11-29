@@ -1,3 +1,7 @@
+`include "axis_i2c_pkg.svh"
+
+import axis_i2c_pkg::*;
+
 module axis_i2c_slave #(
     parameter I2C_ADDR_WIDTH  = 7,
     parameter I2C_DATA_WIDTH  = 8,
@@ -11,11 +15,11 @@ module axis_i2c_slave #(
     axis_if.slave s_axis
 );
 
-    (* keep = "true" *) logic [AXIS_DATA_WIDTH-1:0        ] saved_data;
-    (* keep = "true" *) logic [$clog2(AXIS_DATA_WIDTH)-1:0] cnt;
-    (* keep = "true" *) logic                               scl_en;
+    logic [AXIS_DATA_WIDTH-1:0] saved_data;
+    logic [CNT_WIDTH-1:0      ] cnt;
+    logic                       scl_en;
 
-    (* keep = "true" *) enum logic [2:0] {
+    enum logic [2:0] {
         IDLE      = 3'b000,
         READY     = 3'b001,
         ADDR      = 3'b010,

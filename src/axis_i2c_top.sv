@@ -1,6 +1,9 @@
+`include "axis_i2c_pkg.svh"
+
+import axis_i2c_pkg::*;
+
 module axis_i2c_top #(
-    parameter AXIS_DATA_WIDTH = 16,
-    parameter AXIS_MEM        = "axis_data.mem"
+    parameter AXIS_MEM = "axis_data.mem"
 ) (
     input  logic clk,
     input  logic arstn,
@@ -11,9 +14,9 @@ module axis_i2c_top #(
     axis_if s_axis();
     axis_if m_axis();
 
-    (* keep = "true" *) logic [$clog2(AXIS_DATA_WIDTH)-1:0] cnt;
+    logic [CNT_WIDTH-1:0] cnt;
 
-    (* keep = "true" *) logic [AXIS_DATA_WIDTH-1:0] axis_mem [AXIS_DATA_WIDTH-1:0];
+    logic [AXIS_DATA_WIDTH-1:0] axis_mem [AXIS_DATA_WIDTH-1:0];
 
     initial $readmemh(AXIS_MEM, axis_mem);
 
