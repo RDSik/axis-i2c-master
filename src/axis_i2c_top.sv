@@ -32,9 +32,7 @@ module axis_i2c_top
         end
     end
 
-    axis_i2c_slave #(
-        .AXIS_DATA_WIDTH (AXIS_DATA_WIDTH)
-    ) i2c_inst (
+    axis_i2c_slave i2c_inst (
         .clk    (clk    ),
         .arstn  (arstn  ),
         .sda    (i2c_sda),
