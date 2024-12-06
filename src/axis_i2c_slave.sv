@@ -1,12 +1,8 @@
 `include "axis_i2c_pkg.svh"
 
-import axis_i2c_pkg::*;
-
-module axis_i2c_slave #(
-    parameter I2C_ADDR_WIDTH  = 7,
-    parameter I2C_DATA_WIDTH  = 8,
-    parameter AXIS_DATA_WIDTH = I2C_DATA_WIDTH * 2
-) (
+module axis_i2c_slave 
+    import axis_i2c_pkg::*;
+(
     input  logic clk,
     input  logic arstn,
     output logic scl,

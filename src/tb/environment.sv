@@ -13,19 +13,9 @@ class environment;
 
     task init();
         begin
-            clock();
             repeat (10) begin
                 reset();
                 #(CLK_PER*100);
-            end
-        end
-    endtask
-
-    task clock();
-        begin
-            dut_if.clk = 0;
-            forever begin
-                #(CLK_PER/2) dut_if.clk = ~dut_if.clk;
             end
         end
     endtask

@@ -1,8 +1,7 @@
 `include "axis_i2c_pkg.svh"
 
-import axis_i2c_pkg::AXIS_DATA_WIDTH;
-
 interface axis_if;
+    import axis_i2c_pkg::AXIS_DATA_WIDTH;
     
     logic [AXIS_DATA_WIDTH-1:0] tdata;
     logic                       tvalid;

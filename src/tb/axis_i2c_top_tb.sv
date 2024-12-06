@@ -16,6 +16,8 @@ module axis_i2c_top_tb ();
         .i2c_scl (dut_if.i2c_scl) 
     );
 
+    always #(CLK_PER/2) dut_if.clk = ~dut_if.clk;
+
     initial begin
         env = new(dut_if);
         env.init();

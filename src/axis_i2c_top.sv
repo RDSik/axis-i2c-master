@@ -1,8 +1,8 @@
 `include "axis_i2c_pkg.svh"
 
-import axis_i2c_pkg::*;
-
-module axis_i2c_top #(
+module axis_i2c_top 
+    import axis_i2c_pkg::*;
+#(
     parameter AXIS_MEM = "axis_data.mem"
 ) (
     input  logic clk,
