@@ -15,7 +15,7 @@ def test_runner():
     build_dir = Path('sim_build_axis_i2c_top')
     build_dir.mkdir(exist_ok=True)
 
-    xilinx_simlibs_path = Path(r'../../syn/axis_i2c_slave.cache/compile_simlib/modelsim')
+    xilinx_simlibs_path = Path(r'../../../../sim_libs')
 
     shutil.copyfile(src / 'axis_data.mem', build_dir / 'axis_data.mem')
     shutil.copyfile(xilinx_simlibs_path / 'modelsim.ini', build_dir / 'modelsim.ini')
@@ -24,11 +24,10 @@ def test_runner():
     
     def files(path):
         sources = []
-        for (dirpath, dirnames, filenames) in os.walk(path):
-            for file in filenames:
-                if file[-3:] == '.sv':
-                    sources.append(dirpath.replace("\\", '/') +'/' + file)
-            return sources
+        for child in path.iterdir():
+            if child.is_file() and str(child).endswith('.sv'):
+                sources.append(child)
+        return sources
 
     verilog_sources.extend(files(src))
     

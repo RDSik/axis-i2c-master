@@ -18,3 +18,4 @@ sim/modelsim/*
 !Manifest.py
 !wave.do
 *.bak
+myenv
