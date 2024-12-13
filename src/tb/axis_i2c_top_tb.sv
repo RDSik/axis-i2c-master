@@ -19,8 +19,10 @@ module axis_i2c_top_tb ();
     always #(CLK_PER/2) dut_if.clk = ~dut_if.clk;
 
     initial begin
-        env = new(dut_if);
-        env.init();
+        fork
+            env = new(dut_if);
+            env.init();
+        join
         $stop;
     end
 
