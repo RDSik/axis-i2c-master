@@ -13,6 +13,7 @@ class environment;
 
     task init();
         begin
+            dut_if.clk = 0;
             repeat (10) begin
                 reset();
                 #(CLK_PER*100);
