@@ -6,6 +6,7 @@ module axis_i2c_top_tb ();
 
     localparam CLK_PER = 2;
 
+    axis_if axis();
     axis_i2c_top_if dut_if();
     environment env;
 
@@ -13,7 +14,14 @@ module axis_i2c_top_tb ();
         .clk     (dut_if.clk    ),
         .arstn   (dut_if.arstn  ),
         .i2c_sda (dut_if.i2c_sda),
-        .i2c_scl (dut_if.i2c_scl) 
+        .i2c_scl (dut_if.i2c_scl),
+        .s_axis  (axis          )
+    );
+
+    axis_data_gen data_gen (
+        .clk     (dut_if.clk  ),
+        .arstn   (dut_if.arstn),
+        .m_axis  (axis        )
     );
 
     always #(CLK_PER/2) dut_if.clk = ~dut_if.clk;
