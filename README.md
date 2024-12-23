@@ -12,7 +12,7 @@
 ### Clone repository:
 ```bash
 git clone https://github.com/RDSik/verilog-axis-i2c-slave.git
-cd axis-i2c-slave
+cd verilog-axis-i2c-slave
 ```
 
 ### Download packages:
