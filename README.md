@@ -11,7 +11,7 @@
 
 ### Clone repository:
 ```bash
-git clone https://github.com/RDSik/axis-i2c-slave.git
+git clone https://github.com/RDSik/verilog-axis-i2c-slave.git
 cd axis-i2c-slave
 ```
 
