@@ -13,7 +13,7 @@ module axis_data_gen
 
     logic [CNT_WIDTH-1:0] cnt;
 
-    logic [AXIS_DATA_WIDTH-1:0] axis_mem [CNT_WIDTH-1:0];
+    logic [CNT_WIDTH-1:0] axis_mem [AXIS_DATA_WIDTH-1:0];
 
     initial $readmemh(AXIS_MEM, axis_mem);
 
