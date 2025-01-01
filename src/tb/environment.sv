@@ -3,8 +3,6 @@
 
 class environment;
 
-    localparam CLK_PER = 2;
-
     local virtual axis_i2c_top_if dut_if;
 
     function new(virtual axis_i2c_top_if dut_if);
@@ -16,7 +14,7 @@ class environment;
             dut_if.clk = 0;
             repeat (10) begin
                 reset();
-                #(CLK_PER*100);
+                repeat (100) @(posedge dut_if.clk);
             end
         end
     endtask
@@ -25,7 +23,7 @@ class environment;
         begin
             dut_if.arstn = 0;
             $display("Reset at %g ns.", $time);
-            #CLK_PER;
+            @(posedge dut_if.clk);
             dut_if.arstn = 1;
         end
     endtask
