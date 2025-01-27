@@ -73,14 +73,14 @@ module axis_i2c_slave
                 DATA: begin
                     if (rw == WRITE) begin
                         wr_bit <= saved_data[cnt];
-                        cnt    <= cnt + 1;
+                        cnt    <= cnt + 1'b1;
                         if (cnt == I2C_DATA_WIDTH - 1) begin
                             state <= WACK_DATA;
                             cnt   <= '0;
                         end
                     end else if (rw == READ) begin
                         data_o[cnt] <= rd_bit;
-                        cnt         <= cnt + 1;
+                        cnt         <= cnt + 1'b1;
                         if (cnt == I2C_DATA_WIDTH - 1) begin
                             state <= WACK_DATA;
                             cnt   <= '0;
