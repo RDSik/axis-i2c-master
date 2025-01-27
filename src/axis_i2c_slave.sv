@@ -20,8 +20,8 @@ module axis_i2c_slave
     logic [I2C_DATA_WIDTH-1:0] data_o;
     logic [I2C_DATA_WIDTH-1:0] saved_data;
     logic [I2C_ADDR_WIDTH-1:0] saved_addr;
-    logic                      rw;
     logic [CNT_WIDTH-1:0     ] cnt;
+    logic                      rw;
     logic                      i2c_scl_en;
 
     enum logic [2:0] {
