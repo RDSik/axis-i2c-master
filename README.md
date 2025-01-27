@@ -2,7 +2,7 @@
 
 ## Dependencies 
 
-`hdlmake`, `make`, `cocotb`, `pytest`, `vivado`, `modelsim`, `python`, `chocolatey`, `winget`
+`hdlmake`, `make`, `vivado`, `modelsim`, `python`, `chocolatey`, `winget`
 
 ## Installation
 
@@ -19,8 +19,6 @@ cd axis-i2c-slave
 ```bash
 pip install six
 pip install hdlmake
-pip install cocotb
-pip install pytest
 ```
 
 ### Download make (add to PATH system variable the Make bin folder: C:\Program Files (x86)\GnuWin32\bin):
