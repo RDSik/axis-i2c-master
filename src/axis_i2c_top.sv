@@ -1,29 +1,44 @@
 `include "axis_i2c_pkg.svh"
 
-module axis_i2c_top 
+module axis_i2c_top
     import axis_i2c_pkg::*;
 (
-    input  logic clk,
-    input  logic arstn,
-    output logic i2c_sda,
-    output logic i2c_scl,
+    input  logic                      clk_i,
+    input  logic                      arstn_i,
+    inout                             i2c_sda,
+    output logic                      i2c_scl,
+    output logic [I2C_DATA_WIDTH-1:0] i2c_data_o,
 
     axis_if.slave s_axis
 );
 
     axis_if m_axis();
 
+    logic rd_bit;
+    logic wr_bit;
+    logic i2c_sda_en;
+
+    IOBUF iobuf_inst (
+        .O  (rd_bit    ),  // Buffer output
+        .IO (i2c_sda   ),  // Buffer inout port
+        .I  (wr_bit    ),  // Buffer input
+        .T  (i2c_sda_en)   // 3-state enable input, high=input, low=output
+     );
+
     axis_i2c_slave i2c_inst (
-        .clk    (clk    ),
-        .arstn  (arstn  ),
-        .sda    (i2c_sda),
-        .scl    (i2c_scl),
-        .s_axis (m_axis )
+        .clk_i      (clk_i     ),
+        .arstn_i    (arstn_i   ),
+        .i2c_scl    (i2c_scl   ),
+        .i2c_sda_en (i2c_sda_en),
+        .rd_bit     (rd_bit    ),
+        .wr_bit     (wr_bit    ),
+        .i2c_data_o (i2c_data_o),
+        .s_axis     (m_axis    )
     );
-    
+
     axis_data_fifo fifo_inst (
-        .s_axis_aresetn (arstn        ),
-        .s_axis_aclk    (clk          ),
+        .s_axis_aresetn (arstn_i      ),
+        .s_axis_aclk    (clk_i        ),
         .s_axis_tvalid  (s_axis.tvalid),
         .s_axis_tready  (s_axis.tready),
         .s_axis_tdata   (s_axis.tdata ),

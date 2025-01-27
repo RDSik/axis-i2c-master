@@ -2,11 +2,11 @@ onerror {resume}
 quietly WaveActivateNextPane {} 0
 add wave -noupdate /glbl/GSR
 add wave -noupdate /glbl/GSR
-add wave -noupdate /axis_i2c_top_tb/dut/clk
-add wave -noupdate /axis_i2c_top_tb/dut/arstn
+add wave -noupdate /axis_i2c_top_tb/dut/clk_i
+add wave -noupdate /axis_i2c_top_tb/dut/arstn_i
 add wave -noupdate /axis_i2c_top_tb/dut/i2c_sda
 add wave -noupdate /axis_i2c_top_tb/dut/i2c_scl
-add wave -noupdate /axis_i2c_top_tb/dut/cnt
+add wave -noupdate /axis_i2c_top_tb/dut/i2c_data_o
 add wave -noupdate /axis_i2c_top_tb/dut/fifo_inst/s_axis_aresetn
 add wave -noupdate /axis_i2c_top_tb/dut/fifo_inst/s_axis_aclk
 add wave -noupdate /axis_i2c_top_tb/dut/fifo_inst/s_axis_tvalid
@@ -15,13 +15,19 @@ add wave -noupdate /axis_i2c_top_tb/dut/fifo_inst/s_axis_tdata
 add wave -noupdate /axis_i2c_top_tb/dut/fifo_inst/m_axis_tvalid
 add wave -noupdate /axis_i2c_top_tb/dut/fifo_inst/m_axis_tready
 add wave -noupdate /axis_i2c_top_tb/dut/fifo_inst/m_axis_tdata
-add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/clk
-add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/arstn
-add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/scl
-add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/sda
+add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/clk_i
+add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/arstn_i
+add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/i2c_scl
+add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/i2c_sda_en
+add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/rd_bit
+add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/wr_bit
+add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/i2c_data_o
 add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/saved_data
+add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/saved_addr
+add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/rw
+add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/data_o
 add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/cnt
-add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/scl_en
+add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/i2c_scl_en
 add wave -noupdate /axis_i2c_top_tb/dut/i2c_inst/state
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {37746133 ps} 0}

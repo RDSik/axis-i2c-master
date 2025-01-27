@@ -11,20 +11,20 @@ class environment;
 
     task init();
         begin
-            dut_if.clk = 0;
+            dut_if.clk_i = 0;
             repeat (10) begin
                 reset();
-                repeat (100) @(posedge dut_if.clk);
+                repeat (100) @(posedge dut_if.clk_i);
             end
         end
     endtask
-    
+
     task reset();
         begin
-            dut_if.arstn = 0;
+            dut_if.arstn_i = 1'b0;
             $display("Reset at %g ns.", $time);
-            @(posedge dut_if.clk);
-            dut_if.arstn = 1;
+            @(posedge dut_if.clk_i);
+            dut_if.arstn_i = 1'b1;
         end
     endtask
 

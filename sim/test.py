@@ -7,7 +7,7 @@ import cocotb
 from cocotb.runner import get_runner
 
 def test_runner():
-    src = Path("../../src")
+    src = Path("../src")
     
     hdl_toplevel_lang = os.getenv("HDL_TOPLEVEL_LANG", "verilog")
     sim = os.getenv("SIM", "questa")
@@ -15,7 +15,7 @@ def test_runner():
     build_dir = Path('sim_build_axis_i2c_top')
     build_dir.mkdir(exist_ok=True)
 
-    xilinx_simlibs_path = Path(r'../../../sim_libs')
+    xilinx_simlibs_path = Path(r'../../sim_libs')
 
     shutil.copyfile(src / 'axis_data.mem', build_dir / 'axis_data.mem')
     shutil.copyfile(xilinx_simlibs_path / 'modelsim.ini', build_dir / 'modelsim.ini')
