@@ -5,10 +5,10 @@ module axis_i2c_slave
 (
     input  logic                      clk_i,
     input  logic                      arstn_i,
-    output logic                      i2c_scl,
-    output logic                      i2c_sda_en,
     input  logic                      rd_bit,
     output logic                      wr_bit,
+    output logic                      i2c_scl,
+    output logic                      i2c_sda_en,
     output logic [I2C_DATA_WIDTH-1:0] i2c_data_o,
 
     axis_if.slave s_axis
