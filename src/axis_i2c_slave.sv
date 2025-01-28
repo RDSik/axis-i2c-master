@@ -5,11 +5,13 @@ module axis_i2c_slave
 (
     input  logic                      clk_i,
     input  logic                      arstn_i,
-    input  logic                      rd_bit,
-    output logic                      wr_bit,
-    output logic                      i2c_scl,
-    output logic                      i2c_sda_en,
-    output logic [I2C_DATA_WIDTH-1:0] i2c_data_o,
+    // input  logic                      rd_bit,
+    // output logic                      wr_bit,
+    // output logic                      i2c_sda_en,
+    inout                             i2c_sda_io,
+    output logic                      i2c_scl_o,
+    output logic [I2C_DATA_WIDTH-1:0] i2c_rdata_o,
+    output logic                      rvalid_o,
 
     axis_if.slave s_axis
 );
@@ -17,36 +19,44 @@ module axis_i2c_slave
     localparam WRITE = 1'b0;
     localparam READ  = 1'b1;
 
-    logic [I2C_DATA_WIDTH-1:0] data_o;
-    logic [I2C_DATA_WIDTH-1:0] saved_data;
-    logic [I2C_ADDR_WIDTH-1:0] saved_addr;
-    logic [CNT_WIDTH-1:0     ] cnt;
-    logic                      rw;
-    logic                      i2c_scl_en;
-
     enum logic [2:0] {
         IDLE      = 3'b000,
         START     = 3'b001,
         ADDR      = 3'b010,
-        RW        = 3'b011,
-        WACK_ADDR = 3'b100,
-        DATA      = 3'b101,
-        WACK_DATA = 3'b110,
-        STOP      = 3'b111
+        WACK_ADDR = 3'b011,
+        DATA      = 3'b100,
+        WACK_DATA = 3'b101,
+        STOP      = 3'b110
     } state;
+
+    logic [I2C_DATA_WIDTH-1:0] rd_data;
+    logic [I2C_DATA_WIDTH-1:0] data_reg;
+    logic [I2C_DATA_WIDTH-1:0] addr_reg;
+    logic [CNT_WIDTH-1:0     ] cnt;
+    logic                      cnt_done;
+    logic                      i2c_scl_en;
+
+    logic rd_bit;
+    logic wr_bit;
+    logic i2c_sda_en;
+
+    IOBUF iobuf_inst (
+        .O  (rd_bit    ),  // Buffer output
+        .IO (i2c_sda_io),  // Buffer inout port
+        .I  (wr_bit    ),  // Buffer input
+        .T  (i2c_sda_en)   // 3-state enable input, high=input, low=output
+     );
 
     always_ff @(posedge clk_i or negedge arstn_i) begin
         if (~arstn_i) begin
             state <= IDLE;
-            cnt   <= '0;
         end else begin
             case (state)
                 IDLE: begin
                     if (s_axis.tvalid) begin
                         state      <= START;
-                        saved_data <= s_axis.tdata[AXIS_DATA_WIDTH-1:I2C_DATA_WIDTH];
-                        saved_addr <= s_axis.tdata[I2C_ADDR_WIDTH-1:0];
-                        rw         <= s_axis.tdata[I2C_ADDR_WIDTH];
+                        data_reg   <= s_axis.tdata[AXIS_DATA_WIDTH-1:I2C_DATA_WIDTH];
+                        addr_reg   <= s_axis.tdata[I2C_DATA_WIDTH-1:0];
                         i2c_sda_en <= WRITE;
                     end
                 end
@@ -55,41 +65,30 @@ module axis_i2c_slave
                     wr_bit <= 1'b0;
                 end
                 ADDR: begin
-                    wr_bit <= saved_addr[cnt];
-                    cnt    <= cnt + 1'b1;
-                    if (cnt == I2C_ADDR_WIDTH - 1) begin
-                        state <= RW;
-                        cnt   <= '0;
-                    end
-                end
-                RW: begin
-                    state  <= WACK_ADDR;
-                    wr_bit <= rw;
+                    wr_bit <= addr_reg[cnt];
+                    if (cnt_done) state <= WACK_ADDR;
                 end
                 WACK_ADDR: begin
                     state      <= DATA;
-                    i2c_sda_en <= (rw) ? READ : WRITE;
+                    i2c_sda_en <= (s_axis.tdata[I2C_RW_BIT]) ? READ : WRITE;
                 end
                 DATA: begin
-                    if (rw == WRITE) begin
-                        wr_bit <= saved_data[cnt];
-                        cnt    <= cnt + 1'b1;
-                        if (cnt == I2C_DATA_WIDTH - 1) begin
+                    if (s_axis.tdata[I2C_RW_BIT] == WRITE) begin
+                        wr_bit <= data_reg[cnt];
+                        if (cnt_done) begin
                             state <= WACK_DATA;
-                            cnt   <= '0;
                         end
-                    end else if (rw == READ) begin
-                        data_o[cnt] <= rd_bit;
-                        cnt         <= cnt + 1'b1;
-                        if (cnt == I2C_DATA_WIDTH - 1) begin
-                            state <= WACK_DATA;
-                            cnt   <= '0;
+                    end else if (s_axis.tdata[I2C_RW_BIT] == READ) begin
+                        rd_data[cnt] <= rd_bit;
+                        if (cnt_done) begin
+                            state       <= WACK_DATA;
+                            i2c_rdata_o <= rd_data;
                         end
                     end
                 end
                 WACK_DATA: begin
-                    state      <= STOP;
-                    i2c_sda_en <= WRITE;
+                    state       <= STOP;
+                    i2c_sda_en  <= WRITE;
                 end
                 STOP: begin
                     state  <= IDLE;
@@ -97,6 +96,16 @@ module axis_i2c_slave
                 end
                 default: state <= IDLE;
             endcase
+        end
+    end
+
+    always_ff @(posedge clk_i or negedge arstn_i) begin
+        if (~arstn_i) begin
+            cnt <= '0;
+        end else if ((state == DATA) || (state == ADDR)) begin
+            cnt <= cnt - 1'b1;
+        end else if ((state == WACK_ADDR) || (state == START)) begin
+            cnt <= I2C_DATA_WIDTH - 1;
         end
     end
 
@@ -113,8 +122,10 @@ module axis_i2c_slave
     end
 
     always_comb begin
-        s_axis.tready = (state == START);
-        i2c_scl       = i2c_scl_en ? ~clk_i : 1'b1;
+        s_axis.tready = ((arstn_i == 1'b1) && (state == IDLE)) ? 1'b1 : 1'b0;
+        i2c_scl_o     = i2c_scl_en ? ~clk_i : 1'b1;
+        rvalid_o      = (state == WACK_ADDR) && (s_axis.tdata[I2C_RW_BIT] == READ);
+        cnt_done      = ~(|cnt);
     end
 
 endmodule

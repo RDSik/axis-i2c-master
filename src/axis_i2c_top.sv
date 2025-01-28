@@ -5,35 +5,38 @@ module axis_i2c_top
 (
     input  logic                      clk_i,
     input  logic                      arstn_i,
-    inout                             i2c_sda,
-    output logic                      i2c_scl,
-    output logic [I2C_DATA_WIDTH-1:0] i2c_data_o,
+    inout                             i2c_sda_io,
+    output logic                      i2c_scl_o,
+    output logic [I2C_DATA_WIDTH-1:0] i2c_rdata_o,
+    output logic                      rvalid_o,
 
     axis_if.slave s_axis
 );
 
     axis_if m_axis();
 
-    logic rd_bit;
-    logic wr_bit;
-    logic i2c_sda_en;
+    // logic rd_bit;
+    // logic wr_bit;
+    // logic i2c_sda_en;
 
-    IOBUF iobuf_inst (
-        .O  (rd_bit    ),  // Buffer output
-        .IO (i2c_sda   ),  // Buffer inout port
-        .I  (wr_bit    ),  // Buffer input
-        .T  (i2c_sda_en)   // 3-state enable input, high=input, low=output
-     );
+    // IOBUF iobuf_inst (
+    //     .O  (rd_bit    ),  // Buffer output
+    //     .IO (i2c_sda   ),  // Buffer inout port
+    //     .I  (wr_bit    ),  // Buffer input
+    //     .T  (i2c_sda_en)   // 3-state enable input, high=input, low=output
+    //  );
 
     axis_i2c_slave i2c_inst (
-        .clk_i      (clk_i     ),
-        .arstn_i    (arstn_i   ),
-        .i2c_scl    (i2c_scl   ),
-        .i2c_sda_en (i2c_sda_en),
-        .rd_bit     (rd_bit    ),
-        .wr_bit     (wr_bit    ),
-        .i2c_data_o (i2c_data_o),
-        .s_axis     (m_axis    )
+        .clk_i       (clk_i      ),
+        .arstn_i     (arstn_i    ),
+        .i2c_scl_o   (i2c_scl_o  ),
+        .i2c_sda_io  (i2c_sda_io ),
+        // .i2c_sda_en  (i2c_sda_en ),
+        // .rd_bit      (rd_bit     ),
+        // .wr_bit      (wr_bit     ),
+        .i2c_rdata_o (i2c_rdata_o),
+        .rvalid_o    (rvalid_o   ),
+        .s_axis      (m_axis     )
     );
 
     axis_data_fifo fifo_inst (
