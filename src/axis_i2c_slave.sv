@@ -16,9 +16,6 @@ module axis_i2c_slave
     axis_if.slave s_axis
 );
 
-    localparam WRITE = 1'b0;
-    localparam READ  = 1'b1;
-
     enum logic [2:0] {
         IDLE      = 3'b000,
         START     = 3'b001,
