@@ -75,9 +75,7 @@ module axis_i2c_slave
                 DATA: begin
                     if (s_axis.tdata[I2C_RW_BIT] == WRITE) begin
                         wr_bit <= data_reg[cnt];
-                        if (cnt_done) begin
-                            state <= WACK_DATA;
-                        end
+                        if (cnt_done) state <= WACK_DATA;
                     end else if (s_axis.tdata[I2C_RW_BIT] == READ) begin
                         rd_data[cnt] <= rd_bit;
                         if (cnt_done) begin
