@@ -3,14 +3,16 @@
 module axis_i2c_top
     import axis_i2c_pkg::*;
 (
-    input  logic                      clk_i,
-    input  logic                      arstn_i,
-    inout                             i2c_sda_io,
-    output logic                      i2c_scl_o,
-    output logic [I2C_DATA_WIDTH-1:0] i2c_rdata_o,
-    output logic                      rvalid_o,
+    input  logic                       clk_i,
+    input  logic                       arstn_i,
+    inout                              i2c_sda_io,
+    output logic                       i2c_scl_o,
+    output logic [I2C_DATA_WIDTH-1:0]  i2c_rdata_o,
+    output logic                       rvalid_o,
 
-    axis_if.slave s_axis
+    input  logic [AXIS_DATA_WIDTH-1:0] s_axis_tdata,
+    input  logic                       s_axis_tvalid,
+    output logic                       s_axis_tready
 );
 
     axis_if m_axis();
@@ -42,9 +44,9 @@ module axis_i2c_top
     axis_data_fifo fifo_inst (
         .s_axis_aresetn (arstn_i      ),
         .s_axis_aclk    (clk_i        ),
-        .s_axis_tvalid  (s_axis.tvalid),
-        .s_axis_tready  (s_axis.tready),
-        .s_axis_tdata   (s_axis.tdata ),
+        .s_axis_tvalid  (s_axis_tvalid),
+        .s_axis_tready  (s_axis_tready),
+        .s_axis_tdata   (s_axis_tdata ),
         .m_axis_tvalid  (m_axis.tvalid),
         .m_axis_tready  (m_axis.tready),
         .m_axis_tdata   (m_axis.tdata )

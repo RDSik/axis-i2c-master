@@ -62,7 +62,7 @@ module axis_i2c_slave
                 end
                 ADDR: begin
                     wr_bit <= addr_reg[cnt];
-                    if (cnt_done) state <= WACK_ADDR;
+                    if (~(|cnt)) state <= WACK_ADDR;
                 end
                 WACK_ADDR: begin
                     state      <= DATA;
