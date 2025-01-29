@@ -30,7 +30,6 @@ module axis_i2c_slave
     logic [I2C_DATA_WIDTH-1:0] data_reg;
     logic [I2C_DATA_WIDTH-1:0] addr_reg;
     logic [CNT_WIDTH-1:0     ] cnt;
-    logic                      cnt_done;
     logic                      i2c_scl_en;
 
     logic rd_bit;
@@ -72,10 +71,10 @@ module axis_i2c_slave
                 DATA: begin
                     if (addr_reg[I2C_RW_BIT] == WRITE) begin
                         wr_bit <= data_reg[cnt];
-                        if (cnt_done) state <= WACK_DATA;
+                        if (~(|cnt)) state <= WACK_DATA;
                     end else if (addr_reg[I2C_RW_BIT] == READ) begin
                         rd_data[cnt] <= rd_bit;
-                        if (cnt_done) state <= WACK_DATA;
+                        if (~(|cnt)) state <= WACK_DATA;
                     end
                 end
                 WACK_DATA: begin
@@ -118,7 +117,6 @@ module axis_i2c_slave
         s_axis.tready = ((arstn_i == 1'b1) && (state == IDLE)) ? 1'b1 : 1'b0;
         i2c_scl_o     = i2c_scl_en ? ~clk_i : 1'b1;
         rvalid_o      = (state == STOP) && (addr_reg[I2C_RW_BIT] == READ);
-        cnt_done      = ~(|cnt);
     end
 
 endmodule
