@@ -96,7 +96,7 @@ module axis_i2c_slave
         if (~arstn_i) begin
             cnt <= '0;
         end else if ((state == DATA) || (state == ADDR)) begin
-            cnt <= cnt - 1'b1;
+            cnt <= cnt - 1;
         end else if ((state == WACK_ADDR) || (state == START)) begin
             cnt <= I2C_DATA_WIDTH - 1;
         end
