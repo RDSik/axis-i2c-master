@@ -67,13 +67,13 @@ module axis_i2c_slave
                 end
                 WACK_ADDR: begin
                     state      <= DATA;
-                    i2c_sda_en <= (adr_reg[I2C_RW_BIT]) ? READ : WRITE;
+                    i2c_sda_en <= (addr_reg[I2C_RW_BIT]) ? READ : WRITE;
                 end
                 DATA: begin
-                    if (adr_reg[I2C_RW_BIT] == WRITE) begin
+                    if (addr_reg[I2C_RW_BIT] == WRITE) begin
                         wr_bit <= data_reg[cnt];
                         if (cnt_done) state <= WACK_DATA;
-                    end else if (adr_reg[I2C_RW_BIT] == READ) begin
+                    end else if (addr_reg[I2C_RW_BIT] == READ) begin
                         rd_data[cnt] <= rd_bit;
                         if (cnt_done) state <= WACK_DATA;
                     end
