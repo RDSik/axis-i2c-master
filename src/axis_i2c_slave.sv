@@ -117,7 +117,7 @@ module axis_i2c_slave
     always_comb begin
         s_axis.tready = ((arstn_i == 1'b1) && (state == IDLE)) ? 1'b1 : 1'b0;
         i2c_scl_o     = i2c_scl_en ? ~clk_i : 1'b1;
-        rvalid_o      = (state == STOP) && (s_axis.tdata[I2C_RW_BIT] == READ);
+        rvalid_o      = (state == STOP) && (addr_reg[I2C_RW_BIT] == READ);
         cnt_done      = ~(|cnt);
     end
 
