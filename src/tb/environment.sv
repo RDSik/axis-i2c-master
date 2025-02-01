@@ -17,7 +17,7 @@ class environment;
                 wait(s_axis.tready);
                 s_axis.tvalid = 1'b1;
                 s_axis.tdata  = $urandom_range(0, (2**16)-1);
-                $display("%d AXIS tansaction done at: %t ns\n", i, $time);
+                $display("AXIS tansaction №%d done at: %t ns\n", i, $time);
                 @(posedge dut_if.clk_i);
                 s_axis.tvalid = 1'b0;
                 s_axis.tdata = '0;
