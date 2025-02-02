@@ -28,14 +28,14 @@ generate_target all [get_files *axis_data_fifo.xci]
 
 # read_mem
 
-set_property strategy Flow_PerfOptimized_high [get_runs synth_1]
-set_property strategy Performance_ExtraTimingOpt [get_runs impl_1]
-
 # synth_design
 # opt_design
 # place_design
 # route_design
 # write_bitstream -force "${top}.bit"
+
+set_property strategy Flow_PerfOptimized_high [get_runs synth_1]
+set_property strategy Performance_ExtraTimingOpt [get_runs impl_1]
 
 launch_runs synth_1
 wait_on_run synth_1
