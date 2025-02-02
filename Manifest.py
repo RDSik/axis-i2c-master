@@ -1,5 +1,5 @@
 modules = {
     "local" : [
-        "src",
+        "src/tb",
     ],
 }
