@@ -20,7 +20,7 @@ class environment;
                 $display("AXIS tansaction №%d done at: %t ns\n", i, $time);
                 @(posedge dut_if.clk_i);
                 s_axis.tvalid = 1'b0;
-                s_axis.tdata = '0;
+                s_axis.tdata  = '0;
             end
         end
     endtask
