@@ -4,14 +4,20 @@
 
 module axis_i2c_top_tb ();
 
-    localparam CLK_PER = 2;
+    localparam MAIN_CLK = 100_000_000;
+    localparam I2C_CLK  = 200_000;
+    localparam BYPASS   = 1;
 
     axis_if         s_axis();
     axis_i2c_top_if dut_if();
 
     environment env;
 
-    axis_i2c_top dut (
+    axis_i2c_top #(
+        .MAIN_CLK (MAIN_CLK),
+        .I2C_CLK  (I2C_CLK ),
+        .BYPASS   (BYPASS  )
+    ) dut (
         .clk_i         (dut_if.clk_i      ),
         .arstn_i       (dut_if.arstn_i    ),
         .i2c_sda_io    (dut_if.i2c_sda_io ),
@@ -23,14 +29,13 @@ module axis_i2c_top_tb ();
         .s_axis_tready (s_axis.tready     )
     );
 
-    always #(CLK_PER/2) dut_if.clk_i = ~dut_if.clk_i;
-
     initial begin
+        env = new(dut_if, s_axis);
         fork
-            env = new(dut_if, s_axis);
+            env.clk_gen();
             env.run();
-        join
-        $stop;
+        join_any
+        $stop();
     end
 
     initial begin

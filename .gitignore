@@ -13,4 +13,6 @@ sim/modelsim/*
 !Manifest.py
 !wave.do
 *.bak
+*.jou
+*.log
 myenv

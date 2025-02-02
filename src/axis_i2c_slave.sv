@@ -5,9 +5,6 @@ module axis_i2c_slave
 (
     input  logic                      clk_i,
     input  logic                      arstn_i,
-    // input  logic                      rd_bit,
-    // output logic                      wr_bit,
-    // output logic                      i2c_sda_en,
     inout                             i2c_sda_io,
     output logic                      i2c_scl_o,
     output logic [I2C_DATA_WIDTH-1:0] i2c_rdata_o,
@@ -29,12 +26,11 @@ module axis_i2c_slave
     logic [I2C_DATA_WIDTH-1:0] rd_data;
     logic [I2C_DATA_WIDTH-1:0] data_reg;
     logic [I2C_DATA_WIDTH-1:0] addr_reg;
-    logic [CNT_WIDTH-1:0     ] cnt;
+    logic [BIT_IND_WIDTH-1:0 ] bit_ind;
     logic                      i2c_scl_en;
-
-    logic rd_bit;
-    logic wr_bit;
-    logic i2c_sda_en;
+    logic                      i2c_sda_en;
+    logic                      rd_bit;
+    logic                      wr_bit;
 
     IOBUF iobuf_inst (
         .O  (rd_bit    ),  // Buffer output
@@ -61,8 +57,8 @@ module axis_i2c_slave
                     wr_bit <= 1'b0;
                 end
                 ADDR: begin
-                    wr_bit <= addr_reg[cnt];
-                    if (~(|cnt)) state <= WACK_ADDR;
+                    wr_bit <= addr_reg[bit_ind];
+                    if (~(|bit_ind)) state <= WACK_ADDR;
                 end
                 WACK_ADDR: begin
                     state      <= DATA;
@@ -70,11 +66,11 @@ module axis_i2c_slave
                 end
                 DATA: begin
                     if (addr_reg[I2C_RW_BIT] == WRITE) begin
-                        wr_bit <= data_reg[cnt];
-                        if (~(|cnt)) state <= WACK_DATA;
+                        wr_bit <= data_reg[bit_ind];
+                        if (~(|bit_ind)) state <= WACK_DATA;
                     end else if (addr_reg[I2C_RW_BIT] == READ) begin
-                        rd_data[cnt] <= rd_bit;
-                        if (~(|cnt)) state <= WACK_DATA;
+                        rd_data[bit_ind] <= rd_bit;
+                        if (~(|bit_ind)) state <= WACK_DATA;
                     end
                 end
                 WACK_DATA: begin
@@ -93,11 +89,11 @@ module axis_i2c_slave
 
     always_ff @(posedge clk_i or negedge arstn_i) begin
         if (~arstn_i) begin
-            cnt <= '0;
+            bit_ind <= '0;
         end else if ((state == DATA) || (state == ADDR)) begin
-            cnt <= cnt - 1;
+            bit_ind <= bit_ind - 1;
         end else if ((state == WACK_ADDR) || (state == START)) begin
-            cnt <= I2C_DATA_WIDTH - 1;
+            bit_ind <= I2C_DATA_WIDTH - 1;
         end
     end
 

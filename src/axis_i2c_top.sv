@@ -2,7 +2,11 @@
 
 module axis_i2c_top
     import axis_i2c_pkg::*;
-(
+#(
+    parameter MAIN_CLK = axis_i2c_pkg::MAIN_CLK,
+    parameter I2C_CLK  = axis_i2c_pkg::I2C_CLK,
+    parameter BYPASS   = 0
+) (
     input  logic                       clk_i,
     input  logic                       arstn_i,
     inout                              i2c_sda_io,
@@ -17,28 +21,26 @@ module axis_i2c_top
 
     axis_if m_axis();
 
-    // logic rd_bit;
-    // logic wr_bit;
-    // logic i2c_sda_en;
-
-    // IOBUF iobuf_inst (
-    //     .O  (rd_bit    ),  // Buffer output
-    //     .IO (i2c_sda   ),  // Buffer inout port
-    //     .I  (wr_bit    ),  // Buffer input
-    //     .T  (i2c_sda_en)   // 3-state enable input, high=input, low=output
-    //  );
+    logic i2c_clk;
 
     axis_i2c_slave i2c_inst (
-        .clk_i       (clk_i      ),
+        .clk_i       (i2c_clk    ),
         .arstn_i     (arstn_i    ),
         .i2c_scl_o   (i2c_scl_o  ),
         .i2c_sda_io  (i2c_sda_io ),
-        // .i2c_sda_en  (i2c_sda_en ),
-        // .rd_bit      (rd_bit     ),
-        // .wr_bit      (wr_bit     ),
         .i2c_rdata_o (i2c_rdata_o),
         .rvalid_o    (rvalid_o   ),
         .s_axis      (m_axis     )
+    );
+
+    clk_div #(
+        .CLK_IN  (MAIN_CLK),
+        .CLK_OUT (I2C_CLK ),
+        .BYPASS  (BYPASS  )
+    ) clk_div_inst (
+        .clk_i   (clk_i  ),
+        .arstn_i (arstn_i),
+        .clk_o   (i2c_clk)
     );
 
     axis_data_fifo fifo_inst (
@@ -51,20 +53,6 @@ module axis_i2c_top
         .m_axis_tready  (m_axis.tready),
         .m_axis_tdata   (m_axis.tdata )
     );
-
-    // sync_fifo #(
-        // .DATA_WIDTH (FIFO_DATA_WIDTH),
-        // .FIFO_DEPTH (FIFO_DEPTH     )
-    // ) fifo_inst (
-        // .clk      (clk        ),
-        // .arst     (arst       ),
-        // .rd_en    (fifo_rd_en ),
-        // .wr_en    (fifo_wr_en ),
-        // .data_in  (fifo_data_i),
-        // .data_out (fifo_data_o),
-        // .empty    (fifo_empty ),
-        // .full     (fifo_full  )
-    // );
 
     `ifdef COCOTB_SIM
         initial begin
