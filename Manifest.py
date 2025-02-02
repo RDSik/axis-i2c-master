@@ -1,5 +1,0 @@
-modules = {
-    "local" : [
-        "src/tb",
-    ],
-}
