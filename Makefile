@@ -28,8 +28,8 @@ ifeq ($(OS), Windows_NT)
 else
 	rm *.jou
 	rm *.log
-	rm *.pb
-	rm *.dmp
+	rm $(PROJECT_DIR)/*.pb
+	rm $(PROJECT_DIR)/*.dmp
 	rm $(PROJECT_DIR)/$(TOP).xpr
 	rm -rf $(PROJECT_DIR)/*.zip
 	rm -rf $(PROJECT_DIR)/.Xil
