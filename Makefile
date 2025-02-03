@@ -24,7 +24,7 @@ ifeq ($(OS), Windows_NT)
 	rmdir /s /q $(PROJECT_DIR)\$(TOP).sim
 	rmdir /s /q $(PROJECT_DIR)\work
 	rmdir /s /q $(PROJECT_DIR)\$(TOP).xpr
-else ifeq ($(OS), Linux)
+else
 	rm *.jou
 	rm *.log
 	rm *.pb
