@@ -8,7 +8,6 @@ project:
 	vivado -mode tcl -source $(PROJECT_DIR)/$(TCL)
 
 clean:
-	@echo "OS = $(OS)"
 ifeq ($(OS), Windows_NT)
 	del *.jou
 	del *.log
