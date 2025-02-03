@@ -11,18 +11,20 @@ clean:
 ifeq ($(OS), Windows_NT)
 	del *.jou
 	del *.log
-	rmdir /s /q $(PROJECT_DIR)\.zip
-	rmdir /s /q $(PROJECT_DIR)\.Xil
-	rmdir /s /q $(PROJECT_DIR)\*.pb
-	rmdir /s /q $(PROJECT_DIR)\*.dmp
+	del $(PROJECT_DIR)\*.jou
+	del $(PROJECT_DIR)\*.log
+	del $(PROJECT_DIR)\$(TOP).xpr
+	rmdir /s /q .Xil
 	rmdir /s /q $(PROJECT_DIR)\$(TOP).cache
-	rmdir /s /q $(PROJECT_DIR)\$(TOP).data
 	rmdir /s /q $(PROJECT_DIR)\$(TOP).runs
 	rmdir /s /q $(PROJECT_DIR)\$(TOP).hw
 	rmdir /s /q $(PROJECT_DIR)\$(TOP).ip_user_files
+	rmdir /s /q $(PROJECT_DIR)\$(TOP).data
 	rmdir /s /q $(PROJECT_DIR)\$(TOP).sim
 	rmdir /s /q $(PROJECT_DIR)\work
-	rmdir /s /q $(PROJECT_DIR)\$(TOP).xpr
+	rmdir /s /q $(PROJECT_DIR)\.zip
+	rmdir /s /q $(PROJECT_DIR)\*.pb
+	rmdir /s /q $(PROJECT_DIR)\*.dmp
 else
 	rm *.jou
 	rm *.log
