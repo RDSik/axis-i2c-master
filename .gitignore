@@ -4,7 +4,7 @@ sim/*
 !test.py
 !axis_i2c_top_tb.py
 !wave.do
-proj/*
+project/*
 !project.tcl
 !axis_i2c_top.xdc
 !wave.do

@@ -1,14 +1,42 @@
-TOP      := axis_i2c_top
-TCL      := project.tcl
-PROJ_DIR := proj
-
-CLEAN_TARGETS := $(PROJ_DIR)\*.zip $(PROJ_DIR)\.Xil $(PROJ_DIR)\*.jou $(PROJ_DIR)\*.log $(PROJ_DIR)\*.pb $(PROJ_DIR)\*.dmp $(PROJ_DIR)\$(TOP).cache $(PROJ_DIR)\$(TOP).data work $(PROJ_DIR)\$(TOP).runs $(PROJ_DIR)\$(TOP).hw $(PROJ_DIR)\$(TOP).ip_user_files $(PROJ_DIR)\$(TOP).sim $(PROJ_DIR)\$(TOP).xpr
-
-project:
-	vivado -mode tcl -source $(PROJ_DIR)/$(TCL)
-
-clean:
-	del /s /q /f $(CLEAN_TARGETS)
-	@-rmdir /s /q $(CLEAN_TARGETS) >nul 2>&1
+TOP         := axis_i2c_top
+TCL         := project.tcl
+PROJECT_DIR := project
 
 .PHONY: project clean
+
+project:
+	vivado -mode tcl -source $(PROJECT_DIR)/$(TCL)
+
+clean:
+	@echo "OS = $(OS)"
+ifeq ($(OS), Windows_NT)
+	del *.jou
+	del *.log
+	rmdir /s /q $(PROJECT_DIR)\.zip
+	rmdir /s /q $(PROJECT_DIR)\.Xil
+	rmdir /s /q $(PROJECT_DIR)\*.pb
+	rmdir /s /q $(PROJECT_DIR)\*.dmp
+	rmdir /s /q $(PROJECT_DIR)\$(TOP).cache
+	rmdir /s /q $(PROJECT_DIR)\$(TOP).data
+	rmdir /s /q $(PROJECT_DIR)\$(TOP).runs
+	rmdir /s /q $(PROJECT_DIR)\$(TOP).hw
+	rmdir /s /q $(PROJECT_DIR)\$(TOP).ip_user_files
+	rmdir /s /q $(PROJECT_DIR)\$(TOP).sim
+	rmdir /s /q $(PROJECT_DIR)\work
+	rmdir /s /q $(PROJECT_DIR)\$(TOP).xpr
+else ifeq ($(OS), Linux)
+	rm *.jou
+	rm *.log
+	rm *.pb
+	rm *.dmp
+	rm $(PROJECT_DIR)/$(TOP).xpr
+	rm -rf $(PROJECT_DIR)/*.zip
+	rm -rf $(PROJECT_DIR)/.Xil
+	rm -rf $(PROJECT_DIR)/$(TOP).cache
+	rm -rf $(PROJECT_DIR)/$(TOP).data
+	rm -rf $(PROJECT_DIR)/$(TOP).runs
+	rm -rf $(PROJECT_DIR)/$(TOP).hw
+	rm -rf $(PROJECT_DIR)/$(TOP).ip_user_files
+	rm -rf $(PROJECT_DIR)/$(TOP).sim
+	rm -rf $(PROJECT_DIR)/work
+endif

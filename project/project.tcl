@@ -2,12 +2,12 @@ set part     "xc7z020clg484-1"
 set top      "axis_i2c_top"
 set language "Verilog"
 
-set proj_dir [file normalize "./proj"]
-set src_dir  [file normalize "./src"]
-set tb_dir   [file normalize "./tb"]
-set ip_dir   [file normalize "./ip"]
+set project_dir [file normalize "./project"]
+set src_dir     [file normalize "./src"]
+set tb_dir      [file normalize "./tb"]
+set ip_dir      [file normalize "./ip"]
 
-create_project -force $top $proj_dir -part $part
+create_project -force $top $project_dir -part $part
 set_property target_language $language [current_project]
 set_property top $top [current_fileset]
 
@@ -21,7 +21,7 @@ read_verilog -sv $tb_dir/axis_i2c_top_if.sv
 read_verilog -sv $tb_dir/axis_i2c_top_tb.sv
 read_verilog -sv $tb_dir/environment.sv
 
-read_xdc $proj_dir/$top.xdc
+read_xdc $project_dir/$top.xdc
 
 read_ip $ip_dir/axis_data_fifo/axis_data_fifo.xci
 generate_target all [get_files *axis_data_fifo.xci]
