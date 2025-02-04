@@ -8,8 +8,8 @@ module axis_i2c_top_tb ();
     localparam I2C_CLK  = 200_000;
     localparam BYPASS   = 1;
 
-    axis_if         s_axis();
     axis_i2c_top_if dut_if();
+    axis_if         s_axis();
 
     environment env;
 
