@@ -1,10 +1,10 @@
 module clk_div #(
     parameter CLK_IN  = 100_000_000,
-    parameter CLK_OUT = 200_000,
-    parameter BYPASS  = 0
+    parameter CLK_OUT = 200_000
 ) (
     input  logic clk_i,
     input  logic arstn_i,
+    input  logic en_i,
     output logic clk_o
 );
 
@@ -33,6 +33,6 @@ module clk_div #(
         end
     end
 
-    assign clk_o = (BYPASS) ? clk_i : clk;
+    assign clk_o = (en_i) ? clk : clk_i;
 
 endmodule

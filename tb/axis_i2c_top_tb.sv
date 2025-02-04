@@ -6,7 +6,6 @@ module axis_i2c_top_tb ();
 
     localparam MAIN_CLK = 100_000_000;
     localparam I2C_CLK  = 200_000;
-    localparam BYPASS   = 1;
 
     axis_i2c_top_if dut_if();
     axis_if         s_axis();
@@ -15,11 +14,11 @@ module axis_i2c_top_tb ();
 
     axis_i2c_top #(
         .MAIN_CLK (MAIN_CLK),
-        .I2C_CLK  (I2C_CLK ),
-        .BYPASS   (BYPASS  )
+        .I2C_CLK  (I2C_CLK )
     ) dut (
         .clk_i         (dut_if.clk_i      ),
         .arstn_i       (dut_if.arstn_i    ),
+        .en_i          (dut_if.en_i       ),
         .i2c_sda_io    (dut_if.i2c_sda_io ),
         .i2c_scl_o     (dut_if.i2c_scl_o  ),
         .i2c_rdata_o   (dut_if.i2c_rdata_o),

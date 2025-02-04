@@ -4,11 +4,11 @@ module axis_i2c_top
     import axis_i2c_pkg::*;
 #(
     parameter MAIN_CLK = axis_i2c_pkg::MAIN_CLK,
-    parameter I2C_CLK  = axis_i2c_pkg::I2C_CLK,
-    parameter BYPASS   = 0
+    parameter I2C_CLK  = axis_i2c_pkg::I2C_CLK
 ) (
     input  logic                       clk_i,
     input  logic                       arstn_i,
+    input  logic                       en_i,
     inout                              i2c_sda_io,
     output logic                       i2c_scl_o,
     output logic [I2C_DATA_WIDTH-1:0]  i2c_rdata_o,
@@ -35,11 +35,11 @@ module axis_i2c_top
 
     clk_div #(
         .CLK_IN  (MAIN_CLK),
-        .CLK_OUT (I2C_CLK ),
-        .BYPASS  (BYPASS  )
+        .CLK_OUT (I2C_CLK )
     ) clk_div_inst (
         .clk_i   (clk_i  ),
         .arstn_i (arstn_i),
+        .en_i    (en_i   ),
         .clk_o   (i2c_clk)
     );
 

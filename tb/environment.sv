@@ -29,6 +29,7 @@ class environment;
 
     task run();
         begin
+            dut_if.en_i   = 1'b0;
             s_axis.tvalid = 1'b0;
             s_axis.tdata  = '0;
             rst_gen();

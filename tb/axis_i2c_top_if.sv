@@ -2,6 +2,7 @@ interface axis_i2c_top_if;
 
     bit clk_i;
     bit arstn_i;
+    bit en_i;
 
     wire i2c_sda_io;
 
