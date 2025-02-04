@@ -11,22 +11,25 @@ create_project -force $top $project_dir -part $part
 set_property target_language $language [current_project]
 set_property top $top [current_fileset]
 
-read_verilog -sv $src_dir/axis_i2c_slave.sv
-read_verilog -sv $src_dir/axis_i2c_top.sv
-read_verilog -sv $src_dir/axis_if.sv
-read_verilog -sv $src_dir/axis_i2c_pkg.svh
-read_verilog -sv $src_dir/clk_div.sv
+add_files -norecurse $src_dir/axis_i2c_slave.sv
+add_files -norecurse $src_dir/axis_i2c_top.sv
+add_files -norecurse $src_dir/axis_if.sv
+add_files -norecurse $src_dir/axis_i2c_pkg.svh
+add_files -norecurse $src_dir/clk_div.sv
 
-read_verilog -sv $tb_dir/axis_i2c_top_if.sv
-read_verilog -sv $tb_dir/axis_i2c_top_tb.sv
-read_verilog -sv $tb_dir/environment.sv
+add_files -norecurse $tb_dir/axis_i2c_top_if.sv
+add_files -norecurse $tb_dir/axis_i2c_top_tb.sv
+add_files -norecurse $tb_dir/environment.sv
 
-read_xdc $project_dir/$top.xdc
+add_files -fileset constrs_1 -norecurse $project_dir/$top.xdc
 
-read_ip $ip_dir/axis_data_fifo/axis_data_fifo.xci
-generate_target all [get_files *axis_data_fifo.xci]
+add_files -norecurse $ip_dir/axis_data_fifo/axis_data_fifo.xci
+export_ip_user_files -of_objects [get_files *axis_data_fifo.xci] -force -quiet
 
+# read verilog -sv
 # read_mem
+# read_ip $ip_dir/axis_data_fifo/axis_data_fifo.xci
+# generate_target all [get_files *axis_data_fifo.x
 
 # synth_design
 # opt_design

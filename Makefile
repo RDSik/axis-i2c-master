@@ -19,8 +19,8 @@ ifeq ($(OS), Windows_NT)
 	rmdir /s /q $(PROJECT_DIR)\$(TOP).runs
 	rmdir /s /q $(PROJECT_DIR)\$(TOP).hw
 	rmdir /s /q $(PROJECT_DIR)\$(TOP).ip_user_files
-	rmdir /s /q $(PROJECT_DIR)\$(TOP).data
 	rmdir /s /q $(PROJECT_DIR)\$(TOP).sim
+	rmdir /s /q $(PROJECT_DIR)\$(TOP).data
 	rmdir /s /q $(PROJECT_DIR)\work
 	rmdir /s /q $(PROJECT_DIR)\.zip
 	rmdir /s /q $(PROJECT_DIR)\*.pb
