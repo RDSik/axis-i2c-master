@@ -32,12 +32,15 @@ module axis_i2c_slave
     logic                      rd_bit;
     logic                      wr_bit;
 
-    IOBUF iobuf_inst (
-        .O  (rd_bit    ),  // Buffer output
-        .IO (i2c_sda_io),  // Buffer inout port
-        .I  (wr_bit    ),  // Buffer input
-        .T  (i2c_sda_en)   // 3-state enable input, high=input, low=output
-     );
+    assign i2c_sda_io = (i2c_sda_en) ? 1'bz : wr_bit;
+    assign rd_bit     = i2c_sda_io;
+
+    // IOBUF iobuf_inst (
+        // .O  (rd_bit    ), // Buffer output
+        // .IO (i2c_sda_io), // Buffer inout port
+        // .I  (wr_bit    ), // Buffer input
+        // .T  (i2c_sda_en)  // 3-state enable input, high=input, low=output
+    // );
 
     always_ff @(posedge clk_i or negedge arstn_i) begin
         if (~arstn_i) begin
