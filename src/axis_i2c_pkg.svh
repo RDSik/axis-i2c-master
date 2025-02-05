@@ -10,7 +10,7 @@ package axis_i2c_pkg;
     localparam I2C_RW_BIT      = 7;
     localparam I2C_DATA_WIDTH  = 8;
     localparam AXIS_DATA_WIDTH = 16;
-    localparam BIT_IND_WIDTH  = $clog2(I2C_DATA_WIDTH);
+    localparam BIT_IND_WIDTH   = $clog2(I2C_DATA_WIDTH);
 
 endpackage
 
