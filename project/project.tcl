@@ -27,6 +27,7 @@ add_files -norecurse $ip_dir/axis_data_fifo/axis_data_fifo.xci
 export_ip_user_files -of_objects [get_files *axis_data_fifo.xci] -force -quiet
 
 # read verilog -sv
+# read_xdc
 # read_mem
 # read_ip $ip_dir/axis_data_fifo/axis_data_fifo.xci
 # generate_target all [get_files *axis_data_fifo.xci]
