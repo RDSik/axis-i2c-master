@@ -17,7 +17,6 @@ def test_runner():
 
     xilinx_simlibs_path = Path(r'../../sim_libs')
 
-    shutil.copyfile(src / 'axis_data.mem', build_dir / 'axis_data.mem')
     shutil.copyfile(xilinx_simlibs_path / 'modelsim.ini', build_dir / 'modelsim.ini')
 
     verilog_sources = []
