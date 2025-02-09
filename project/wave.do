@@ -1,7 +1,7 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
-add wave -position insertpoint sim:/axis_i2c_top_tb/dut/i2c_inst/*
-add wave -position insertpoint sim:/axis_i2c_top_tb/dut/fifo_inst/*
+add wave -expand -group I2C  /axis_i2c_top_tb/dut/i2c_inst/*
+add wave -expand -group FIFO /axis_i2c_top_tb/dut/fifo_inst/*
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {37746133 ps} 0}
 quietly wave cursor active 1
