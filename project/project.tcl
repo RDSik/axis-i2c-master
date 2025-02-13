@@ -2,10 +2,10 @@ set part     "xc7z020clg484-1"
 set top      "axis_i2c_top"
 set language "Verilog"
 
-set project_dir [file normalize "./project"]
-set src_dir     [file normalize "./src"]
-set tb_dir      [file normalize "./tb"]
-set ip_dir      [file normalize "./ip"]
+set project_dir [file normalize "project"]
+set src_dir     [file normalize "src"]
+set tb_dir      [file normalize "tb"]
+set ip_dir      [file normalize "ip"]
 
 create_project -force $top $project_dir -part $part
 set_property target_language $language [current_project]

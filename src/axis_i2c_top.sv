@@ -11,8 +11,8 @@ module axis_i2c_top
     input  logic                       en_i,
     inout                              i2c_sda_io,
     output logic                       i2c_scl_o,
-    output logic [I2C_DATA_WIDTH-1:0]  i2c_rdata_o,
-    output logic                       rvalid_o,
+    output logic [I2C_DATA_WIDTH-1:0]  i2c_tdata_o,
+    output logic                       i2c_tvalid_o,
 
     input  logic [AXIS_DATA_WIDTH-1:0] s_axis_tdata,
     input  logic                       s_axis_tvalid,
@@ -24,13 +24,13 @@ module axis_i2c_top
     logic i2c_clk;
 
     axis_i2c_slave i2c_inst (
-        .clk_i       (i2c_clk    ),
-        .arstn_i     (arstn_i    ),
-        .i2c_scl_o   (i2c_scl_o  ),
-        .i2c_sda_io  (i2c_sda_io ),
-        .i2c_rdata_o (i2c_rdata_o),
-        .rvalid_o    (rvalid_o   ),
-        .s_axis      (m_axis     )
+        .clk_i         (i2c_clk     ),
+        .arstn_i       (arstn_i     ),
+        .i2c_scl_o     (i2c_scl_o   ),
+        .i2c_sda_io    (i2c_sda_io  ),
+        .m_axis_tdata  (i2c_tdata_o ),
+        .m_axis_tvalid (i2c_tvalid_o),
+        .s_axis        (m_axis      )
     );
 
     clk_div #(

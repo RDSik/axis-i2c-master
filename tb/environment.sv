@@ -13,9 +13,9 @@ class environment;
         this.s_axis = s_axis;
     endfunction
 
-    task data_gen();
+    task data_gen(int n);
         begin
-            for (int i = 0; i < 50; i++) begin
+            for (int i = 0; i < n; i++) begin
                 wait(s_axis.tready);
                 s_axis.tvalid = 1'b1;
                 s_axis.tdata  = $urandom_range(0, (2**16)-1);
@@ -33,7 +33,7 @@ class environment;
             s_axis.tvalid = 1'b0;
             s_axis.tdata  = '0;
             rst_gen();
-            data_gen();
+            data_gen(50);
             $display("Stop simulation at: %t ns\n", $time);
         end
     endtask
