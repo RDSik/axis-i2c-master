@@ -3,8 +3,8 @@
 module axis_i2c_top
     import axis_i2c_pkg::*;
 #(
-    parameter MAIN_CLK = axis_i2c_pkg::MAIN_CLK,
-    parameter I2C_CLK  = axis_i2c_pkg::I2C_CLK
+    parameter MAIN_CLK = 100_000_000,
+    parameter I2C_CLK  = 200_000
 ) (
     input  logic                       clk_i,
     input  logic                       arstn_i,
