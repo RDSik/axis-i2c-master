@@ -66,7 +66,9 @@ module axis_i2c_slave
                 end
                 ADDR: begin
                     wr_bit <= addr[bit_cnt];
-                    if (cnt_done) state <= WACK_ADDR;
+                    if (cnt_done) begin 
+                        state <= WACK_ADDR;
+                    end
                 end
                 WACK_ADDR: begin
                     state <= DATA;
@@ -75,10 +77,14 @@ module axis_i2c_slave
                     i2c_sda_en <= (addr[RW_BIT]) ? READ : WRITE;
                     if (addr[RW_BIT] == WRITE) begin
                         wr_bit <= wr_data[bit_cnt];
-                        if (cnt_done) state <= WACK_DATA;
+                        if (cnt_done) begin 
+                            state <= WACK_DATA;
+                        end
                     end else if (addr[RW_BIT] == READ) begin
                         rd_data[bit_cnt] <= rd_bit;
-                        if (cnt_done) state <= WACK_DATA;
+                        if (cnt_done) begin
+                            state <= WACK_DATA;
+                        end
                     end
                 end
                 WACK_DATA: begin
@@ -97,10 +103,12 @@ module axis_i2c_slave
     always_ff @(posedge clk_i or negedge arstn_i) begin
         if (~arstn_i) begin
             bit_cnt <= '0;
-        end else if ((state == DATA) || (state == ADDR)) begin
-            bit_cnt <= bit_cnt - 1;
-        end else if ((state == WACK_ADDR) || (state == START)) begin
-            bit_cnt <= I2C_DATA_WIDTH - 1;
+        end else begin
+            if ((state == DATA) || (state == ADDR)) begin
+                bit_cnt <= bit_cnt - 1;
+            end else if ((state == WACK_ADDR) || (state == START)) begin
+                bit_cnt <= I2C_DATA_WIDTH - 1;
+            end
         end
     end
 
