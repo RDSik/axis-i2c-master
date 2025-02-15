@@ -1,7 +1,5 @@
-`include "axis_i2c_pkg.svh"
-
 interface axis_if #(
-    parameter DATA_WIDTH = axis_i2c_pkg::AXIS_DATA_WIDTH
+    parameter DATA_WIDTH = 16
 );
 
     logic [DATA_WIDTH-1:0] tdata;
