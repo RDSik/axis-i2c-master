@@ -19,47 +19,47 @@ module axis_i2c_top
     output logic                       s_axis_tready
 );
 
-    axis_if m_axis();
+axis_if m_axis();
 
-    logic i2c_clk;
+logic i2c_clk;
 
-    axis_i2c_slave i2c_inst (
-        .clk_i         (i2c_clk     ),
-        .arstn_i       (arstn_i     ),
-        .i2c_scl_o     (i2c_scl_o   ),
-        .i2c_sda_io    (i2c_sda_io  ),
-        .m_axis_tdata  (i2c_tdata_o ),
-        .m_axis_tvalid (i2c_tvalid_o),
-        .s_axis        (m_axis      )
-    );
+axis_i2c_slave i_axis_i2c_slave (
+    .clk_i         (i2c_clk     ),
+    .arstn_i       (arstn_i     ),
+    .i2c_scl_o     (i2c_scl_o   ),
+    .i2c_sda_io    (i2c_sda_io  ),
+    .m_axis_tdata  (i2c_tdata_o ),
+    .m_axis_tvalid (i2c_tvalid_o),
+    .s_axis        (m_axis      )
+);
 
-    clk_div #(
-        .CLK_IN  (MAIN_CLK),
-        .CLK_OUT (I2C_CLK )
-    ) clk_div_inst (
-        .clk_i   (clk_i  ),
-        .arstn_i (arstn_i),
-        .en_i    (en_i   ),
-        .clk_o   (i2c_clk)
-    );
+clk_div #(
+    .CLK_IN  (MAIN_CLK),
+    .CLK_OUT (I2C_CLK )
+) i_clk_div (
+    .clk_i   (clk_i  ),
+    .arstn_i (arstn_i),
+    .en_i    (en_i   ),
+    .clk_o   (i2c_clk)
+);
 
-    axis_data_fifo fifo_inst (
-        .s_axis_aresetn (arstn_i      ),
-        .s_axis_aclk    (clk_i        ),
-        .s_axis_tvalid  (s_axis_tvalid),
-        .s_axis_tready  (s_axis_tready),
-        .s_axis_tdata   (s_axis_tdata ),
-        .m_axis_tvalid  (m_axis.tvalid),
-        .m_axis_tready  (m_axis.tready),
-        .m_axis_tdata   (m_axis.tdata )
-    );
+axis_data_fifo i_axis_data_fifo (
+    .s_axis_aresetn (arstn_i      ),
+    .s_axis_aclk    (clk_i        ),
+    .s_axis_tvalid  (s_axis_tvalid),
+    .s_axis_tready  (s_axis_tready),
+    .s_axis_tdata   (s_axis_tdata ),
+    .m_axis_tvalid  (m_axis.tvalid),
+    .m_axis_tready  (m_axis.tready),
+    .m_axis_tdata   (m_axis.tdata )
+);
 
-    `ifdef COCOTB_SIM
-        initial begin
-            $dumpfile ("axis_i2c_top.vcd");
-            $dumpvars (0, axis_i2c_top);
-            #1;
-        end
-    `endif
+`ifdef COCOTB_SIM
+    initial begin
+        $dumpfile ("axis_i2c_top.vcd");
+        $dumpvars (0, axis_i2c_top);
+        #1;
+    end
+`endif
 
 endmodule
