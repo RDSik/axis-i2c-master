@@ -1,24 +1,16 @@
-# Usage
+# AXI-Stream I2C Master module
 
-## Dependencies 
+This is simple design with Xilinx AXI-Stream Data FIFO IP, AXI-Stream I2C Master and Clock Divider. 
 
-`make`, `vivado`, `modelsim`, `python`, `winget`
-
-## Installation
-
-### Download make (add to PATH system variable the Make bin folder: C:\Program Files (x86)\GnuWin32\bin):
+## Clone repository:
 ```bash
-winget install GnuWin32.make
-```
-
-### Clone repository:
-```bash
-git clone https://github.com/RDSik/axis-i2c-slave.git
-cd axis-i2c-slave
+git clone https://github.com/RDSik/axis-i2c-master.git
+cd axis-i2c-master
 ```
 
 ## Build project
-
 ```bash
 make
 ```
+
+* For simulation use macro filf(wave.do) for QuestaSim and compile Vivado libs
