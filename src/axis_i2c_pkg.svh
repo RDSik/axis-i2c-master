@@ -3,8 +3,6 @@
 
 package axis_i2c_pkg;
 
-    localparam MAIN_CLK        = 100_000_000;
-    localparam I2C_CLK         = 200_000;
     localparam WRITE           = 1'b0;
     localparam READ            = 1'b1;
     localparam RW_BIT          = 7;
