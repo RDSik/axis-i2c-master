@@ -13,4 +13,4 @@ cd axis-i2c-master
 make
 ```
 
-* For simulation use macro filf(wave.do) for QuestaSim and compile Vivado libs
+* For simulation use macro file(wave.do) for QuestaSim and compile Vivado libs
