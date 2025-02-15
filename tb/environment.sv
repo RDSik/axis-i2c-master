@@ -6,11 +6,12 @@ class environment;
     local virtual axis_i2c_top_if dut_if;
     local virtual axis_if         s_axis;
 
-    localparam CLK_PER = 2;
+    int clk_per;
 
-    function new(virtual axis_i2c_top_if dut_if, virtual axis_if s_axis);
-        this.dut_if = dut_if;
-        this.s_axis = s_axis;
+    function new(virtual axis_i2c_top_if dut_if, virtual axis_if s_axis, int clk_per);
+        this.dut_if  = dut_if;
+        this.s_axis  = s_axis;
+        this.clk_per = clk_per;
     endfunction
 
     task data_gen(int n);
@@ -51,7 +52,7 @@ class environment;
         begin
             dut_if.clk_i = 1'b0;
             forever begin
-                #(CLK_PER/2) dut_if.clk_i = ~dut_if.clk_i;
+                #(clk_per/2) dut_if.clk_i = ~dut_if.clk_i;
             end
         end
     endtask

@@ -6,6 +6,7 @@ module axis_i2c_top_tb ();
 
 localparam MAIN_CLK = 100_000_000;
 localparam I2C_CLK  = 200_000;
+localparam CLK_PER  = 2;
 
 axis_i2c_top_if dut_if();
 axis_if         s_axis();
@@ -13,7 +14,7 @@ axis_if         s_axis();
 environment env;
 
 initial begin
-    env = new(dut_if, s_axis);
+    env = new(dut_if, s_axis, CLK_PER);
     fork
         env.clk_gen();
         env.run();
