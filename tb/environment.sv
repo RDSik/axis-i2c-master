@@ -20,7 +20,7 @@ class environment;
                 wait(s_axis.tready);
                 s_axis.tvalid = 1'b1;
                 s_axis.tdata  = $urandom_range(0, (2**16)-1);
-                $display("AXIS tansaction №%d done at: %t ns\n", i, $time);
+                $display("AXIS tansaction %d done at: %t ps\n", i, $time);
                 @(posedge dut_if.clk_i);
                 s_axis.tvalid = 1'b0;
                 s_axis.tdata  = '0;
@@ -35,14 +35,14 @@ class environment;
             s_axis.tdata  = '0;
             rst_gen();
             data_gen(50);
-            $display("Stop simulation at: %t ns\n", $time);
+            $display("Stop simulation at: %t ps\n", $time);
         end
     endtask
 
     task rst_gen();
         begin
             dut_if.arstn_i = 1'b0;
-            $display("Reset at %t ns\n.", $time);
+            $display("Reset at %t ps\n.", $time);
             @(posedge dut_if.clk_i);
             dut_if.arstn_i = 1'b1;
         end
