@@ -31,16 +31,17 @@ axis_i2c_top #(
     .MAIN_CLK (MAIN_CLK),
     .I2C_CLK  (I2C_CLK )
 ) dut (
-    .clk_i         (dut_if.clk_i       ),
-    .arstn_i       (dut_if.arstn_i     ),
-    .en_i          (dut_if.en_i        ),
-    .i2c_sda_io    (dut_if.i2c_sda_io  ),
-    .i2c_scl_o     (dut_if.i2c_scl_o   ),
-    .i2c_tdata_o   (dut_if.i2c_tdata_o ),
-    .i2c_tvalid_o  (dut_if.i2c_tvalid_o),
-    .s_axis_tdata  (s_axis.tdata       ),
-    .s_axis_tvalid (s_axis.tvalid      ),
-    .s_axis_tready (s_axis.tready      )
+    .clk_i         (dut_if.clk_i        ),
+    .arstn_i       (dut_if.arstn_i      ),
+    .en_i          (dut_if.en_i         ),
+    .i2c_sda_io    (dut_if.i2c_sda_io   ),
+    .i2c_scl_o     (dut_if.i2c_scl_o    ),
+    .m_axis_tdata  (dut_if.m_axis_tdata ),
+    .m_axis_tvalid (dut_if.m_axis_tvalid),
+    .m_axis_tready (dut_if.m_axis_tready),
+    .s_axis_tdata  (s_axis.tdata        ),
+    .s_axis_tvalid (s_axis.tvalid       ),
+    .s_axis_tready (s_axis.tready       )
 );
 
 endmodule

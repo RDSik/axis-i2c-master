@@ -11,26 +11,29 @@ module axis_i2c_top
     input  logic                       en_i,
     inout                              i2c_sda_io,
     output logic                       i2c_scl_o,
-    output logic [I2C_DATA_WIDTH-1:0]  i2c_tdata_o,
-    output logic                       i2c_tvalid_o,
+
+    output logic [I2C_DATA_WIDTH-1:0]  m_axis_tdata,
+    output logic                       m_axis_tvalid,
+    input  logic                       m_axis_tready,
 
     input  logic [AXIS_DATA_WIDTH-1:0] s_axis_tdata,
     input  logic                       s_axis_tvalid,
     output logic                       s_axis_tready
 );
 
-axis_if m_axis();
+axis_if axis();
 
 logic i2c_clk;
 
-axis_i2c_slave i_axis_i2c_slave (
-    .clk_i         (i2c_clk     ),
-    .arstn_i       (arstn_i     ),
-    .i2c_scl_o     (i2c_scl_o   ),
-    .i2c_sda_io    (i2c_sda_io  ),
-    .m_axis_tdata  (i2c_tdata_o ),
-    .m_axis_tvalid (i2c_tvalid_o),
-    .s_axis        (m_axis      )
+axis_i2c_master i_axis_i2c_master (
+    .clk_i         (i2c_clk      ),
+    .arstn_i       (arstn_i      ),
+    .i2c_scl_o     (i2c_scl_o    ),
+    .i2c_sda_io    (i2c_sda_io   ),
+    .m_axis_tdata  (m_axis_tdata ),
+    .m_axis_tvalid (m_axis_tvalid),
+    .m_axis_tready (m_axis_tready),
+    .s_axis        (axis         )
 );
 
 clk_div #(
@@ -49,9 +52,9 @@ axis_data_fifo i_axis_data_fifo (
     .s_axis_tvalid  (s_axis_tvalid),
     .s_axis_tready  (s_axis_tready),
     .s_axis_tdata   (s_axis_tdata ),
-    .m_axis_tvalid  (m_axis.tvalid),
-    .m_axis_tready  (m_axis.tready),
-    .m_axis_tdata   (m_axis.tdata )
+    .m_axis_tvalid  (axis.tvalid  ),
+    .m_axis_tready  (axis.tready  ),
+    .m_axis_tdata   (axis.tdata   )
 );
 
 `ifdef COCOTB_SIM
