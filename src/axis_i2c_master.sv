@@ -3,14 +3,14 @@
 module axis_i2c_master
     import axis_i2c_pkg::*;
 (
-    input  logic                      clk_i,
-    input  logic                      arstn_i,
-    inout                             i2c_sda_io,
-    output logic                      i2c_scl_o,
+    input  logic                       clk_i,
+    input  logic                       arstn_i,
+    inout                              i2c_sda_io,
+    output logic                       i2c_scl_o,
 
-    output logic [I2C_DATA_WIDTH-1:0] m_axis_tdata,
-    output logic                      m_axis_tvalid,
-    input  logic                      m_axis_tready,
+    output logic [I2C_DATA_WIDTH-1:0]  m_axis_tdata,
+    output logic                       m_axis_tvalid,
+    input  logic                       m_axis_tready,
 
     axis_if.slave s_axis
 );
@@ -74,12 +74,16 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
             end
             DATA: begin
                 i2c_sda_en <= (rw) ? READ : WRITE;
-                if (cnt_done) begin
-                    state <= WACK_DATA;
-                end else if (~rw) begin
+                if (~rw) begin
                     i2c_sda_o <= wr_data[bit_cnt];
+                    if (cnt_done) begin
+                        state <= WACK_DATA;
+                    end
                 end else if (rw) begin
                     rd_data[bit_cnt] <= i2c_sda_i;
+                    if (cnt_done) begin
+                        state <= WACK_DATA;
+                    end
                 end
             end
             WACK_DATA: begin
