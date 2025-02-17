@@ -20,9 +20,10 @@ enum logic [2:0] {
     START     = 3'b001,
     ADDR      = 3'b010,
     WACK_ADDR = 3'b011,
-    DATA      = 3'b100,
-    WACK_DATA = 3'b101,
-    STOP      = 3'b110
+    WR_DATA   = 3'b100,
+    RD_DATA   = 3'b101,
+    WACK_DATA = 3'b110,
+    STOP      = 3'b111
 } state;
 
 logic [I2C_DATA_WIDTH-1:0] rd_data;
@@ -64,26 +65,31 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
                 i2c_sda_o  <= 1'b0;
             end
             ADDR: begin
-                i2c_sda_o <= addr[bit_cnt];
+                i2c_sda_o  <= addr[bit_cnt];
+                i2c_sda_en <= WRITE;
                 if (cnt_done) begin
                     state <= WACK_ADDR;
                 end
             end
             WACK_ADDR: begin
-                state <= DATA;
+                if (rw) begin
+                    state <= RD_DATA;
+                end else if (~rw) begin
+                    state <= WR_DATA;
+                end
             end
-            DATA: begin
-                i2c_sda_en <= (rw) ? READ : WRITE;
-                if (~rw) begin
-                    i2c_sda_o <= wr_data[bit_cnt];
-                    if (cnt_done) begin
-                        state <= WACK_DATA;
-                    end
-                end else if (rw) begin
-                    rd_data[bit_cnt] <= i2c_sda_i;
-                    if (cnt_done) begin
-                        state <= WACK_DATA;
-                    end
+            WR_DATA: begin
+                i2c_sda_o  <= wr_data[bit_cnt];
+                i2c_sda_en <= WRITE;
+                if (cnt_done) begin
+                    state <= WACK_DATA;
+                end
+            end
+            RD_DATA: begin
+                rd_data[bit_cnt] <= i2c_sda_i;
+                i2c_sda_en       <= READ;
+                if (cnt_done) begin
+                    state <= WACK_DATA;
                 end
             end
             WACK_DATA: begin
@@ -103,7 +109,7 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         bit_cnt <= '0;
     end else begin
-        if ((state == DATA) || (state == ADDR)) begin
+        if ((state == ADDR) || (state == WR_DATA) || (state == RD_DATA)) begin
             bit_cnt <= bit_cnt - 1;
         end else if ((state == WACK_ADDR) || (state == START)) begin
             bit_cnt <= I2C_DATA_WIDTH - 1;
