@@ -50,16 +50,12 @@ assign i2c_sda_i  = i2c_sda_io;
 always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         state   <= IDLE;
-        addr    <= '0;
-        wr_data <= '0;
         rd_data <= '0;
     end else begin
         case (state)
             IDLE: begin
                 if (s_axis.tvalid) begin
-                    state   <= START;
-                    wr_data <= s_axis.tdata[AXIS_DATA_WIDTH-1:I2C_DATA_WIDTH];
-                    addr    <= s_axis.tdata[I2C_DATA_WIDTH-1:0];
+                    state <= START;
                 end
             end
             START: begin
@@ -78,16 +74,12 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
             end
             DATA: begin
                 i2c_sda_en <= (rw) ? READ : WRITE;
-                if (~rw) begin
+                if (cnt_done) begin
+                    state <= WACK_DATA;
+                end else if (~rw) begin
                     i2c_sda_o <= wr_data[bit_cnt];
-                    if (cnt_done) begin
-                        state <= WACK_DATA;
-                    end
                 end else if (rw) begin
                     rd_data[bit_cnt] <= i2c_sda_i;
-                    if (cnt_done) begin
-                        state <= WACK_DATA;
-                    end
                 end
             end
             WACK_DATA: begin
@@ -137,8 +129,20 @@ always_ff @(posedge clk_i) begin
     end
 end
 
+always_ff @(posedge clk_i) begin
+    if (~arstn_i) begin
+        wr_data <= '0;
+        addr    <= '0;
+    end else begin
+        if (s_axis.tvalid & s_axis.tready) begin
+            wr_data <= s_axis.tdata[AXIS_DATA_WIDTH-1:I2C_DATA_WIDTH];
+            addr    <= s_axis.tdata[I2C_DATA_WIDTH-1:0];
+        end
+    end
+end
+
 always_comb begin
-    s_axis.tready = ((arstn_i == 1'b1) && (state == IDLE)) ? 1'b1 : 1'b0;
+    s_axis.tready = (state == IDLE) ? 1'b1 : 1'b0;
     i2c_scl_o     = i2c_scl_en ? ~clk_i : 1'b1;
     cnt_done      = ~(|bit_cnt);
     rw            = (addr[7]) ? READ : WRITE;
