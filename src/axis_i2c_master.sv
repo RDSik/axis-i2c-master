@@ -72,11 +72,7 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
                 end
             end
             WACK_ADDR: begin
-                if (rw) begin
-                    state <= RD_DATA;
-                end else if (~rw) begin
-                    state <= WR_DATA;
-                end
+                state <= (rw) ? RD_DATA : WR_DATA;
             end
             WR_DATA: begin
                 i2c_sda_o  <= wr_data[bit_cnt];
