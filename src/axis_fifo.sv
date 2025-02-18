@@ -2,8 +2,8 @@ module axis_fifo #(
     parameter DATA_WIDTH = 16,
     parameter FIFO_DEPTH = 4
 ) (
-    input  logic clk_i,
-    input  logic arstn_i,
+    input logic clk_i,
+    input logic arstn_i,
 
     axis_if.slave s_axis,
     axis_if.master m_axis
@@ -59,9 +59,9 @@ always_ff @(posedge clk_i) begin
 end
 
 always_comb begin
+    m_axis.tdata  = fifo[rd_pointer];
     s_axis.tready = ~full;
     m_axis.tvalid = ~empty;
-    m_axis.tdata  = fifo[rd_pointer];
     push  = s_axis.tvalid & s_axis.tready;
     pop   = m_axis.tvalid & m_axis.tready;
     full  = push ? (status_cnt >= FIFO_DEPTH - 1) : (status_cnt == FIFO_DEPTH);
