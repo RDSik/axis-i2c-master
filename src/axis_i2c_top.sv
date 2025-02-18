@@ -1,6 +1,6 @@
 module axis_i2c_top #(
     parameter XILINX_IP_EN   = 1,
-    parameter FIFO_DEPTH     = 4,
+    parameter FIFO_DEPTH     = 32,
     parameter DATA_WIDTH     = 16,
     parameter I2C_DATA_WIDTH = 8,
     parameter MAIN_CLK       = 100_000_000,
