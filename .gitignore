@@ -11,5 +11,9 @@ project/*
 *.bak
 *.jou
 *.log
+*.wlf
+*.vcd
 myenv
+work
+transcript
 .Xil

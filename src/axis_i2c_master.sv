@@ -27,13 +27,13 @@ enum logic [2:0] {
 localparam WRITE = 1'b0;
 localparam READ  = 1'b1;
 
-logic [$clog2(DATA_WIDTH)-1:0 ] bit_cnt;
-logic [DATA_WIDTH-1:0]          rd_data;
-logic [DATA_WIDTH-1:0]          wr_data;
-logic [DATA_WIDTH-1:0]          addr;
-logic                           cnt_done;
-logic                           rw;
-logic                           i2c_scl_en;
+logic [$clog2(DATA_WIDTH)-1:0] bit_cnt;
+logic [DATA_WIDTH-1:0]         rd_data;
+logic [DATA_WIDTH-1:0]         wr_data;
+logic [DATA_WIDTH-1:0]         addr;
+logic                          cnt_done;
+logic                          rw;
+logic                          i2c_scl_en;
 
 logic i2c_sda_en;
 logic i2c_sda_o;
@@ -142,12 +142,10 @@ always_ff @(posedge clk_i) begin
     end
 end
 
-always_comb begin
-    s_axis.tready = (state == IDLE) ? 1'b1 : 1'b0;
-    i2c_scl_o     = i2c_scl_en ? ~clk_i : 1'b1;
-    cnt_done      = ~(|bit_cnt);
-    rw            = (addr[7]) ? READ : WRITE;
-    m_axis_tvalid = ((state == STOP) && (rw)) ? 1'b1 : 1'b0;
-end
+assign s_axis.tready = (state == IDLE) ? 1'b1 : 1'b0;
+assign i2c_scl_o     = i2c_scl_en ? ~clk_i : 1'b1;
+assign cnt_done      = ~(|bit_cnt);
+assign rw            = (addr[7]) ? READ : WRITE;
+assign m_axis_tvalid = ((state == STOP) && (rw)) ? 1'b1 : 1'b0;
 
 endmodule

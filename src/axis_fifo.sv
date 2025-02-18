@@ -1,12 +1,12 @@
 module axis_fifo #(
     parameter DATA_WIDTH = 16,
-    parameter FIFO_DEPTH = 4
+    parameter FIFO_DEPTH = 32
 ) (
     input logic clk_i,
     input logic arstn_i,
 
-    axis_if.slave s_axis,
-    axis_if.master m_axis
+    axis_if.master m_axis,
+    axis_if.slave  s_axis
 );
 
 localparam POINTER_WIDTH = $clog2(FIFO_DEPTH);
@@ -61,15 +61,14 @@ always_ff @(posedge clk_i) begin
     end
 end
 
-always_comb begin
-    m_axis.tdata  = fifo[rd_pointer];
-    m_axis.tvalid = ~empty;
-    s_axis.tready = ~full;
-    push  = s_axis.tvalid & s_axis.tready;
-    pop   = m_axis.tvalid & m_axis.tready;
-    full  = (wr_pointer == rd_pointer) && (wr_odd_circle != rd_odd_circle);
-    empty = (wr_pointer == rd_pointer) && (wr_odd_circle == rd_odd_circle);
-end
+assign m_axis.tdata  = fifo[rd_pointer];
+assign m_axis.tvalid = ~empty;
+assign s_axis.tready = ~full;
+
+assign push  = s_axis.tvalid & s_axis.tready;
+assign pop   = m_axis.tvalid & m_axis.tready;
+assign full  = (wr_pointer == rd_pointer) && (wr_odd_circle != rd_odd_circle);
+assign empty = (wr_pointer == rd_pointer) && (wr_odd_circle == rd_odd_circle);
 
 // Status counter for full and empty
 // always_ff @(posedge clk_i or negedge arstn_i) begin

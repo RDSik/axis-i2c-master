@@ -10,7 +10,12 @@ cd axis-i2c-master
 
 ## Build project
 ```bash
-make
+make project
 ```
 
-* For simulation use macro file(wave.do) for QuestaSim and compile Vivado libs
+## Simulate project
+* For simulation with Xilinx FIFO, build project, use macro file(wave.do) in project dir and compile Vivado libs
+* For simulation with Custom FIFO, use:
+```bash
+make
+```

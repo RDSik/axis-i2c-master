@@ -1,29 +1,24 @@
 module axis_i2c_top #(
-    `ifdef VERILATOR
+    parameter XILINX_IP_EN   = 1,
     parameter FIFO_DEPTH     = 4,
-    `endif
     parameter DATA_WIDTH     = 16,
     parameter I2C_DATA_WIDTH = 8,
     parameter MAIN_CLK       = 100_000_000,
     parameter I2C_CLK        = 200_000
 ) (
-    input  logic                       clk_i,
-    input  logic                       arstn_i,
-    input  logic                       en_i,
-    inout                              i2c_sda_io,
-    output logic                       i2c_scl_o,
+    input  logic                      clk_i,
+    input  logic                      arstn_i,
+    input  logic                      en_i,
+    inout                             i2c_sda_io,
+    output logic                      i2c_scl_o,
 
-    output logic [I2C_DATA_WIDTH-1:0]  m_axis_tdata,
-    output logic                       m_axis_tvalid,
-    input  logic                       m_axis_tready,
+    output logic [I2C_DATA_WIDTH-1:0] m_axis_tdata,
+    output logic                      m_axis_tvalid,
+    input  logic                      m_axis_tready,
 
-    `ifdef VERILATOR
-    axis_if.slave s_axis
-    `else
-    input  logic [DATA_WIDTH-1:0]      s_axis_tdata,
-    input  logic                       s_axis_tvalid,
-    output logic                       s_axis_tready
-    `endif
+    input  logic [DATA_WIDTH-1:0]     s_axis_tdata,
+    input  logic                      s_axis_tvalid,
+    output logic                      s_axis_tready
 );
 
 axis_if axis();
@@ -53,28 +48,36 @@ clk_div #(
     .clk_o   (i2c_clk)
 );
 
-`ifdef VERILATOR
-axis_fifo #(
-    .DATA_WIDTH (DATA_WIDTH),
-    .FIFO_DEPTH (FIFO_DEPTH)
-) i_axis_fifo (
-    .clk_i   (clk_i  ),
-    .arstn_i (arstn_i),
-    .s_axis  (s_axis ),
-    .m_axis  (axis   )
-);
-`else
-axis_data_fifo i_axis_data_fifo (
-    .s_axis_aresetn (arstn_i      ),
-    .s_axis_aclk    (clk_i        ),
-    .s_axis_tvalid  (s_axis_tvalid),
-    .s_axis_tready  (s_axis_tready),
-    .s_axis_tdata   (s_axis_tdata ),
-    .m_axis_tvalid  (axis.tvalid  ),
-    .m_axis_tready  (axis.tready  ),
-    .m_axis_tdata   (axis.tdata   )
-);
-`endif
+if (XILINX_IP_EN) begin
+    axis_data_fifo i_axis_data_fifo (
+        .s_axis_aresetn (arstn_i      ),
+        .s_axis_aclk    (clk_i        ),
+        .s_axis_tvalid  (s_axis_tvalid),
+        .s_axis_tready  (s_axis_tready),
+        .s_axis_tdata   (s_axis_tdata ),
+        .m_axis_tvalid  (axis.tvalid  ),
+        .m_axis_tready  (axis.tready  ),
+        .m_axis_tdata   (axis.tdata   )
+    );
+end else begin
+    axis_if s_axis();
+
+    always_comb begin
+        s_axis_tready = s_axis.tready;
+        s_axis.tvalid = s_axis_tvalid;
+        s_axis.tdata  = s_axis_tdata;
+    end
+
+    axis_fifo #(
+        .DATA_WIDTH (DATA_WIDTH),
+        .FIFO_DEPTH (FIFO_DEPTH)
+    ) i_axis_data_fifo (
+        .clk_i   (clk_i  ),
+        .arstn_i (arstn_i),
+        .s_axis  (s_axis ),
+        .m_axis  (axis   )
+    );
+end
 
 `ifdef COCOTB_SIM
     initial begin

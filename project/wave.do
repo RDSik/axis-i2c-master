@@ -1,7 +1,7 @@
 onerror {resume}
 quietly WaveActivateNextPane {} 0
 add wave -expand -group I2C  /axis_i2c_top_tb/dut/i_axis_i2c_master/*
-add wave -expand -group FIFO /axis_i2c_top_tb/dut/i_axis_data_fifo/*
+add wave -expand -group FIFO /axis_i2c_top_tb/dut/genblk1/i_axis_data_fifo/*
 TreeUpdate [SetDefaultTree]
 WaveRestoreCursors {{Cursor 1} {37746133 ps} 0}
 quietly wave cursor active 1
