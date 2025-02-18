@@ -58,9 +58,6 @@ always_ff @(posedge clk_i) begin
     end
 end
 
-// assign full  = (status_cnt >= FIFO_DEPTH);
-// assign empty = (status_cnt <= 0);
-
 always_comb begin
     s_axis.tready = ~full;
     m_axis.tvalid = ~empty;
@@ -70,5 +67,8 @@ always_comb begin
     full  = push ? (status_cnt >= FIFO_DEPTH - 1) : (status_cnt == FIFO_DEPTH);
     empty = pop ? (status_cnt <= 1) : (status_cnt == 0);
 end
+
+// assign full  = (status_cnt >= FIFO_DEPTH);
+// assign empty = (status_cnt <= 0);
 
 endmodule

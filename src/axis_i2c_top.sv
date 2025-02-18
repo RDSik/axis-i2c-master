@@ -16,9 +16,13 @@ module axis_i2c_top
     output logic                       m_axis_tvalid,
     input  logic                       m_axis_tready,
 
+    `ifdef VERILATOR
+    axis_if.slave s_axis
+    `else
     input  logic [AXIS_DATA_WIDTH-1:0] s_axis_tdata,
     input  logic                       s_axis_tvalid,
     output logic                       s_axis_tready
+    `endif
 );
 
 axis_if axis();
@@ -46,6 +50,18 @@ clk_div #(
     .clk_o   (i2c_clk)
 );
 
+`ifdef VERILATOR
+localparam FIFO_DEPTH = 4;
+axis_fifo #(
+    .DATA_WIDTH (AXIS_DATA_WIDTH),
+    .FIFO_DEPTH (FIFO_DEPTH     )
+) i_axis_fifo (
+    .clk_i   (clk_i  ),
+    .arstn_i (arstn_i),
+    .s_axis  (s_axis ),
+    .m_axis  (axis   )
+);
+`else
 axis_data_fifo i_axis_data_fifo (
     .s_axis_aresetn (arstn_i      ),
     .s_axis_aclk    (clk_i        ),
@@ -56,6 +72,7 @@ axis_data_fifo i_axis_data_fifo (
     .m_axis_tready  (axis.tready  ),
     .m_axis_tdata   (axis.tdata   )
 );
+`endif
 
 `ifdef COCOTB_SIM
     initial begin
