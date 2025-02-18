@@ -101,18 +101,6 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     end
 end
 
-always_ff @(posedge clk_i or negedge arstn_i) begin
-    if (~arstn_i) begin
-        bit_cnt <= '0;
-    end else begin
-        if ((state == ADDR) || (state == WR_DATA) || (state == RD_DATA)) begin
-            bit_cnt <= bit_cnt - 1;
-        end else if ((state == WACK_ADDR) || (state == START)) begin
-            bit_cnt <= I2C_DATA_WIDTH - 1;
-        end
-    end
-end
-
 always_ff @(negedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         i2c_scl_en <= 1'b0;
@@ -125,13 +113,21 @@ always_ff @(negedge clk_i or negedge arstn_i) begin
     end
 end
 
+always_ff @(posedge clk_i or negedge arstn_i) begin
+    if (~arstn_i) begin
+        bit_cnt <= '0;
+    end else if ((state == WACK_ADDR) || (state == START)) begin
+        bit_cnt <= I2C_DATA_WIDTH - 1;
+    end else if ((state == ADDR) || (state == WR_DATA) || (state == RD_DATA)) begin
+        bit_cnt <= bit_cnt - 1;
+    end
+end
+
 always_ff @(posedge clk_i) begin
     if (~arstn_i) begin
         m_axis_tdata <= '0;
-    end else begin
-        if (m_axis_tvalid & m_axis_tready) begin
-            m_axis_tdata <= rd_data;
-        end
+    end else if (m_axis_tvalid & m_axis_tready) begin
+        m_axis_tdata <= rd_data;
     end
 end
 
@@ -139,11 +135,9 @@ always_ff @(posedge clk_i) begin
     if (~arstn_i) begin
         wr_data <= '0;
         addr    <= '0;
-    end else begin
-        if (s_axis.tvalid & s_axis.tready) begin
-            wr_data <= s_axis.tdata[AXIS_DATA_WIDTH-1:I2C_DATA_WIDTH];
-            addr    <= s_axis.tdata[I2C_DATA_WIDTH-1:0];
-        end
+    end else if (s_axis.tvalid & s_axis.tready) begin
+        wr_data <= s_axis.tdata[AXIS_DATA_WIDTH-1:I2C_DATA_WIDTH];
+        addr    <= s_axis.tdata[I2C_DATA_WIDTH-1:0];
     end
 end
 
