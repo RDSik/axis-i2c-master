@@ -1,16 +1,14 @@
-`include "axis_i2c_pkg.svh"
+module axis_i2c_master #(
+    parameter DATA_WIDTH = 8
+) (
+    input  logic                   clk_i,
+    input  logic                   arstn_i,
+    inout                          i2c_sda_io,
+    output logic                   i2c_scl_o,
 
-module axis_i2c_master
-    import axis_i2c_pkg::*;
-(
-    input  logic                       clk_i,
-    input  logic                       arstn_i,
-    inout                              i2c_sda_io,
-    output logic                       i2c_scl_o,
-
-    output logic [I2C_DATA_WIDTH-1:0]  m_axis_tdata,
-    output logic                       m_axis_tvalid,
-    input  logic                       m_axis_tready,
+    output logic [DATA_WIDTH-1:0]  m_axis_tdata,
+    output logic                   m_axis_tvalid,
+    input  logic                   m_axis_tready,
 
     axis_if.slave s_axis
 );
@@ -26,13 +24,16 @@ enum logic [2:0] {
     STOP      = 3'b111
 } state;
 
-logic [I2C_DATA_WIDTH-1:0] rd_data;
-logic [I2C_DATA_WIDTH-1:0] wr_data;
-logic [I2C_DATA_WIDTH-1:0] addr;
-logic [BIT_CNT_WIDTH-1:0 ] bit_cnt;
-logic                      cnt_done;
-logic                      rw;
-logic                      i2c_scl_en;
+localparam WRITE = 1'b0;
+localparam READ  = 1'b1;
+
+logic [$clog2(DATA_WIDTH)-1:0 ] bit_cnt;
+logic [DATA_WIDTH-1:0]          rd_data;
+logic [DATA_WIDTH-1:0]          wr_data;
+logic [DATA_WIDTH-1:0]          addr;
+logic                           cnt_done;
+logic                           rw;
+logic                           i2c_scl_en;
 
 logic i2c_sda_en;
 logic i2c_sda_o;
@@ -117,7 +118,7 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         bit_cnt <= '0;
     end else if ((state == WACK_ADDR) || (state == START)) begin
-        bit_cnt <= I2C_DATA_WIDTH - 1;
+        bit_cnt <= DATA_WIDTH - 1;
     end else if ((state == ADDR) || (state == WR_DATA) || (state == RD_DATA)) begin
         bit_cnt <= bit_cnt - 1;
     end
@@ -136,8 +137,8 @@ always_ff @(posedge clk_i) begin
         wr_data <= '0;
         addr    <= '0;
     end else if (s_axis.tvalid & s_axis.tready) begin
-        wr_data <= s_axis.tdata[AXIS_DATA_WIDTH-1:I2C_DATA_WIDTH];
-        addr    <= s_axis.tdata[I2C_DATA_WIDTH-1:0];
+        wr_data <= s_axis.tdata[(DATA_WIDTH*2)-1:DATA_WIDTH];
+        addr    <= s_axis.tdata[DATA_WIDTH-1:0];
     end
 end
 

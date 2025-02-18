@@ -15,7 +15,6 @@ add_files -norecurse $src_dir/axis_i2c_master.sv
 add_files -norecurse $src_dir/axis_fifo.sv
 add_files -norecurse $src_dir/axis_i2c_top.sv
 add_files -norecurse $src_dir/axis_if.sv
-add_files -norecurse $src_dir/axis_i2c_pkg.svh
 add_files -norecurse $src_dir/clk_div.sv
 
 add_files -norecurse $tb_dir/axis_i2c_top_if.sv

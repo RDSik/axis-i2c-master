@@ -1,10 +1,11 @@
-`include "axis_i2c_pkg.svh"
-
-module axis_i2c_top
-    import axis_i2c_pkg::*;
-#(
-    parameter MAIN_CLK = 100_000_000,
-    parameter I2C_CLK  = 200_000
+module axis_i2c_top #(
+    `ifdef VERILATOR
+    parameter FIFO_DEPTH     = 4,
+    `endif
+    parameter DATA_WIDTH     = 16,
+    parameter I2C_DATA_WIDTH = 8,
+    parameter MAIN_CLK       = 100_000_000,
+    parameter I2C_CLK        = 200_000
 ) (
     input  logic                       clk_i,
     input  logic                       arstn_i,
@@ -19,7 +20,7 @@ module axis_i2c_top
     `ifdef VERILATOR
     axis_if.slave s_axis
     `else
-    input  logic [AXIS_DATA_WIDTH-1:0] s_axis_tdata,
+    input  logic [DATA_WIDTH-1:0]      s_axis_tdata,
     input  logic                       s_axis_tvalid,
     output logic                       s_axis_tready
     `endif
@@ -29,7 +30,9 @@ axis_if axis();
 
 logic i2c_clk;
 
-axis_i2c_master i_axis_i2c_master (
+axis_i2c_master #(
+    .DATA_WIDTH (I2C_DATA_WIDTH)
+) i_axis_i2c_master (
     .clk_i         (i2c_clk      ),
     .arstn_i       (arstn_i      ),
     .i2c_scl_o     (i2c_scl_o    ),
@@ -51,10 +54,9 @@ clk_div #(
 );
 
 `ifdef VERILATOR
-localparam FIFO_DEPTH = 4;
 axis_fifo #(
-    .DATA_WIDTH (AXIS_DATA_WIDTH),
-    .FIFO_DEPTH (FIFO_DEPTH     )
+    .DATA_WIDTH (DATA_WIDTH),
+    .FIFO_DEPTH (FIFO_DEPTH)
 ) i_axis_fifo (
     .clk_i   (clk_i  ),
     .arstn_i (arstn_i),
