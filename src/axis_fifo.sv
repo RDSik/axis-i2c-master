@@ -2,8 +2,8 @@ module axis_fifo #(
     parameter DATA_WIDTH = 16,
     parameter FIFO_DEPTH = 4
 ) (
-    input  logic clk,
-    input  logic arstn,
+    input  logic clk_i,
+    input  logic arstn_i,
 
     axis_if.slave s_axis,
     axis_if.master m_axis
@@ -24,8 +24,8 @@ logic empty;
 logic full;
 
 // Read logic
-always_ff @(posedge clk or negedge arstn) begin
-    if (~arstn) begin
+always_ff @(posedge clk_i or negedge arstn_i) begin
+    if (~arstn_i) begin
         rd_ptr <= '0;
     end else if (pop) begin
         rd_ptr <= (rd_ptr == MAX_POINTER) ? '0 : rd_ptr + 1;
@@ -33,8 +33,8 @@ always_ff @(posedge clk or negedge arstn) begin
 end
 
 // Write logic
-always_ff @(posedge clk or negedge arstn) begin
-    if (~arstn) begin
+always_ff @(posedge clk_i or negedge arstn_i) begin
+    if (~arstn_i) begin
         wr_ptr <= '0;
     end else if (push) begin
         wr_ptr <= (wr_ptr == MAX_POINTER) ? '0 : wr_ptr + 1;
@@ -42,8 +42,8 @@ always_ff @(posedge clk or negedge arstn) begin
 end
 
 // Status counter for full and empty
-always_ff @(posedge clk or negedge arstn) begin
-    if (~arstn) begin
+always_ff @(posedge clk_i or negedge arstn_i) begin
+    if (~arstn_i) begin
         status_cnt <= '0;
     end else if (push && !pop && (status_cnt != FIFO_DEPTH)) begin
         status_cnt <= status_cnt + 1;
@@ -52,7 +52,7 @@ always_ff @(posedge clk or negedge arstn) begin
     end
 end
 
-always_ff @(posedge clk) begin
+always_ff @(posedge clk_i) begin
     if (push) begin
         fifo[wr_ptr] <= s_axis.tdata;
     end
