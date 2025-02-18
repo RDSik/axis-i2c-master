@@ -4,6 +4,9 @@
 
 module axis_i2c_top_tb ();
 
+`ifdef VERILATOR
+parameter FIFO_DEPTH = 4;
+`endif
 localparam MAIN_CLK = 100_000_000;
 localparam I2C_CLK  = 200_000;
 localparam CLK_PER  = 2;
@@ -28,8 +31,11 @@ initial begin
 end
 
 axis_i2c_top #(
-    .MAIN_CLK (MAIN_CLK),
-    .I2C_CLK  (I2C_CLK )
+    `ifdef VERILATOR
+    .FIFO_DEPTH (FIFO_DEPTH),
+    `endif
+    .MAIN_CLK   (MAIN_CLK),
+    .I2C_CLK    (I2C_CLK )
 ) dut (
     .clk_i         (dut_if.clk_i        ),
     .arstn_i       (dut_if.arstn_i      ),
@@ -39,9 +45,13 @@ axis_i2c_top #(
     .m_axis_tdata  (dut_if.m_axis_tdata ),
     .m_axis_tvalid (dut_if.m_axis_tvalid),
     .m_axis_tready (dut_if.m_axis_tready),
+    `ifdef VERILATOR
+    .s_axis        (s_axis              )
+    `else
     .s_axis_tdata  (s_axis.tdata        ),
     .s_axis_tvalid (s_axis.tvalid       ),
     .s_axis_tready (s_axis.tready       )
+    `endif
 );
 
 endmodule
