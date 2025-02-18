@@ -59,9 +59,9 @@ always_ff @(posedge clk_i) begin
 end
 
 always_comb begin
+    m_axis.tdata  = fifo[rd_ptr];
     s_axis.tready = ~full;
     m_axis.tvalid = ~empty;
-    m_axis.tdata  = fifo[rd_ptr];
     push  = s_axis.tvalid & s_axis.tready;
     pop   = m_axis.tvalid & m_axis.tready;
     full  = push ? (status_cnt >= FIFO_DEPTH - 1) : (status_cnt == FIFO_DEPTH);
