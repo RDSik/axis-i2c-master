@@ -17,13 +17,15 @@ class environment;
     task data_gen(int n);
         begin
             for (int i = 0; i < n; i++) begin
-                wait(s_axis.tready);
+                @(posedge dut_if.clk_i);
                 s_axis.tvalid = 1'b1;
                 s_axis.tdata  = $urandom_range(0, (2**16)-1);
                 $display("AXIS tansaction %0d done at: %g ns\n", i, $time);
-                @(posedge dut_if.clk_i);
+                do begin
+                    @(posedge dut_if.clk_i);
+                end
+                while (~s_axis.tready);
                 s_axis.tvalid = 1'b0;
-                s_axis.tdata  = '0;
             end
         end
     endtask
