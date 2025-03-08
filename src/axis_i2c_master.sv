@@ -118,9 +118,9 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         bit_cnt <= '0;
     end else if ((state == WACK_ADDR) || (state == START)) begin
-        bit_cnt <= DATA_WIDTH - 1;
+        bit_cnt <= DATA_WIDTH - 1'b1;
     end else if ((state == ADDR) || (state == WR_DATA) || (state == RD_DATA)) begin
-        bit_cnt <= bit_cnt - 1;
+        bit_cnt <= bit_cnt - 1'b1;
     end
 end
 
