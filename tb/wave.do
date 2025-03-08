@@ -14,6 +14,7 @@ vsim -voptargs="+acc" axis_i2c_top_tb
 add log -r /*
 
 add wave -expand -group I2C  /axis_i2c_top_tb/dut/i_axis_i2c_master/*
+add wave -expand -group AXIS /axis_i2c_top_tb/dut/axis/*
 add wave -expand -group FIFO /axis_i2c_top_tb/dut/genblk1/i_axis_data_fifo/*
 
 run -all
