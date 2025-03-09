@@ -5,8 +5,11 @@ sim/*
 !axis_i2c_top_tb.py
 !wave.do
 project/*
-!project.tcl
+!gowin_project.tcl
+!vivado_project.tcl
 !axis_i2c_top.xdc
+!axis_i2c_top.sdc
+!axis_i2c_top.cst
 !wave.do
 *.bak
 *.jou
@@ -14,6 +17,7 @@ project/*
 *.wlf
 *.vcd
 myenv
+axis_i2c_top
 work
 transcript
 .Xil

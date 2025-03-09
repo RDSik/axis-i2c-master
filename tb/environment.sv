@@ -14,32 +14,29 @@ class environment;
         this.clk_per = clk_per;
     endfunction
 
-    task data_gen(int n);
-        begin
-            for (int i = 0; i < n; i++) begin
-                @(posedge dut_if.clk_i);
-                s_axis.tvalid = 1'b1;
-                s_axis.tdata  = $urandom_range(0, (2**16)-1);
-                $display("AXIS tansaction %0d done at: %g ns\n", i, $time);
-                do begin
-                    @(posedge dut_if.clk_i);
-                end
-                while (~s_axis.tready);
-                s_axis.tvalid = 1'b0;
-            end
-        end
-    endtask
+    // task data_gen(int n);
+    //     begin
+    //         for (int i = 0; i < n; i++) begin
+    //             @(posedge dut_if.clk_i);
+    //             s_axis.tvalid = 1'b1;
+    //             s_axis.tdata  = $urandom_range(0, (2**16)-1);
+    //             $display("AXIS tansaction %0d done at: %g ns\n", i, $time);
+    //             do begin
+    //                 @(posedge dut_if.clk_i);
+    //             end
+    //             while (~s_axis.tready);
+    //             s_axis.tvalid = 1'b0;
+    //         end
+    //     end
+    // endtask
 
-    task run();
-        begin
-            dut_if.en_i   = 1'b0;
-            s_axis.tvalid = 1'b0;
-            s_axis.tdata  = '0;
-            rst_gen();
-            data_gen(50);
-            $display("Stop simulation at: %g ns\n", $time);
-        end
-    endtask
+    // task run();
+    //     begin
+    //         rst_gen();
+    //         data_gen(50);
+    //         $display("Stop simulation at: %g ns\n", $time);
+    //     end
+    // endtask
 
     task rst_gen();
         begin

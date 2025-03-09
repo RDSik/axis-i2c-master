@@ -1,0 +1,4 @@
+IO_LOC "clk_i"      H11;
+IO_LOC "arstn_i"    C7;
+IO_LOC "i2c_sda_io" B11;
+IO_LOC "i2c_scl_o"  D11;

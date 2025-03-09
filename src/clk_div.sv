@@ -8,10 +8,10 @@ module clk_div #(
     output logic clk_o
 );
 
-localparam RATIO = CLK_IN/CLK_OUT;
+localparam RATIO     = CLK_IN/CLK_OUT;
+localparam CNT_WIDTH = $clog2(RATIO);
 
-logic [$clog2(RATIO)-1:0] cnt;
-logic                     clk;
+logic [CNT_WIDTH-1:0] cnt = '0;
 
 always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
@@ -19,20 +19,10 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     end else if (cnt == RATIO - 1) begin
         cnt <= '0;
     end else begin
-        cnt <= cnt + 1;
+        cnt <= cnt + 1'b1;
     end
 end
 
-always_ff @(posedge clk_i or negedge arstn_i) begin
-    if (~arstn_i) begin
-        clk <= 1'b0;
-    end else if (cnt == RATIO - 1) begin
-        clk <= 1'b0;
-    end else if (cnt == (RATIO/2) - 1) begin
-        clk <= 1'b1;
-    end
-end
-
-assign clk_o = (en_i) ? clk : clk_i;
+assign clk_o = (en_i) ? cnt[CNT_WIDTH-1] : clk_i;
 
 endmodule

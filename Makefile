@@ -4,19 +4,27 @@ SRC_DIR     := src
 TB_DIR      := tb
 PROJECT_DIR := project
 
-MACRO_FILE := wave.do
-TCL        := project.tcl
+SYN ?= gowin
 
-.PHONY: sim project clean
+MACRO_FILE := wave.do
+GOWIN_TCL  := gowin_project.tcl
+VIVADO_TCL := vivado_project.tcl
+
+.PHONY: project sim clean
+
+project:
+ifeq ($(SYN), gowin)
+	gw_sh $(PROJECT_DIR)/$(GOWIN_TCL)
+else ifeq ($(SYN), vivado)
+	vivado -mode tcl -source $(PROJECT_DIR)/$(VIVADO_TCL)
+endif
 
 sim:
 	vsim -do $(TB_DIR)/$(MACRO_FILE)
 
-project:
-	vivado -mode tcl -source $(PROJECT_DIR)/$(TCL)
-
 clean:
 ifeq ($(OS), Windows_NT)
+	rmdir /s /q $(PROJECT_DIR)\$(TOP)
 	rmdir /s /q work
 	del *.jou
 	del *.log
@@ -41,6 +49,7 @@ else
 	rm $(PROJECT_DIR)/*.pb
 	rm $(PROJECT_DIR)/*.dmp
 	rm $(PROJECT_DIR)/$(TOP).xpr
+	rm -rf $(PROJECT_DIR)/$(TOP)
 	rm -rf $(PROJECT_DIR)/*.zip
 	rm -rf $(PROJECT_DIR)/.Xil
 	rm -rf $(PROJECT_DIR)/$(TOP).cache

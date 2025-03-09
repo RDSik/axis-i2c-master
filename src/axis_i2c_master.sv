@@ -1,16 +1,13 @@
 module axis_i2c_master #(
     parameter DATA_WIDTH = 8
 ) (
-    input  logic                   clk_i,
-    input  logic                   arstn_i,
-    inout                          i2c_sda_io,
-    output logic                   i2c_scl_o,
+    input  logic clk_i,
+    input  logic arstn_i,
+    inout        i2c_sda_io,
+    output logic i2c_scl_o,
 
-    output logic [DATA_WIDTH-1:0]  m_axis_tdata,
-    output logic                   m_axis_tvalid,
-    input  logic                   m_axis_tready,
-
-    axis_if.slave s_axis
+    axis_if s_axis,
+    axis_if m_axis
 );
 
 enum logic [2:0] {
@@ -124,15 +121,15 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     end
 end
 
-always_ff @(posedge clk_i) begin
+always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
-        m_axis_tdata <= '0;
-    end else if (m_axis_tvalid & m_axis_tready) begin
-        m_axis_tdata <= rd_data;
+        m_axis.tdata <= '0;
+    end else if (m_axis.tvalid & m_axis.tready) begin
+        m_axis.tdata <= rd_data;
     end
 end
 
-always_ff @(posedge clk_i) begin
+always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         wr_data <= '0;
         addr    <= '0;
@@ -146,6 +143,6 @@ assign s_axis.tready = (state == IDLE) ? 1'b1 : 1'b0;
 assign i2c_scl_o     = i2c_scl_en ? ~clk_i : 1'b1;
 assign cnt_done      = ~(|bit_cnt);
 assign rw            = (addr[7]) ? READ : WRITE;
-assign m_axis_tvalid = ((state == STOP) && (rw)) ? 1'b1 : 1'b0;
+assign m_axis.tvalid = ((state == STOP) && (rw)) ? 1'b1 : 1'b0;
 
 endmodule

@@ -12,10 +12,11 @@ set_property target_language $language [current_project]
 set_property top $top [current_fileset]
 
 add_files -norecurse $src_dir/axis_i2c_master.sv
-add_files -norecurse $src_dir/axis_fifo.sv
+add_files -norecurse $src_dir/axis_data_gen.sv
 add_files -norecurse $src_dir/axis_i2c_top.sv
 add_files -norecurse $src_dir/axis_if.sv
 add_files -norecurse $src_dir/clk_div.sv
+add_files -norecurse $src_dir/config.mem
 
 add_files -norecurse $tb_dir/axis_i2c_top_if.sv
 add_files -norecurse $tb_dir/axis_i2c_top_tb.sv

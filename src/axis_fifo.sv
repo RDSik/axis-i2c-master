@@ -1,6 +1,6 @@
 module axis_fifo #(
     parameter DATA_WIDTH = 16,
-    parameter FIFO_DEPTH = 32
+    parameter FIFO_DEPTH = 64
 ) (
     input logic clk_i,
     input logic arstn_i,
