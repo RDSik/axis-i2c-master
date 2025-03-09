@@ -11,7 +11,7 @@ module clk_div #(
 localparam RATIO     = CLK_IN/CLK_OUT;
 localparam CNT_WIDTH = $clog2(RATIO);
 
-logic [CNT_WIDTH-1:0] cnt = '0;
+logic [CNT_WIDTH-1:0] cnt;
 
 always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
