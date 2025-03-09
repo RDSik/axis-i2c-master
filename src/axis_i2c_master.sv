@@ -81,7 +81,7 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
                 end
             end
             RD_DATA: begin
-                rd_data    <= {rd_data[DATA_WIDTH-2:0], i2c_sda_i};
+                rd_data[bit_cnt] <= i2c_sda_i;
                 i2c_sda_en <= READ;
                 if (cnt_done) begin
                     state <= WACK_DATA;
@@ -117,9 +117,9 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         bit_cnt <= '0;
     end else if ((state == WACK_ADDR) || (state == START)) begin
-        bit_cnt <= '0;
+        bit_cnt <= DATA_WIDTH - 1;
     end else if ((state == ADDR) || (state == WR_DATA) || (state == RD_DATA)) begin
-        bit_cnt <= bit_cnt + 1'b1;
+        bit_cnt <= bit_cnt - 1'b1;
     end
 end
 
@@ -143,7 +143,7 @@ end
 
 assign s_axis.tready = (state == IDLE) ? 1'b1 : 1'b0;
 assign i2c_scl_o     = i2c_scl_en ? ~clk_i : 1'b1;
-assign cnt_done      = (bit_cnt == DATA_WIDTH - 1) ? 1'b1 : 1'b0;
+assign cnt_done      = ~(|bit_cnt);
 assign rw            = addr[DATA_WIDTH-1];
 assign m_axis.tvalid = ((state == STOP) && (rw)) ? 1'b1 : 1'b0;
 
