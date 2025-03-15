@@ -3,7 +3,7 @@ module axis_i2c_top #(
     parameter I2C_DATA_WIDTH = 8,
     parameter MAIN_CLK       = 27_000_000,
     parameter I2C_CLK        = 200_000,
-    parameter CONFIG_MEM     = "../../src/config.mem",
+    parameter CONFIG_MEM     = "../../rtl/config.mem",
     parameter MEM_DEPTH      = 24
 ) (
     input  logic clk_i,

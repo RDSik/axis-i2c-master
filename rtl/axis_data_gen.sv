@@ -1,5 +1,5 @@
 module axis_data_gen #(
-    parameter CONFIG_MEM = "src/config.mem",
+    parameter CONFIG_MEM = "rtl/config.mem",
     parameter MEM_DEPTH  = 24,
     parameter MEM_WIDTH  = 16
 )(
@@ -35,6 +35,8 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     end
 end
 
-assign m_axis.tdata = config_mem[index];
+always_ff @(posedge clk_i) begin
+    m_axis.tdata <= config_mem[index];
+end
 
 endmodule

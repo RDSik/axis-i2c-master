@@ -4,11 +4,11 @@ vmap work
 vlog tb/axis_i2c_top_tb.sv
 vlog tb/axis_i2c_top_if.sv
 vlog tb/environment.sv
-vlog src/axis_if.sv
-vlog src/axis_i2c_top.sv
-vlog src/axis_i2c_master.sv
-vlog src/axis_data_gen.sv
-vlog src/clk_div.sv
+vlog rtl/axis_if.sv
+vlog rtl/axis_i2c_top.sv
+vlog rtl/axis_i2c_master.sv
+vlog rtl/axis_data_gen.sv
+vlog rtl/clk_div.sv
 
 vsim -voptargs="+acc" axis_i2c_top_tb
 add log -r /*

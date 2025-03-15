@@ -1,6 +1,6 @@
 TOP := axis_i2c_top
 
-SRC_DIR     := src
+RTL_DIR     := rtl
 TB_DIR      := tb
 PROJECT_DIR := project
 

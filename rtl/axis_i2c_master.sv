@@ -81,7 +81,7 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
                 end
             end
             RD_DATA: begin
-                rd_data[bit_cnt] <= i2c_sda_i;
+                rd_data <= {rd_data[DATA_WIDTH-2:0], i2c_sda_i};
                 i2c_sda_en <= READ;
                 if (cnt_done) begin
                     state <= WACK_DATA;

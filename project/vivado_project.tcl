@@ -3,7 +3,7 @@ set top      "axis_i2c_top"
 set language "Verilog"
 
 set project_dir [file normalize "project"]
-set src_dir     [file normalize "src"]
+set rtl_dir     [file normalize "rtl"]
 set tb_dir      [file normalize "tb"]
 set ip_dir      [file normalize "ip"]
 
@@ -11,12 +11,12 @@ create_project -force $top $project_dir -part $part
 set_property target_language $language [current_project]
 set_property top $top [current_fileset]
 
-add_files -norecurse $src_dir/axis_i2c_master.sv
-add_files -norecurse $src_dir/axis_data_gen.sv
-add_files -norecurse $src_dir/axis_i2c_top.sv
-add_files -norecurse $src_dir/axis_if.sv
-add_files -norecurse $src_dir/clk_div.sv
-add_files -norecurse $src_dir/config.mem
+add_files -norecurse $rtl_dir/axis_i2c_master.sv
+add_files -norecurse $rtl_dir/axis_data_gen.sv
+add_files -norecurse $rtl_dir/axis_i2c_top.sv
+add_files -norecurse $rtl_dir/axis_if.sv
+add_files -norecurse $rtl_dir/clk_div.sv
+add_files -norecurse $rtl_dir/config.mem
 
 add_files -norecurse $tb_dir/axis_i2c_top_if.sv
 add_files -norecurse $tb_dir/axis_i2c_top_tb.sv

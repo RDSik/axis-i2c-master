@@ -8,7 +8,7 @@ localparam DATA_WIDTH     = 16;
 localparam I2C_DATA_WIDTH = 8;
 localparam MAIN_CLK       = 100_000_000;
 localparam I2C_CLK        = 50_000_000;
-localparam CONFIG_MEM     = "src/config.mem";
+localparam CONFIG_MEM     = "rtl/config.mem";
 localparam MEM_DEPTH      = 24;
 
 localparam CLK_PER        = 2;
