@@ -44,7 +44,7 @@ clk_div #(
 ) i_clk_div (
     .clk_i    (clk_i  ),
     .arstn_i  (arstn_i),
-    .bypass_i (1'b1   );
+    .bypass_i (1'b1   ),
     .en_i     (1'b1   ),
     .clk_o    (i2c_clk)
 );

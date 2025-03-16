@@ -9,9 +9,10 @@ module clk_div #(
     output logic clk_o
 );
 
-localparam RATIO = CLK_IN/CLK_OUT;
+localparam RATIO     = CLK_IN/CLK_OUT;
+localparam CNT_WIDTH = $clog2(RATIO);
 
-logic [$clog2(RATIO)-1:0] cnt;
+logic [CNT_WIDTH-1:0] cnt;
 
 always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
