@@ -27,16 +27,7 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     end
 end
 
-always_ff @(posedge clk_i or negedge arstn_i) begin
-    if (~arstn_i) begin
-        m_axis.tvalid <= 1'b0;
-    end else begin
-        m_axis.tvalid <= 1'b1;
-    end
-end
-
-always_ff @(posedge clk_i) begin
-    m_axis.tdata <= config_mem[index];
-end
+assign m_axis.tvalid = 1'b1;
+assign m_axis.tdata  = config_mem[index];
 
 endmodule
