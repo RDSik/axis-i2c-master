@@ -20,10 +20,8 @@ end
 always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         index <= '0;
-    end else if (index == MEM_DEPTH - 1) begin
-        index <= '0;
     end else if (m_axis.tvalid & m_axis.tready) begin
-        index <= index + 1'b1;
+        index <= (index == MEM_DEPTH - 1) ? '0 : index + 1'b1;
     end
 end
 
