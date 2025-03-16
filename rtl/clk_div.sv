@@ -4,8 +4,8 @@ module clk_div #(
 ) (
     input  logic clk_i,
     input  logic arstn_i,
-    input  logic en_i,
     input  logic bypass_i,
+    input  logic en_i,
     output logic clk_o
 );
 
