@@ -16,10 +16,8 @@ logic [CNT_WIDTH-1:0] cnt;
 always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         cnt <= '0;
-    end else if (cnt == RATIO - 1) begin
-        cnt <= '0;
     end else begin
-        cnt <= cnt + 1'b1;
+        cnt <= (cnt == RATIO - 1) ? '0 : cnt + 1'b1;
     end
 end
 
