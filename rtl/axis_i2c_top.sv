@@ -42,10 +42,11 @@ clk_div #(
     .CLK_IN  (MAIN_CLK),
     .CLK_OUT (I2C_CLK )
 ) i_clk_div (
-    .clk_i   (clk_i  ),
-    .arstn_i (arstn_i),
-    .en_i    (1'b1   ),
-    .clk_o   (i2c_clk)
+    .clk_i    (clk_i  ),
+    .arstn_i  (arstn_i),
+    .bypass_i (1'b1   );
+    .en_i     (1'b1   ),
+    .clk_o    (i2c_clk)
 );
 
 `ifdef COCOTB_SIM
