@@ -5,22 +5,22 @@ module clk_div #(
     input  logic clk_i,
     input  logic arstn_i,
     input  logic en_i,
+    input  logic bypass_i,
     output logic clk_o
 );
 
-localparam RATIO     = CLK_IN/CLK_OUT;
-localparam CNT_WIDTH = $clog2(RATIO);
+localparam RATIO = CLK_IN/CLK_OUT;
 
-logic [CNT_WIDTH-1:0] cnt;
+logic [$clog2(RATIO)-1:0] cnt;
 
 always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         cnt <= '0;
-    end else begin
+    end else if (en_i) begin
         cnt <= (cnt == RATIO - 1) ? '0 : cnt + 1'b1;
     end
 end
 
-assign clk_o = (en_i) ? cnt[CNT_WIDTH-1] : clk_i;
+assign clk_o = (bypass_i) ? cnt[CNT_WIDTH-1] : clk_i;
 
 endmodule
