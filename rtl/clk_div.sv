@@ -22,6 +22,6 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     end
 end
 
-assign clk_o = (bypass_i) ? cnt[CNT_WIDTH-1] : clk_i;
+assign clk_o = (bypass_i) ? clk_i : cnt[CNT_WIDTH-1];
 
 endmodule
