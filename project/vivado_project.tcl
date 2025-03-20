@@ -14,7 +14,6 @@ set_property target_language $language [current_project]
 set_property top $syn_top [current_fileset]
 set_property top $sim_top [get_filesets sim1]
 
-
 add_files -norecurse $rtl_dir/axis_i2c_master.sv
 add_files -norecurse $rtl_dir/axis_data_gen.sv
 add_files -norecurse $rtl_dir/axis_i2c_top.sv
