@@ -1,5 +1,6 @@
 set part     "xc7z020clg484-1"
-set top      "axis_i2c_top"
+set syn_top  "axis_i2c_top"
+set sim_top  "axis_i2c_top_tb"
 set language "Verilog"
 
 set project_dir [file normalize "project"]
@@ -8,8 +9,11 @@ set tb_dir      [file normalize "tb"]
 set ip_dir      [file normalize "ip"]
 
 create_project -force $top $project_dir -part $part
+
 set_property target_language $language [current_project]
-set_property top $top [current_fileset]
+set_property top $syn_top [current_fileset]
+set_property top $sim_top [get_filesets sim1]
+
 
 add_files -norecurse $rtl_dir/axis_i2c_master.sv
 add_files -norecurse $rtl_dir/axis_data_gen.sv
