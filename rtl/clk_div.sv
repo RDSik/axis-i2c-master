@@ -9,8 +9,8 @@ module clk_div #(
     output logic clk_o
 );
 
-localparam RATIO     = CLK_IN/CLK_OUT;
-localparam CNT_WIDTH = $clog2(RATIO);
+localparam DIVIDER   = CLK_IN/CLK_OUT;
+localparam CNT_WIDTH = $clog2(DIVIDER);
 
 logic [CNT_WIDTH-1:0] cnt;
 
@@ -18,7 +18,7 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         cnt <= '0;
     end else if (en_i) begin
-        cnt <= (cnt == RATIO - 1) ? '0 : cnt + 1'b1;
+        cnt <= (cnt == DIVIDER - 1) ? '0 : cnt + 1'b1;
     end
 end
 
