@@ -20,14 +20,8 @@ axis_if         s_axis();
 environment env;
 
 initial begin
-    env = new(dut_if, s_axis, CLK_PER);
-    fork
-        env.clk_gen();
-        env.rst_gen();
-    join_any
-    #SIM_TIME;
-    $display("Stop simulation at: %g ns\n", $time);
-    $stop();
+    env = new(dut_if, s_axis, CLK_PER, SIM_TIME);
+    env.run();
 end
 
 initial begin

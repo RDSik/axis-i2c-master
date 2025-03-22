@@ -7,11 +7,13 @@ class environment;
     local virtual axis_if         s_axis;
 
     int clk_per;
+    int sim_time;
 
-    function new(virtual axis_i2c_top_if dut_if, virtual axis_if s_axis, int clk_per);
-        this.dut_if  = dut_if;
-        this.s_axis  = s_axis;
-        this.clk_per = clk_per;
+    function new(virtual axis_i2c_top_if dut_if, virtual axis_if s_axis, int clk_per, int sim_time);
+        this.dut_if   = dut_if;
+        this.s_axis   = s_axis;
+        this.clk_per  = clk_per;
+        this.sim_time = sim_time;
     endfunction
 
     // task data_gen(int n);
@@ -30,29 +32,38 @@ class environment;
     //     end
     // endtask
 
-    // task run();
-    //     begin
-    //         rst_gen();
-    //         data_gen(50);
-    //         $display("Stop simulation at: %g ns\n", $time);
-    //     end
-    // endtask
+    task run();
+        fork
+            reset_gen();
+            clock_gen();
+            // data_gen(50);
+        join_none
+        time_out(sim_time);
+    endtask
 
-    task rst_gen();
+    task reset_gen();
         begin
             dut_if.arstn_i = 1'b0;
-            $display("Reset at %g ns\n.", $time);
-            @(posedge dut_if.clk_i);
+            repeat ($urandom_range(1, 10)) @(posedge dut_if.clk_i);
             dut_if.arstn_i = 1'b1;
+            $display("Reset done at %g ns\n", $time);
         end
     endtask
 
-    task clk_gen();
+    task clock_gen();
         begin
             dut_if.clk_i = 1'b0;
             forever begin
                 #(clk_per/2) dut_if.clk_i = ~dut_if.clk_i;
             end
+        end
+    endtask
+
+    task time_out(int sim_time);
+        begin
+            repeat (sim_time) @(posedge dut_if.clk_i);
+            $display("Stop simulation at: %g ns\n", $time);
+            $stop();
         end
     endtask
 
