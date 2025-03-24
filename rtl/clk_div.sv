@@ -15,8 +15,8 @@ generate;
     if (BYPASS == 1) begin
         assign clk_o = clk_i;
     end else begin
-        localparam RATIO     = CLK_IN/CLK_OUT;
-        localparam CNT_WIDTH = $clog2(RATIO);
+        localparam DIVIDER   = CLK_IN/CLK_OUT;
+        localparam CNT_WIDTH = $clog2(DIVIDER);
 
         logic [CNT_WIDTH-1:0] cnt;
         logic                 clk;
@@ -26,7 +26,7 @@ generate;
                 cnt <= '0;
                 clk <= '0;
             end else if (en_i) begin
-                if (cnt == CNT_WIDTH'(RATIO-1)) begin
+                if (cnt == CNT_WIDTH'(DIVIDER-1)) begin
                     cnt <= '0;
                     clk <= ~clk;
                 end else begin
