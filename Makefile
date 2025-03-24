@@ -24,10 +24,13 @@ sim:
 
 clean:
 ifeq ($(OS), Windows_NT)
-	rmdir /s /q $(PROJECT_DIR)\$(TOP)
 	rmdir /s /q work
+	del *.vcd
 	del *.jou
 	del *.log
+	del *.wlf
+	del transcript
+	rmdir /s /q $(PROJECT_DIR)\$(TOP)
 	del $(PROJECT_DIR)\*.jou
 	del $(PROJECT_DIR)\*.log
 	del $(PROJECT_DIR)\$(TOP).xpr
@@ -44,8 +47,11 @@ ifeq ($(OS), Windows_NT)
 	rmdir /s /q $(PROJECT_DIR)\*.dmp
 else
 	rm -rf work
+	rm *.vcd
 	rm *.jou
 	rm *.log
+	rm *.wlf
+	rm transcript
 	rm $(PROJECT_DIR)/*.pb
 	rm $(PROJECT_DIR)/*.dmp
 	rm $(PROJECT_DIR)/$(TOP).xpr

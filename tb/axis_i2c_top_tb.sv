@@ -8,6 +8,7 @@ localparam DATA_WIDTH     = 16;
 localparam I2C_DATA_WIDTH = 8;
 localparam MAIN_CLK       = 100_000_000;
 localparam I2C_CLK        = 50_000_000;
+localparam BYPASS         = 0;
 localparam CONFIG_MEM     = "rtl/config.mem";
 localparam MEM_DEPTH      = 24;
 
@@ -34,6 +35,7 @@ axis_i2c_top #(
     .I2C_DATA_WIDTH (I2C_DATA_WIDTH),
     .MAIN_CLK       (MAIN_CLK      ),
     .I2C_CLK        (I2C_CLK       ),
+    .BYPASS         (BYPASS        ),
     .CONFIG_MEM     (CONFIG_MEM    ),
     .MEM_DEPTH      (MEM_DEPTH     )
 ) dut (
