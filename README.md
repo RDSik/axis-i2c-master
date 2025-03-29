@@ -1,4 +1,4 @@
-[![Build project](https://github.com/RDSik/axis-i2c_master/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/RDSik/axis-i2c-master/actions/workflows/main.yml)
+[![Build project](https://github.com/RDSik/axis-i2c-master/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/RDSik/axis-i2c-master/actions/workflows/main.yml)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/RDSik/axis-i2c_master/blob/master/LICENSE.txt)
 
 # AXI-Stream I2C Master module
