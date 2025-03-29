@@ -35,7 +35,7 @@ class environment;
     task run();
         fork
             reset_gen();
-            clock_gen();
+            clock_gen(clk_per);
             // data_gen(50);
         join_none
         time_out(sim_time);
@@ -50,7 +50,7 @@ class environment;
         end
     endtask
 
-    task clock_gen();
+    task clock_gen(int clk_per);
         begin
             dut_if.clk_i = 1'b0;
             forever begin
