@@ -24,6 +24,6 @@ jobs:
         with:
             image: ${{env.image_name}}
             run: |
-              git clone https://github.com/RDSik/axis-i2c_master.git
-              cd axis-i2c_master
+              git clone https://github.com/RDSik/axis-i2c-master.git
+              cd axis-i2c-master
               make
