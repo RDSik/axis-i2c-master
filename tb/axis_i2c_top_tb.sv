@@ -12,7 +12,7 @@ localparam BYPASS         = 0;
 localparam CONFIG_MEM     = "rtl/config.mem";
 localparam MEM_DEPTH      = 24;
 
-localparam CLK_PER        = 2;
+localparam CLK_PER_NS     = 10**9/MAIN_CLK;
 localparam SIM_TIME       = 3000;
 
 axis_i2c_top_if dut_if();
@@ -21,7 +21,7 @@ axis_if         s_axis();
 environment env;
 
 initial begin
-    env = new(dut_if, s_axis, CLK_PER, SIM_TIME);
+    env = new(dut_if, s_axis, CLK_PER_NS, SIM_TIME);
     env.run();
 end
 

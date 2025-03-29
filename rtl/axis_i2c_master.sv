@@ -125,9 +125,13 @@ end
 
 always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
-        m_axis.tdata <= '0;
+        m_axis.tdata  <= '0;
+        m_axis.tvalid <= '0;
     end else if (m_axis.tvalid & m_axis.tready) begin
-        m_axis.tdata <= rd_data;
+        m_axis.tvalid <= '0;
+    end else if ((state == STOP) && (rw)) begin
+        m_axis.tdata  <= rd_data;
+        m_axis.tvalid <= '1;
     end
 end
 
@@ -141,10 +145,11 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     end
 end
 
+
+
 assign s_axis.tready = (state == IDLE) ? 1'b1 : 1'b0;
 assign i2c_scl_o     = i2c_scl_en ? ~clk_i : 1'b1;
 assign cnt_done      = ~(|bit_cnt);
 assign rw            = addr[DATA_WIDTH-1];
-assign m_axis.tvalid = ((state == STOP) && (rw)) ? 1'b1 : 1'b0;
 
 endmodule

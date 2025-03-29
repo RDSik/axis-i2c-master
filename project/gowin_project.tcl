@@ -20,5 +20,8 @@ add_file $constrain_dir/axis_i2c_top.cst
 
 set_option -top_module $top
 set_option -verilog_std $language
+set_option -use_sspi_as_gpio 1
+set_option -use_ready_as_gpio 1
+set_option -use_done_as_gpio 1
 
 run all
