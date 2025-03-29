@@ -1,0 +1,29 @@
+name: Build project
+
+on: 
+    push:
+      branches: [master]
+    pull_request:
+      branches: [master]
+
+env:
+    image_name: r0d0s/fpga_tools:latest
+
+jobs:
+  build-project:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./
+    steps:
+      - name: Check out the repository to the runner
+        uses: actions/checkout@v2
+      - name: Run Docker container
+        uses: addnab/docker-run-action@v3
+        with:
+            image: ${{env.image_name}}
+            run: |
+              git clone https://github.com/RDSik/axis-i2c_master.git
+              cd axis-i2c_master
+              make
