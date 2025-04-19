@@ -6,8 +6,8 @@ module axis_i2c_master #(
     inout        i2c_sda_io,
     output logic i2c_scl_o,
 
-    axis_if s_axis,
-    axis_if m_axis
+    axis_if      s_axis,
+    axis_if      m_axis
 );
 
 enum logic [2:0] {
