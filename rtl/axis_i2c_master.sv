@@ -10,7 +10,7 @@ module axis_i2c_master #(
     axis_if      m_axis
 );
 
-enum logic [2:0] {
+typedef enum logic [2:0] {
     IDLE      = 3'b000,
     START     = 3'b001,
     ADDR      = 3'b010,
@@ -19,7 +19,9 @@ enum logic [2:0] {
     RD_DATA   = 3'b101,
     WACK_DATA = 3'b110,
     STOP      = 3'b111
-} state;
+} my_state;
+
+my_state state;
 
 localparam WRITE = 1'b0;
 localparam READ  = 1'b1;
