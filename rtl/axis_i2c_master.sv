@@ -147,8 +147,6 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     end
 end
 
-
-
 assign s_axis.tready = (state == IDLE) ? 1'b1 : 1'b0;
 assign i2c_scl_o     = i2c_scl_en ? ~clk_i : 1'b1;
 assign cnt_done      = ~(|bit_cnt);
