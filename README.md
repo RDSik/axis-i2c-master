@@ -17,8 +17,6 @@ make project
 ```
 
 ## Simulate project
-* For simulation with Xilinx FIFO, build project, use macro file(wave.do) in project dir and compile Vivado libs
-* For simulation with Custom FIFO, use:
 ```bash
 make
 ```
