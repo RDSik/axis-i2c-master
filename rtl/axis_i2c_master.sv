@@ -81,7 +81,7 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
                 end
             end
             RD_DATA: begin
-                rd_data <= {rd_data[DATA_WIDTH-2:0], i2c_sda_i};
+                rd_data    <= {rd_data[DATA_WIDTH-2:0], i2c_sda_i};
                 i2c_sda_en <= READ;
                 if (cnt_done) begin
                     state <= WACK_DATA;
@@ -128,10 +128,10 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
         m_axis.tdata  <= '0;
         m_axis.tvalid <= '0;
     end else if (m_axis.tvalid & m_axis.tready) begin
-        m_axis.tvalid <= '0;
+        m_axis.tvalid <= 1'b0;
     end else if ((state == STOP) && (rw)) begin
         m_axis.tdata  <= rd_data;
-        m_axis.tvalid <= '1;
+        m_axis.tvalid <= 1'b1;
     end
 end
 
