@@ -34,9 +34,14 @@ logic                          cnt_done;
 logic                          rw;
 logic                          i2c_scl_en;
 
-logic i2c_sda_en;
-logic i2c_sda_o;
-logic i2c_sda_i;
+logic                          s_handshake;
+logic                          m_handshake;
+logic                          m_axis_tdata_reg;
+logic                          m_axis_tvalid_reg;
+
+logic                          i2c_sda_en;
+logic                          i2c_sda_o;
+logic                          i2c_sda_i;
 
 assign i2c_sda_io = (i2c_sda_en) ? 1'bz : i2c_sda_o;
 assign i2c_sda_i  = i2c_sda_io;
@@ -115,6 +120,8 @@ always_ff @(negedge clk_i or negedge arstn_i) begin
     end
 end
 
+assign i2c_scl_o = i2c_scl_en ? ~clk_i : 1'b1;
+
 always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         bit_cnt <= '0;
@@ -125,15 +132,17 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     end
 end
 
+assign cnt_done = ~(|bit_cnt);
+
 always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
-        m_axis.tdata  <= '0;
-        m_axis.tvalid <= '0;
-    end else if (m_axis.tvalid & m_axis.tready) begin
-        m_axis.tvalid <= 1'b0;
+        m_axis_tdata_reg  <= '0;
+        m_axis_tvalid_reg <= '0;
+    end else if (m_handshake) begin
+        m_axis_tvalid_reg <= 1'b0;
     end else if ((state == STOP) && (rw)) begin
-        m_axis.tdata  <= rd_data;
-        m_axis.tvalid <= 1'b1;
+        m_axis_tdata_reg  <= rd_data;
+        m_axis_tvalid_reg <= 1'b1;
     end
 end
 
@@ -141,15 +150,17 @@ always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         wr_data <= '0;
         addr    <= '0;
-    end else if (s_axis.tvalid & s_axis.tready) begin
+    end else if (s_handshake) begin
         wr_data <= s_axis.tdata[(DATA_WIDTH*2)-1:DATA_WIDTH];
         addr    <= s_axis.tdata[DATA_WIDTH-1:0];
     end
 end
 
-assign s_axis.tready = (state == IDLE) ? 1'b1 : 1'b0;
-assign i2c_scl_o     = i2c_scl_en ? ~clk_i : 1'b1;
-assign cnt_done      = ~(|bit_cnt);
 assign rw            = addr[DATA_WIDTH-1];
+assign s_axis.tready = (state == IDLE) ? 1'b1 : 1'b0;
+assign m_axis.tvalid = m_axis_tvalid_reg;
+assign m_axis.tdata  = m_axis_tdata_reg;
+assign s_handshake   = s_axis.tvalid & s_axis.tready;
+assign m_handshake   = m_axis.tvalid & m_axis.tready;
 
 endmodule

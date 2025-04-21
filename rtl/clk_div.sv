@@ -10,37 +10,34 @@ module clk_div #(
     output logic clk_o
 );
 
+if (BYPASS == 1) begin
+    assign clk_o = clk_i;
+end else begin
+    localparam DIVIDER   = CLK_IN/CLK_OUT;
+    localparam CNT_WIDTH = $clog2(DIVIDER);
 
-generate;
-    if (BYPASS == 1) begin
-        assign clk_o = clk_i;
-    end else begin
-        localparam DIVIDER   = CLK_IN/CLK_OUT;
-        localparam CNT_WIDTH = $clog2(DIVIDER);
+    logic [CNT_WIDTH-1:0] cnt;
+    logic                 clk;
 
-        logic [CNT_WIDTH-1:0] cnt;
-        logic                 clk;
-
-        always_ff @(posedge clk_i or negedge arstn_i) begin
-            if (~arstn_i) begin
+    always_ff @(posedge clk_i or negedge arstn_i) begin
+        if (~arstn_i) begin
+            cnt <= '0;
+            clk <= '0;
+        end else if (en_i) begin
+            if (cnt == CNT_WIDTH'(DIVIDER-1)) begin
                 cnt <= '0;
-                clk <= '0;
-            end else if (en_i) begin
-                if (cnt == CNT_WIDTH'(DIVIDER-1)) begin
-                    cnt <= '0;
-                    clk <= ~clk;
-                end else begin
-                    cnt <= cnt + 1'b1;
-                end
+                clk <= ~clk;
+            end else begin
+                cnt <= cnt + 1'b1;
             end
         end
-
-        if (XILINX == 1) begin
-            BUFG i_BUFG (.I (clk), .O (clk_o));
-        end else begin
-            assign clk_o = clk;
-        end
     end
-endgenerate
+
+    if (XILINX == 1) begin
+        BUFG i_BUFG (.I (clk), .O (clk_o));
+    end else begin
+        assign clk_o = clk;
+    end
+end
 
 endmodule
