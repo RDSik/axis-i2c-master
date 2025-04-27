@@ -20,24 +20,25 @@ axis_if #(.DATA_WIDTH (I2C_DATA_WIDTH)) m_axis();
 logic i2c_clk;
 
 axis_i2c_master #(
-    .DATA_WIDTH (I2C_DATA_WIDTH)
+    .DATA_WIDTH (I2C_DATA_WIDTH),
+    .XILINX     (XILINX        )
 ) i_axis_i2c_master (
-    .clk_i         (i2c_clk      ),
-    .arstn_i       (arstn_i      ),
-    .i2c_scl_o     (i2c_scl_o    ),
-    .i2c_sda_io    (i2c_sda_io   ),
-    .s_axis        (s_axis.slave ),
-    .m_axis        (m_axis.master)
+    .clk_i      (i2c_clk       ),
+    .arstn_i    (arstn_i       ),
+    .i2c_scl_o  (i2c_scl_o     ),
+    .i2c_sda_io (i2c_sda_io    ),
+    .s_axis     (s_axis.slave  ),
+    .m_axis     (m_axis.master )
 );
 
 axis_data_gen #(
-    .CONFIG_MEM (CONFIG_MEM),
-    .MEM_DEPTH  (MEM_DEPTH ),
-    .MEM_WIDTH  (DATA_WIDTH)
+    .CONFIG_MEM (CONFIG_MEM   ),
+    .MEM_DEPTH  (MEM_DEPTH    ),
+    .MEM_WIDTH  (DATA_WIDTH   )
 ) i_axis_data_gen (
-    .clk_i   (i2c_clk      ),
-    .arstn_i (arstn_i      ),
-    .m_axis  (s_axis.master)
+    .clk_i      (i2c_clk      ),
+    .arstn_i    (arstn_i      ),
+    .m_axis     (s_axis.master)
 );
 
 clk_div #(
@@ -46,10 +47,10 @@ clk_div #(
     .BYPASS  (BYPASS  ),
     .XILINX  (XILINX  )
 ) i_clk_div (
-    .clk_i    (clk_i  ),
-    .arstn_i  (arstn_i),
-    .en_i     (1'b1   ),
-    .clk_o    (i2c_clk)
+    .clk_i   (clk_i   ),
+    .arstn_i (arstn_i ),
+    .en_i    (1'b1    ),
+    .clk_o   (i2c_clk )
 );
 
 `ifdef COCOTB_SIM

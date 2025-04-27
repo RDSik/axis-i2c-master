@@ -4,7 +4,7 @@ set dev_ver  "C"
 set language "sysv2017"
 
 set rtl_dir       "../../rtl"
-set constrain_dir ".."
+set constrain_dir "../gowin/"
 
 create_project -name $top -dir project -pn $part -device_version $dev_ver -force
 

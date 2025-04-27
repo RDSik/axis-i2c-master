@@ -1,5 +1,6 @@
 module axis_i2c_master #(
-    parameter DATA_WIDTH = 8
+    parameter DATA_WIDTH = 8,
+    parameter XILINX     = 0
 ) (
     input  logic clk_i,
     input  logic arstn_i,
@@ -43,15 +44,17 @@ logic                          i2c_sda_en;
 logic                          i2c_sda_o;
 logic                          i2c_sda_i;
 
-assign i2c_sda_io = (i2c_sda_en) ? 1'bz : i2c_sda_o;
-assign i2c_sda_i  = i2c_sda_io;
-
-// IOBUF iobuf_inst (
-    // .O  (i2c_sda_i ), // Buffer output
-    // .IO (i2c_sda_io), // Buffer inout port
-    // .I  (i2c_sda_o ), // Buffer input
-    // .T  (i2c_sda_en)  // 3-state enable input, high=input, low=output
-// );
+if (XILINX == 1) begin
+    IOBUF i_IOBUF (
+        .O  (i2c_sda_i ), // Buffer output
+        .IO (i2c_sda_io), // Buffer inout port
+        .I  (i2c_sda_o ), // Buffer input
+        .T  (i2c_sda_en)  // 3-state enable input, high=input, low=output
+    );
+end else begin
+    assign i2c_sda_io = (i2c_sda_en) ? 1'bz : i2c_sda_o;
+    assign i2c_sda_i  = i2c_sda_io;
+end
 
 always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin

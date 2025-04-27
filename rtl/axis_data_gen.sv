@@ -10,6 +10,8 @@ module axis_data_gen #(
 );
 
 logic [$clog2(MEM_DEPTH)-1:0] index;
+logic                         index_done;
+logic                         m_handshake;
 
 logic [MEM_WIDTH-1:0] config_mem [0:MEM_DEPTH-1];
 
@@ -20,12 +22,27 @@ end
 always_ff @(posedge clk_i or negedge arstn_i) begin
     if (~arstn_i) begin
         index <= '0;
-    end else if (m_axis.tvalid & m_axis.tready) begin
-        index <= (index == MEM_DEPTH - 1) ? '0 : index + 1'b1;
+    end else if (m_handshake) begin
+        if (index_done) begin
+            index <= '0;
+        end else begin
+            index <= index + 1'b1;
+        end
     end
 end
 
-assign m_axis.tvalid = 1'b1;
-assign m_axis.tdata  = config_mem[index];
+always_ff @(posedge clk_i or negedge arstn_i) begin
+    if (~arstn_i) begin
+        m_axis.tvalid <= 1'b0;
+    end else if (m_handshake) begin
+        m_axis.tvalid <= 1'b0;
+    end else begin
+        m_axis.tvalid <= 1'b1;
+    end
+end
+
+assign index_done   = (index == MEM_DEPTH - 1) ? 1'b0 : 1'b1;
+assign m_handshake  = m_axis.tvalid & m_axis.tready;
+assign m_axis.tdata = config_mem[index];
 
 endmodule

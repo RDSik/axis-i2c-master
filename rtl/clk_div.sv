@@ -34,7 +34,10 @@ end else begin
     end
 
     if (XILINX == 1) begin
-        BUFG i_BUFG (.I (clk), .O (clk_o));
+        BUFG i_BUFG (
+            .I (clk  ),
+            .O (clk_o)
+        );
     end else begin
         assign clk_o = clk;
     end
