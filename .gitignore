@@ -9,7 +9,7 @@
 !project/**/
 
 !project/**/project.tcl
-!project/**/axis_uart_top.xdc
+!project/**/axis_i2c_top.xdc
 !project/**/*.sdc
 !project/**/*.cst
 
